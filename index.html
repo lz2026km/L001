@@ -736,128 +736,248 @@ body {
 <!-- ===== MAP VIEW ===== -->
 <div id="mapView" class="view active">
   <div class="map-wrapper">
-    <svg id="chinaMap" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- ===== 五代十国历史地图 v0.3 ===== -->
+    <svg id="chinaMap" viewBox="0 0 900 660" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="mapBg" cx="50%" cy="50%" r="70%">
+        <!-- 底图渐变 -->
+        <radialGradient id="mapBg" cx="50%" cy="45%" r="70%">
           <stop offset="0%" stop-color="#1a2a3a"/>
-          <stop offset="100%" stop-color="#080c10"/>
+          <stop offset="60%" stop-color="#0d1a28"/>
+          <stop offset="100%" stop-color="#060c14"/>
         </radialGradient>
-        <filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <filter id="softShadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity=".5"/></filter>
+        <!-- 烫金渐变 -->
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8c84a"/>
+          <stop offset="50%" stop-color="#c9a227"/>
+          <stop offset="100%" stop-color="#8b6914"/>
+        </linearGradient>
+        <!-- 发光滤镜 -->
+        <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="kingdomGlow"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#000" flood-opacity=".6"/></filter>
+        <!-- 纸张纹理 -->
+        <pattern id="paper" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+          <rect width="200" height="200" fill="#1a2a3a"/>
+          <circle cx="100" cy="100" r="1" fill="rgba(201,162,39,0.08)"/>
+          <circle cx="0" cy="0" r="1" fill="rgba(201,162,39,0.06)"/>
+          <circle cx="50" cy="50" r="0.5" fill="rgba(201,162,39,0.04)"/>
+          <circle cx="150" cy="80" r="0.5" fill="rgba(201,162,39,0.04)"/>
+        </pattern>
       </defs>
+
+      <!-- 底图 -->
+      <rect width="900" height="660" fill="url(#mapBg)"/>
+      <rect width="900" height="660" fill="url(#paper)" opacity="0.4"/>
+
+      <!-- ===== 地 理 基 础 ===== -->
       
-      <rect width="800" height="600" fill="url(#mapBg)"/>
+      <!-- 海岸线 -->
+      <path d="M160,460 Q220,448 290,445 Q360,442 440,448 Q510,455 570,468 Q620,480 660,500 Q680,515 690,535 L700,660 L160,660 Z" 
+            fill="#0d2035" stroke="#1a3a5a" stroke-width="1.5" opacity="0.9"/>
       
       <!-- 黄河 -->
-      <path d="M480,75 Q492,115 472,155 Q460,185 445,210 Q425,235 435,260 Q450,280 458,295" 
-            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+      <path d="M520,50 Q510,90 530,130 Q545,165 528,200 Q515,235 538,268 Q555,295 545,330" 
+            fill="none" stroke="#3a6090" stroke-width="2.5" opacity="0.55" stroke-linecap="round"/>
       <!-- 长江 -->
-      <path d="M520,115 Q530,175 518,215 Q505,255 488,300 Q468,345 478,390 Q488,430 518,465 Q540,490 580,500" 
-            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+      <path d="M550,115 Q548,165 538,205 Q525,250 515,295 Q502,345 508,395 Q515,435 528,475 Q540,510 560,540" 
+            fill="none" stroke="#3a6090" stroke-width="2.5" opacity="0.55" stroke-linecap="round"/>
       <!-- 淮河 -->
-      <path d="M540,195 Q560,220 570,255 Q575,285 565,310" 
-            fill="none" stroke="#1a4a6a" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+      <path d="M558,268 Q575,295 585,325 Q592,350 582,375" 
+            fill="none" stroke="#3a6090" stroke-width="2" opacity="0.45" stroke-linecap="round"/>
+      <!-- 珠江支流 -->
+      <path d="M530,430 Q525,455 535,480 Q545,500 540,525" 
+            fill="none" stroke="#3a6090" stroke-width="1.5" opacity="0.35" stroke-linecap="round"/>
 
-      <!-- 后梁 -->
-      <g id="gLaterLiang" class="kingdom" data-kingdom="LaterLiang" opacity="0">
-        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
-              fill="#8b6914" filter="url(#glow)"/>
-        <text x="415" y="218" class="kingdom-label">后梁</text>
-      </g>
-      <!-- 后唐 -->
-      <g id="gLaterTang" class="kingdom" data-kingdom="LaterTang" opacity="0">
-        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
-              fill="#c45c00" filter="url(#glow)"/>
-        <text x="415" y="218" class="kingdom-label">后唐</text>
-      </g>
-      <!-- 后晋 -->
-      <g id="gLaterJin" class="kingdom" data-kingdom="LaterJin" opacity="0">
-        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
-              fill="#1a6090" filter="url(#glow)"/>
-        <text x="415" y="218" class="kingdom-label">后晋</text>
-      </g>
-      <!-- 后汉 -->
-      <g id="gLaterHan" class="kingdom" data-kingdom="LaterHan" opacity="0">
-        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
-              fill="#5a2050" filter="url(#glow)"/>
-        <text x="415" y="218" class="kingdom-label">后汉</text>
-      </g>
-      <!-- 后周 -->
-      <g id="gLaterZhou" class="kingdom" data-kingdom="LaterZhou" opacity="0">
-        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
-              fill="#1a5a30" filter="url(#glow)"/>
-        <text x="415" y="218" class="kingdom-label">后周</text>
-      </g>
-      <!-- 前蜀 -->
-      <g id="gFormerShu" class="kingdom" data-kingdom="FormerShu" opacity="0">
-        <path d="M258,298 Q308,278 328,310 Q333,352 308,392 Q268,412 238,387 Q218,352 238,315 Q248,295 258,298Z" 
-              fill="#c0392b" filter="url(#glow)"/>
-        <text x="278" y="343" class="kingdom-label">前蜀</text>
-      </g>
-      <!-- 后蜀 -->
-      <g id="gLaterShu" class="kingdom" data-kingdom="LaterShu" opacity="0">
-        <path d="M258,298 Q308,278 328,310 Q333,352 308,392 Q268,412 238,387 Q218,352 238,315 Q248,295 258,298Z" 
-              fill="#d35400" filter="url(#glow)"/>
-        <text x="278" y="343" class="kingdom-label">后蜀</text>
-      </g>
-      <!-- 吴 -->
-      <g id="gWu" class="kingdom" data-kingdom="Wu" opacity="0">
-        <path d="M498,228 Q558,198 588,238 Q598,290 578,330 Q538,360 498,340 Q468,300 478,253 Q488,233 498,228Z" 
-              fill="#16a085" filter="url(#glow)"/>
-        <text x="533" y="283" class="kingdom-label">吴</text>
-      </g>
-      <!-- 南唐 -->
-      <g id="gSouthernTang" class="kingdom" data-kingdom="SouthernTang" opacity="0">
-        <path d="M478,228 Q558,198 602,240 Q612,300 592,362 Q552,402 502,382 Q462,342 472,282 Q477,238 478,228Z" 
-              fill="#2980b9" filter="url(#glow)"/>
-        <text x="530" y="303" class="kingdom-label">南唐</text>
-      </g>
-      <!-- 吴越 -->
-      <g id="gWuyue" class="kingdom" data-kingdom="Wuyue" opacity="0">
-        <path d="M558,338 Q598,308 628,338 Q638,380 618,420 Q578,442 548,420 Q538,385 553,355 Q556,342 558,338Z" 
-              fill="#f39c12" filter="url(#glow)"/>
-        <text x="588" y="373" class="kingdom-label">吴越</text>
-      </g>
-      <!-- 闽 -->
-      <g id="gMin" class="kingdom" data-kingdom="Min" opacity="0">
-        <path d="M598,398 Q638,378 658,408 Q663,448 638,478 Q603,490 588,465 Q578,435 593,410 Q596,400 598,398Z" 
-              fill="#c0392b" filter="url(#glow)"/>
-        <text x="623" y="436" class="kingdom-label">闽</text>
-      </g>
-      <!-- 楚 -->
-      <g id="gChu" class="kingdom" data-kingdom="Chu" opacity="0">
-        <path d="M418,358 Q478,328 508,358 Q518,400 493,440 Q448,462 408,440 Q388,405 403,370 Q410,358 418,358Z" 
-              fill="#27ae60" filter="url(#glow)"/>
-        <text x="453" y="398" class="kingdom-label">楚</text>
-      </g>
-      <!-- 南汉 -->
-      <g id="gSouthernHan" class="kingdom" data-kingdom="SouthernHan" opacity="0">
-        <path d="M498,448 Q578,418 618,448 Q638,498 608,548 Q548,578 498,558 Q468,518 478,473 Q488,448 498,448Z" 
-              fill="#2c3e50" filter="url(#glow)"/>
-        <text x="548" y="498" class="kingdom-label">南汉</text>
-      </g>
-      <!-- 荆南 -->
-      <g id="gJingnan" class="kingdom" data-kingdom="Jingnan" opacity="0">
-        <path d="M418,278 Q468,258 493,283 Q498,318 473,343 Q438,353 413,333 Q403,303 418,278Z" 
-              fill="#7f8c8d" filter="url(#glow)"/>
-        <text x="450" y="303" class="kingdom-label">荆南</text>
-      </g>
-      <!-- 北汉 -->
-      <g id="gNorthernHan" class="kingdom" data-kingdom="NorthernHan" opacity="0">
-        <path d="M348,118 Q398,98 428,123 Q438,158 413,188 Q373,203 343,183 Q328,148 348,118Z" 
-              fill="#8e44ad" filter="url(#glow)"/>
-        <text x="385" y="150" class="kingdom-label">北汉</text>
-      </g>
-      <!-- 契丹 -->
+      <!-- ===== 大 丈 山 脉 ===== -->
+      <!-- 秦岭 -->
+      <path d="M340,220 Q380,205 420,215 Q450,222 460,240 Q420,250 380,245 Q350,238 340,220Z" 
+            fill="#1a3a28" stroke="#2a5a38" stroke-width="0.8" opacity="0.6"/>
+      <!-- 太行山 -->
+      <path d="M420,160 Q450,150 480,162 Q470,175 440,180 Q415,175 420,160Z" 
+            fill="#1a3a28" stroke="#2a5a38" stroke-width="0.8" opacity="0.5"/>
+      <!-- 巫山/武陵山 -->
+      <path d="M400,320 Q430,310 450,320 Q445,340 420,345 Q395,340 400,320Z" 
+            fill="#1a3a28" stroke="#2a5a38" stroke-width="0.8" opacity="0.4"/>
+
+      <!-- ===== 长 城 ===== -->
+      <!-- 秦汉长城（西部） -->
+      <path d="M180,175 L280,165 L360,172 L420,180" 
+            fill="none" stroke="rgba(201,162,39,0.35)" stroke-width="2" stroke-dasharray="6,4" stroke-linecap="round"/>
+      <!-- 明长城轮廓（北京附近） -->
+      <path d="M440,178 Q460,172 500,178 Q530,185 570,190 Q600,198 640,210" 
+            fill="none" stroke="rgba(201,162,39,0.4)" stroke-width="2.5" stroke-dasharray="5,3" stroke-linecap="round"/>
+      <!-- 燕山标注 -->
+      <text x="470" y="168" font-size="9" fill="rgba(201,162,39,0.3)" font-family="serif">燕山</text>
+
+      <!-- ===== 地 名 标 注 ===== -->
+      <!-- 黄河源 -->
+      <text x="540" y="48" font-size="9" fill="rgba(58,96,144,0.5)" font-family="serif">黄河</text>
+      <!-- 长江标注 -->
+      <text x="558" y="108" font-size="9" fill="rgba(58,96,144,0.5)" font-family="serif">长江</text>
+      <!-- 淮河标注 -->
+      <text x="565" y="260" font-size="8" fill="rgba(58,96,144,0.4)" font-family="serif">淮河</text>
+      <!-- 黄河几字弯 -->
+      <text x="510" y="185" font-size="9" fill="rgba(58,96,144,0.4)" font-family="serif">河</text>
+
+      <!-- ===== 重 镇 坐 标 ===== -->
+      <!-- 开封(汴梁) -->
+      <circle cx="530" cy="260" r="3" fill="#c9a227" opacity="0.8"/>
+      <text x="536" y="256" font-size="11" fill="rgba(201,162,39,0.9)" font-family="serif" font-weight="600">汴梁</text>
+      <!-- 洛阳 -->
+      <circle cx="480" cy="245" r="2.5" fill="#c9a227" opacity="0.6"/>
+      <text x="486" y="242" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">洛阳</text>
+      <!-- 太原 -->
+      <circle cx="440" cy="210" r="2.5" fill="#c9a227" opacity="0.6"/>
+      <text x="446" y="207" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">太原</text>
+      <!-- 成都 -->
+      <circle cx="318" cy="340" r="3" fill="#c9a227" opacity="0.8"/>
+      <text x="324" y="337" font-size="11" fill="rgba(201,162,39,0.9)" font-family="serif" font-weight="600">成都</text>
+      <!-- 金陵(南京) -->
+      <circle cx="560" cy="300" r="2.5" fill="#c9a227" opacity="0.6"/>
+      <text x="566" y="297" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">金陵</text>
+      <!-- 杭州 -->
+      <circle cx="610" cy="335" r="2.5" fill="#c9a227" opacity="0.6"/>
+      <text x="616" y="332" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">杭州</text>
+      <!-- 广州 -->
+      <circle cx="530" cy="448" r="3" fill="#c9a227" opacity="0.7"/>
+      <text x="536" y="445" font-size="11" fill="rgba(201,162,39,0.85)" font-family="serif" font-weight="600">广州</text>
+      <!-- 长沙 -->
+      <circle cx="470" cy="365" r="2" fill="#c9a227" opacity="0.6"/>
+      <text x="476" y="362" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">长沙</text>
+      <!-- 福州 -->
+      <circle cx="628" cy="400" r="2" fill="#c9a227" opacity="0.6"/>
+      <text x="634" y="397" font-size="10" fill="rgba(201,162,39,0.7)" font-family="serif">福州</text>
+      <!-- 江陵(荆南) -->
+      <circle cx="458" cy="315" r="2" fill="#c9a227" opacity="0.6"/>
+      <text x="464" y="312" font-size="9" fill="rgba(201,162,39,0.65)" font-family="serif">江陵</text>
+      <!-- 扬州(吴国都) -->
+      <circle cx="558" cy="278" r="2" fill="#c9a227" opacity="0.6"/>
+      <text x="564" y="275" font-size="9" fill="rgba(201,162,39,0.65)" font-family="serif">扬州</text>
+
+      <!-- ===== 辽 契 丹 ===== -->
       <g id="gLiao" class="kingdom" data-kingdom="Liao" opacity="0">
-        <path d="M48,78 Q198,48 348,68 Q378,88 368,138 Q338,178 278,188 Q178,193 78,168 Q28,138 38,98Z" 
-              fill="#566573" opacity="0.6" filter="url(#glow)"/>
-        <text x="198" y="122" class="kingdom-label" fill="#ccc">契丹</text>
+        <path d="M20,55 Q80,35 160,45 Q230,55 300,70 Q360,88 390,105 Q370,130 340,145 Q300,158 260,162 Q210,168 160,168 Q100,168 60,158 Q25,148 20,120 Q15,90 20,55Z" 
+              fill="#4a5568" opacity="0.65"/>
+        <!-- 契丹首都上京临潢府 -->
+        <circle cx="280" cy="100" r="2.5" fill="#9ca8b8" opacity="0.7"/>
+        <text x="286" y="97" font-size="9" fill="rgba(180,190,210,0.7)" font-family="serif">临潢</text>
+        <text x="195" y="78" class="kingdom-label" fill="#c0c8d8" font-size="14">契丹</text>
       </g>
 
-      <!-- 地图边框装饰 -->
-      <rect x="8" y="8" width="784" height="584" fill="none" stroke="rgba(201,162,39,.15)" stroke-width="1" rx="3"/>
-      <text x="790" y="594" fill="rgba(201,162,39,.2)" font-size="9" text-anchor="end" font-family="monospace">L001 · 五代十国兴亡录 v0.1</text>
+      <!-- ===== 后 梁 ===== -->
+      <g id="gLaterLiang" class="kingdom" data-kingdom="LaterLiang" opacity="0">
+        <path d="M440,195 Q480,178 530,188 Q565,200 582,228 Q588,258 572,285 Q548,308 510,308 Q470,305 448,280 Q428,252 432,222 Q435,200 440,195Z" 
+              fill="#c9a227" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="505" y="248" class="kingdom-label" fill="#fff" font-size="15" font-weight="900">后梁</text>
+      </g>
+
+      <!-- ===== 后 唐 ===== -->
+      <g id="gLaterTang" class="kingdom" data-kingdom="LaterTang" opacity="0">
+        <path d="M358,195 Q410,172 465,185 Q500,198 520,225 Q528,255 512,285 Q488,312 448,318 Q405,318 375,290 Q348,258 350,222 Q353,200 358,195Z" 
+              fill="#e07020" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="432" y="252" class="kingdom-label" fill="#fff" font-size="15" font-weight="900">后唐</text>
+      </g>
+
+      <!-- ===== 后 晋 ===== -->
+      <g id="gLaterJin" class="kingdom" data-kingdom="LaterJin" opacity="0">
+        <path d="M388,155 Q448,138 510,148 Q558,162 582,198 Q598,235 582,272 Q558,305 515,315 Q468,318 435,290 Q405,258 400,218 Q396,180 388,155Z" 
+              fill="#1a6090" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="478" y="232" class="kingdom-label" fill="#fff" font-size="15" font-weight="900">后晋</text>
+      </g>
+
+      <!-- ===== 后 汉 ===== -->
+      <g id="gLaterHan" class="kingdom" data-kingdom="LaterHan" opacity="0">
+        <path d="M398,118 Q448,102 498,112 Q535,128 555,162 Q568,198 552,235 Q528,268 492,278 Q450,280 420,252 Q395,220 392,182 Q390,145 398,118Z" 
+              fill="#7b3a90" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="468" y="195" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">后汉</text>
+      </g>
+
+      <!-- ===== 后 周 ===== -->
+      <g id="gLaterZhou" class="kingdom" data-kingdom="LaterZhou" opacity="0">
+        <path d="M448,198 Q488,180 535,192 Q568,208 582,242 Q590,278 572,305 Q545,328 505,325 Q465,318 442,288 Q425,255 432,222 Q438,202 448,198Z" 
+              fill="#1a8a48" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="505" y="260" class="kingdom-label" fill="#fff" font-size="15" font-weight="900">后周</text>
+      </g>
+
+      <!-- ===== 前 蜀 ===== -->
+      <g id="gFormerShu" class="kingdom" data-kingdom="FormerShu" opacity="0">
+        <path d="M248,268 Q298,248 338,268 Q358,298 348,340 Q328,378 288,388 Q248,385 228,355 Q212,315 228,282 Q238,262 248,268Z" 
+              fill="#c0281a" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="282" y="325" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">前蜀</text>
+      </g>
+
+      <!-- ===== 后 蜀 ===== -->
+      <g id="gLaterShu" class="kingdom" data-kingdom="LaterShu" opacity="0">
+        <path d="M252,272 Q305,252 345,272 Q365,305 355,348 Q335,388 292,398 Q252,395 232,362 Q215,322 232,288 Q242,268 252,272Z" 
+              fill="#d05800" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="288" y="332" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">后蜀</text>
+      </g>
+
+      <!-- ===== 吴 ===== -->
+      <g id="gWu" class="kingdom" data-kingdom="Wu" opacity="0">
+        <path d="M530,225 Q572,208 608,230 Q628,265 618,308 Q598,345 562,358 Q528,358 512,328 Q500,295 508,260 Q518,232 530,225Z" 
+              fill="#0a9090" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="562" y="290" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">吴</text>
+      </g>
+
+      <!-- ===== 南 唐 ===== -->
+      <g id="gSouthernTang" class="kingdom" data-kingdom="SouthernTang" opacity="0">
+        <path d="M508,218 Q572,198 618,225 Q645,268 635,322 Q615,372 572,395 Q528,405 498,378 Q475,342 485,295 Q492,250 508,218Z" 
+              fill="#2060c0" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="558" y="308" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">南唐</text>
+      </g>
+
+      <!-- ===== 吴 越 ===== -->
+      <g id="gWuyue" class="kingdom" data-kingdom="Wuyue" opacity="0">
+        <path d="M578,298 Q622,278 658,300 Q675,332 660,368 Q635,395 600,398 Q575,388 568,358 Q565,325 578,298Z" 
+              fill="#d4a010" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="614" y="345" class="kingdom-label" fill="#fff" font-size="13" font-weight="900">吴越</text>
+      </g>
+
+      <!-- ===== 闽 ===== -->
+      <g id="gMin" class="kingdom" data-kingdom="Min" opacity="0">
+        <path d="M620,358 Q665,338 690,362 Q700,400 682,432 Q655,455 628,448 Q610,425 612,398 Q615,372 620,358Z" 
+              fill="#b02818" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="648" y="398" class="kingdom-label" fill="#fff" font-size="13" font-weight="900">闽</text>
+      </g>
+
+      <!-- ===== 楚 ===== -->
+      <g id="gChu" class="kingdom" data-kingdom="Chu" opacity="0">
+        <path d="M425,302 Q478,278 512,300 Q525,332 510,368 Q480,398 440,398 Q412,388 405,358 Q400,328 425,302Z" 
+              fill="#1a9040" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="455" y="348" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">楚</text>
+      </g>
+
+      <!-- ===== 南 汉 ===== -->
+      <g id="gSouthernHan" class="kingdom" data-kingdom="SouthernHan" opacity="0">
+        <path d="M475,398 Q542,372 588,400 Q618,442 602,492 Q572,532 528,545 Q478,545 455,505 Q440,455 455,415 Q462,398 475,398Z" 
+              fill="#2c3a50" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="522" y="468" class="kingdom-label" fill="#fff" font-size="14" font-weight="900">南汉</text>
+      </g>
+
+      <!-- ===== 荆 南 ===== -->
+      <g id="gJingnan" class="kingdom" data-kingdom="Jingnan" opacity="0">
+        <path d="M428,278 Q468,262 495,282 Q505,308 490,330 Q462,345 438,332 Q418,310 428,278Z" 
+              fill="#6a7080" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="458" y="302" class="kingdom-label" fill="#fff" font-size="11" font-weight="700">荆南</text>
+      </g>
+
+      <!-- ===== 北 汉 ===== -->
+      <g id="gNorthernHan" class="kingdom" data-kingdom="NorthernHan" opacity="0">
+        <path d="M348,115 Q398,95 445,108 Q475,128 485,165 Q488,202 468,232 Q440,258 402,258 Q365,250 345,218 Q328,178 348,115Z" 
+              fill="#7a2090" opacity="0.88" filter="url(#kingdomGlow)"/>
+        <text x="408" y="185" class="kingdom-label" fill="#fff" font-size="13" font-weight="900">北汉</text>
+      </g>
+
+      <!-- ===== 地 图 装 饰 边 框 ===== -->
+      <!-- 四角装饰 -->
+      <path d="M4,4 L40,4 M4,4 L4,40" stroke="rgba(201,162,39,0.5)" stroke-width="2" fill="none"/>
+      <path d="M896,4 L860,4 M896,4 L896,40" stroke="rgba(201,162,39,0.5)" stroke-width="2" fill="none"/>
+      <path d="M4,656 L40,656 M4,656 L4,620" stroke="rgba(201,162,39,0.5)" stroke-width="2" fill="none"/>
+      <path d="M896,656 L860,656 M896,656 L896,620" stroke="rgba(201,162,39,0.5)" stroke-width="2" fill="none"/>
+      <!-- 外边框 -->
+      <rect x="4" y="4" width="892" height="652" fill="none" stroke="rgba(201,162,39,0.2)" stroke-width="1" rx="2"/>
+      <!-- 版本标注 -->
+      <text x="895" y="655" fill="rgba(201,162,39,0.2)" font-size="9" text-anchor="end" font-family="monospace">L001 · 五代十国 v0.3</text>
     </svg>
 
     <!-- 事件浮窗 -->
