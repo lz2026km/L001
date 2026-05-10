@@ -4,509 +4,1031 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L001 · 五代十国兴亡录</title>
+<!-- fonts inline -->
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0a0f;--card:#16161f;--card2:#1e1e2e;--text:#f0e6d3;--muted:#8a8a9a;
-  --liang:#c9a227;--tang:#e85d04;--jin:#4cc9f0;--han:#7b2d8b;--zhou:#2d6a4f;
+:root {
+  --ink: #1a1208;
+  --paper: #f5edd8;
+  --paper-dark: #e8d9b8;
+  --gold: #c9a227;
+  --gold-light: #e8c84a;
+  --bronze: #8b6914;
+  --vermilion: #8b1a1a;
+  --text: #2c1810;
+  --text-light: #5a4030;
+  --muted: #8a7060;
+  --shadow: rgba(0,0,0,.25);
+  --liang:#8b6914;
+  --tang:#c45c00;
+  --jin:#1a6090;
+  --han:#5a2050;
+  --zhou:#1a5a30;
 }
-body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 24px;background:var(--card);border-bottom:1px solid #2a2a3a;
-  position:sticky;top:0;z-index:100;
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family: 'Noto Serif SC', 'Source Han Serif CN', 'Source Han Serif SC', 'SimSun', '宋体', 'Songti SC', serif;
+  background: var(--ink);
+  color: var(--text);
 }
-.topbar h1{font-size:18px;font-weight:700;letter-spacing:2px;color:#d4af37}
-.topbar .ver{font-size:12px;color:var(--muted);background:#222;padding:2px 8px;border-radius:4px}
-.tabs{display:flex;gap:6px}
-.tabs button{
-  padding:6px 16px;border:1px solid #333;background:var(--card2);
-  color:var(--text);border-radius:6px;cursor:pointer;font-size:14px;
-  transition:all .2s;
+
+/* ===== PARCHMENT BACKGROUND ===== */
+.paper-bg {
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(200,170,100,.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,140,80,.08) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 }
-.tabs button.active{background:#d4af37;color:#000;border-color:#d4af37;font-weight:600}
-.view{display:none;height:calc(100vh - 60px);overflow:hidden}
-.view.active{display:block}
+
+/* ===== TOPBAR ===== */
+.topbar {
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+  background: linear-gradient(135deg, #1a1208 0%, #2c1f10 50%, #1a1208 100%);
+  border-bottom: 2px solid var(--gold);
+  position: relative;
+  z-index: 100;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+}
+.topbar-left {
+  display: flex; align-items: center; gap: 20px;
+}
+.topbar h1 {
+  font-family: 'Noto Serif SC', 'SimSun', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-shadow: 0 2px 8px rgba(201,162,39,.3);
+}
+.topbar-right {
+  display: flex; align-items: center; gap: 16px;
+}
+.ver-badge {
+  font-size: 12px;
+  color: var(--gold);
+  background: rgba(201,162,39,.15);
+  border: 1px solid var(--gold);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-family: monospace;
+}
+.tabs {
+  display: flex; gap: 4px;
+  background: rgba(0,0,0,.3);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(201,162,39,.3);
+}
+.tabs button {
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  color: rgba(201,162,39,.6);
+  font-size: 14px;
+  font-family: 'Noto Serif SC', serif;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all .25s;
+  display: flex; align-items: center; gap: 6px;
+}
+.tabs button.active {
+  background: linear-gradient(135deg, var(--gold), var(--bronze));
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(201,162,39,.4);
+}
+.tabs button:hover:not(.active) {
+  color: var(--gold-light);
+  background: rgba(201,162,39,.1);
+}
+
+/* ===== VIEWS ===== */
+.view { display: none; height: calc(100vh - 64px); }
+.view.active { display: flex; flex-direction: column; }
 
 /* ===== MAP VIEW ===== */
-#mapView{position:relative}
-.map-container{
-  position:relative;width:100%;height:calc(100vh - 120px);overflow:hidden;
+#mapView {
+  flex: 1;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
 }
-#chinaMap{width:100%;height:100%}
-.kingdom{
-  cursor:pointer;transition:opacity .3s,filter .3s;
-  pointer-events:none;
+.map-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 50%, #1a2a3a 0%, #0a0a0f 100%);
 }
-.kingdom.active{pointer-events:all}
-.kingdom:hover{filter:brightness(1.4)}
-.kingdom-label{
-  font-size:11px;fill:#fff;font-weight:600;
-  pointer-events:none;text-anchor:middle;
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
+.map-wrapper::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='1' fill='rgba(201,162,39,0.1)'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
 }
-.year-slider{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(10,10,15,.9);padding:12px 24px;
-  border-top:1px solid #2a2a3a;display:flex;align-items:center;gap:16px;
+#chinaMap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
-.year-slider label{font-size:13px;color:var(--muted);min-width:40px}
-#yearDisplay{font-size:20px;font-weight:700;color:#d4af37;min-width:50px;text-align:center}
-#yearRange{
-  flex:1;accent-color:#d4af37;height:6px;cursor:pointer;
-  -webkit-appearance:none;background:linear-gradient(to right,#c9a227 var(--pct,0%),#333 var(--pct,0%));
-  border-radius:3px;
+
+/* ===== KINGDOM SVG ===== */
+.kingdom {
+  cursor: pointer;
+  transition: opacity .5s ease, filter .3s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.5));
 }
-#yearRange::-webkit-slider-thumb{
-  -webkit-appearance:none;width:16px;height:16px;
-  background:#d4af37;border-radius:50%;cursor:pointer;
+.kingdom.active {
+  pointer-events: all;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.6));
+}
+.kingdom.active:hover {
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,.7)) brightness(1.2);
+}
+.kingdom-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  fill: #fff;
+  font-weight: 700;
+  pointer-events: none;
+  text-anchor: middle;
+  text-shadow: 0 2px 6px rgba(0,0,0,.9), 0 0 20px rgba(0,0,0,.5);
+  dominant-baseline: middle;
+}
+
+/* ===== YEAR SLIDER ===== */
+.year-panel {
+  height: 90px;
+  flex-shrink: 0;
+  background: linear-gradient(to top, rgba(10,8,5,.98) 0%, rgba(20,15,8,.95) 60%, rgba(26,18,8,.9) 100%);
+  border-top: 1px solid rgba(201,162,39,.3);
+  padding: 12px 40px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.year-panel-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.year-big {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(201,162,39,.5);
+  min-width: 60px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.year-sep {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+}
+.year-era-info {
+  flex: 1;
+}
+.year-era-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 2px;
+}
+.year-era-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+.year-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.year-controls label {
+  font-size: 13px;
+  color: rgba(201,162,39,.5);
+  font-weight: 600;
+}
+#yearRange {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  background: linear-gradient(to right,
+    var(--liang) 0%,
+    var(--tang) 25%,
+    var(--jin) 45%,
+    var(--han) 65%,
+    var(--zhou) 80%,
+    #333 80%,
+    #222 100%
+  );
+  border-radius: 2px;
+  cursor: pointer;
+  accent-color: var(--gold);
+}
+#yearRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold), var(--bronze));
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(201,162,39,.6), 0 2px 6px rgba(0,0,0,.5);
+  border: 2px solid rgba(255,255,255,.3);
+}
+#yearRange::-moz-range-thumb {
+  width: 20px; height: 20px;
+  background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(201,162,39,.6);
+  border: 2px solid rgba(255,255,255,.3);
+}
+
+/* ===== EVENTS FLOAT ===== */
+.events-float {
+  position: absolute;
+  right: 24px;
+  top: 16px;
+  width: 240px;
+  background: rgba(20,14,8,.92);
+  border: 1px solid rgba(201,162,39,.3);
+  border-radius: 12px;
+  padding: 14px 16px;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+.events-float h4 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,162,39,.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.event-item {
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(201,162,39,.08);
+  cursor: pointer;
+  transition: all .2s;
+}
+.event-item:last-child { border-bottom: none; }
+.event-item:hover { padding-left: 6px; }
+.event-item .ev-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paper);
+  margin-bottom: 2px;
+}
+.event-item .ev-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.ev-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  background: var(--gold);
 }
 
 /* ===== TIMELINE VIEW ===== */
-#timelineView{
-  overflow-x:auto;overflow-y:auto;padding:0 24px 40px;
-  height:calc(100vh - 120px);
+#timelineView {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--ink);
+  padding: 0;
 }
-.timeline-header{
-  position:sticky;top:0;background:var(--bg);padding:16px 0 8px;
-  z-index:10;border-bottom:1px solid #2a2a3a;margin-bottom:0;
+.tl-hero {
+  background: linear-gradient(135deg, #1a1208 0%, #2c1f10 50%, #1a1208 100%);
+  padding: 40px 48px 32px;
+  border-bottom: 2px solid var(--gold);
+  position: relative;
 }
-.tl-title{font-size:16px;font-weight:700;color:#d4af37;margin-bottom:12px}
-.tl-scroll{overflow-x:auto;padding-bottom:20px}
-.tl-ruler{
-  display:flex;position:relative;height:40px;
-  background:linear-gradient(to right,var(--liang),var(--tang),var(--jin),var(--han),var(--zhou));
-  border-radius:4px;min-width:1200px;margin-bottom:20px;
+.tl-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 48px; right: 48px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
 }
-.tl-era{
-  flex:1;text-align:center;font-size:11px;font-weight:600;
-  padding:10px 4px;color:rgba(0,0,0,.7);
-  border-right:1px solid rgba(0,0,0,.2);display:flex;flex-direction:column;justify-content:center;
+.tl-hero-title {
+  font-family: 'Noto Serif SC', 'SimSun', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 6px;
+  margin-bottom: 8px;
 }
-.tl-era:last-child{border-right:none}
-.tl-era span{font-size:13px;font-weight:700}
-.tl-events{position:relative;min-width:1200px}
-.tl-dynasty-row{
-  display:flex;align-items:center;margin-bottom:16px;gap:8px;
+.tl-hero-sub {
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 2px;
 }
-.tl-dynasty-label{
-  width:80px;font-size:12px;font-weight:600;text-align:right;
-  flex-shrink:0;padding-right:8px;border-right:2px solid;
+.tl-body {
+  padding: 32px 48px 60px;
 }
-.tl-dynasty-track{
-  flex:1;position:relative;height:28px;background:#1a1a25;border-radius:4px;
+
+/* ===== DYNASTY BARS ===== */
+.dynasty-section { margin-bottom: 32px; }
+.dynasty-section-title {
+  font-family: 'Noto Serif SC', 'SimSun', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,162,39,.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.tl-bar{
-  position:absolute;height:16px;top:6px;border-radius:3px;
-  cursor:pointer;transition:filter .2s;display:flex;align-items:center;
-  padding:0 8px;font-size:11px;font-weight:600;color:rgba(0,0,0,.7);
-  white-space:nowrap;overflow:hidden;
+.dynasty-section-title::before {
+  content: '';
+  width: 4px; height: 16px;
+  background: var(--gold);
+  border-radius: 2px;
 }
-.tl-bar:hover{filter:brightness(1.3)}
-.tl-event-dot{
-  position:absolute;width:12px;height:12px;border-radius:50%;
-  top:8px;transform:translateX(-50%);cursor:pointer;
-  border:2px solid #fff;z-index:2;
+.dynasty-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 0;
 }
-.tl-event-dot.war{background:#e63946}
-.tl-event-dot.found{background:#2a9d8f}
-.tl-event-dot.destroy{background:#555}
-.tl-event-dot.political{background:#457b9d}
-.tl-event-dot:hover{transform:translateX(-50%) scale(1.5)}
+.dynasty-label {
+  width: 70px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  padding-right: 14px;
+  flex-shrink: 0;
+  color: var(--paper-dark);
+}
+.dynasty-track {
+  flex: 1;
+  position: relative;
+  height: 32px;
+  background: rgba(255,255,255,.03);
+  border-radius: 6px;
+  overflow: visible;
+}
+.tl-bar {
+  position: absolute;
+  height: 26px;
+  top: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: filter .25s, transform .2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.4);
+  letter-spacing: 1px;
+  font-family: 'Noto Serif SC', serif;
+}
+.tl-bar:hover {
+  filter: brightness(1.3);
+  transform: translateY(-2px);
+  z-index: 10;
+}
+.tl-bar.ten {
+  height: 22px;
+  top: 5px;
+  font-size: 11px;
+  opacity: .9;
+}
+
+/* ===== EVENT DOTS ===== */
+.events-section { margin-top: 36px; }
+.events-ruler {
+  display: flex;
+  position: relative;
+  height: 36px;
+  margin-bottom: 20px;
+  background: rgba(201,162,39,.05);
+  border-radius: 6px;
+  border: 1px solid rgba(201,162,39,.15);
+  overflow: hidden;
+}
+.ruler-mark {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(201,162,39,.1);
+  position: relative;
+}
+.ruler-mark:last-child { border-right: none; }
+.ruler-mark .year-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(201,162,39,.7);
+}
+.ruler-mark .dynasty-label-sm {
+  font-size: 9px;
+  color: rgba(201,162,39,.4);
+  margin-top: 1px;
+}
+.events-row {
+  position: relative;
+  height: 100px;
+  background: rgba(255,255,255,.02);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  overflow: visible;
+}
+.events-row::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,162,39,.2), transparent);
+}
+.tl-dot {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,.4);
+  transition: transform .2s, box-shadow .2s;
+  z-index: 5;
+}
+.tl-dot:hover {
+  transform: translate(-50%, -50%) scale(1.6);
+  box-shadow: 0 0 12px currentColor;
+  z-index: 15;
+}
+.tl-dot.war { background: #e63946; }
+.tl-dot.found { background: #2a9d8f; }
+.tl-dot.destroy { background: #555; }
+.tl-dot.political { background: #457b9d; }
+.tl-dot .dot-label {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--gold);
+  white-space: nowrap;
+  background: rgba(20,14,8,.85);
+  padding: 1px 5px;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.tl-dot:hover .dot-label { opacity: 1; }
 
 /* ===== DETAIL PANEL ===== */
-.detail-panel{
-  position:fixed;top:0;right:-480px;width:460px;height:100vh;
-  background:var(--card);border-left:1px solid #2a2a3a;
-  transition:right .4s cubic-bezier(.4,0,.2,1);z-index:200;
-  overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,.5);
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.65);
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s;
+  z-index: 200;
+  backdrop-filter: blur(3px);
 }
-.detail-panel.open{right:0}
-.detail-header{
-  padding:20px 24px 16px;border-bottom:1px solid #2a2a3a;
-  position:sticky;top:0;background:var(--card);z-index:1;
-}
-.detail-close{
-  float:right;background:none;border:none;color:var(--muted);
-  font-size:24px;cursor:pointer;line-height:1;
-}
-.detail-close:hover{color:var(--text)}
-.detail-name{font-size:24px;font-weight:700;margin-bottom:4px}
-.detail-subtitle{font-size:13px;color:var(--muted);margin-bottom:8px}
-.detail-period{
-  display:inline-block;padding:3px 12px;border-radius:20px;
-  font-size:12px;font-weight:600;
-}
-.detail-body{padding:20px 24px}
-.detail-section{margin-bottom:24px}
-.detail-section h3{
-  font-size:13px;font-weight:700;color:#d4af37;margin-bottom:10px;
-  text-transform:uppercase;letter-spacing:1px;
-}
-.detail-section p{font-size:14px;line-height:1.8;color:#c8c8d8}
-.detail-rulers{list:none}
-.detail-rulers li{
-  padding:8px 12px;background:#1a1a25;border-radius:6px;
-  margin-bottom:6px;display:flex;justify-content:space-between;
-  font-size:13px;
-}
-.detail-rulers .ruler-name{font-weight:600}
-.detail-rulers .ruler-years{color:var(--muted)}
-.detail-timeline{position:relative;padding-left:16px;border-left:2px solid #333}
-.detail-tl-item{
-  position:relative;padding:0 0 16px;font-size:13px;line-height:1.6;
-}
-.detail-tl-item::before{
-  content:'';position:absolute;left:-21px;top:4px;
-  width:8px;height:8px;border-radius:50%;background:#d4af37;
-}
-.detail-tl-item .year{color:#d4af37;font-weight:600}
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  opacity:0;pointer-events:none;transition:opacity .3s;z-index:150;
-}
-.overlay.show{opacity:1;pointer-events:auto}
+.overlay.show { opacity: 1; pointer-events: auto; }
 
-/* ===== YEAR BADGE ===== */
-.year-events{
-  position:absolute;right:24px;top:80px;width:200px;
-  background:rgba(22,22,31,.95);border:1px solid #2a2a3a;
-  border-radius:8px;padding:12px;max-height:300px;overflow-y:auto;
+.detail-panel {
+  position: fixed;
+  top: 0; right: -520px;
+  width: 500px;
+  height: 100vh;
+  background: linear-gradient(160deg, #1e1810 0%, #16100a 50%, #1a1208 100%);
+  border-left: 2px solid var(--gold);
+  transition: right .4s cubic-bezier(.4,0,.2,1);
+  z-index: 210;
+  overflow-y: auto;
+  box-shadow: -12px 0 50px rgba(0,0,0,.7);
 }
-.year-events h4{font-size:12px;color:#d4af37;margin-bottom:8px}
-.year-event-item{
-  padding:6px 0;border-bottom:1px solid #1e1e2e;font-size:12px;
-  cursor:pointer;color:var(--text);
+.detail-panel.open { right: 0; }
+.detail-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(201,162,39,.08) 0%, transparent 100%);
+  pointer-events: none;
 }
-.year-event-item:hover{color:#d4af37}
-.year-event-item:last-child{border-bottom:none}
+.detail-header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid rgba(201,162,39,.2);
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 1;
+}
+.detail-close {
+  float: right;
+  background: rgba(201,162,39,.1);
+  border: 1px solid rgba(201,162,39,.3);
+  color: var(--gold);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  line-height: 1;
+}
+.detail-close:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.detail-flag {
+  font-size: 28px;
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+}
+.detail-name {
+  font-family: 'Noto Serif SC', 'SimSun', serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-shadow: 0 2px 12px rgba(201,162,39,.3);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.detail-meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.detail-period-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: monospace;
+  border: 1px solid;
+}
+.detail-body { padding: 24px 32px 40px; }
+.detail-section { margin-bottom: 28px; }
+.detail-section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,162,39,.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.detail-section-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+.detail-prose {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--paper-dark);
+  text-align: justify;
+}
+.rulers-list { list-style: none; }
+.rulers-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255,255,255,.03);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  border: 1px solid rgba(201,162,39,.08);
+  transition: all .2s;
+}
+.rulers-list li:hover {
+  background: rgba(201,162,39,.06);
+  border-color: rgba(201,162,39,.2);
+}
+.ruler-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--paper);
+}
+.ruler-years {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: monospace;
+}
+.detail-tl {
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid rgba(201,162,39,.25);
+}
+.detail-tl-item {
+  position: relative;
+  padding: 0 0 20px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--paper-dark);
+}
+.detail-tl-item:last-child { padding-bottom: 0; }
+.detail-tl-item::before {
+  content: '';
+  position: absolute;
+  left: -25px;
+  top: 5px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(201,162,39,.5);
+}
+.detail-tl-item .year {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 12px;
+  font-family: monospace;
+}
+.detail-tl-item .title {
+  font-weight: 700;
+  color: var(--paper);
+  display: block;
+  margin-bottom: 2px;
+}
+.detail-tl-item .desc {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,.2); }
+::-webkit-scrollbar-thumb { background: rgba(201,162,39,.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,162,39,.5); }
 
 /* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-  .detail-panel{width:100%;right:-100%}
-  .year-events{right:8px;width:160px;font-size:11px}
-  .topbar h1{font-size:14px}
+@media(max-width: 768px) {
+  .topbar { padding: 0 16px; height: 56px; }
+  .topbar h1 { font-size: 16px; letter-spacing: 2px; }
+  .tabs button { padding: 6px 14px; font-size: 13px; }
+  .detail-panel { width: 100%; right: -100%; }
+  .events-float { width: 180px; right: 8px; padding: 10px 12px; }
+  .year-panel { padding: 10px 16px 12px; }
+  .tl-body { padding: 20px 16px 40px; }
+  .tl-hero { padding: 24px 16px 20px; }
+  .tl-hero-title { font-size: 20px; }
+  .dynasty-label { width: 50px; font-size: 11px; }
 }
 </style>
 </head>
 <body>
 
+<!-- ===== TOPBAR ===== -->
 <div class="topbar">
-  <h1>L001 · 五代十国兴亡录</h1>
-  <div class="tabs">
-    <button class="active" onclick="switchView('map')">🗺️ 地图</button>
-    <button onclick="switchView('timeline')">📜 时间轴</button>
+  <div class="topbar-left">
+    <h1>📜 L001 · 五代十国兴亡录</h1>
   </div>
-  <span class="ver">v0.1</span>
+  <div class="topbar-right">
+    <div class="tabs">
+      <button class="active" onclick="switchView('map')">🗺️ 地图</button>
+      <button onclick="switchView('timeline')">📜 时间轴</button>
+    </div>
+    <span class="ver-badge">v0.1</span>
+  </div>
 </div>
 
 <!-- ===== MAP VIEW ===== -->
 <div id="mapView" class="view active">
-  <div class="map-container">
+  <div class="map-wrapper">
     <svg id="chinaMap" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-      <!-- 简化中国地图轮廓 -->
       <defs>
-        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="mapBg" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#1a2a3a"/>
+          <stop offset="100%" stop-color="#080c10"/>
+        </radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="softShadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity=".5"/></filter>
       </defs>
       
-      <!-- 背景 -->
-      <rect width="800" height="600" fill="#0d0d15"/>
-      
-      <!-- 外边框 -->
-      <rect x="10" y="10" width="780" height="580" fill="none" stroke="#222" stroke-width="1" rx="4"/>
-      
-      <!-- 地理参考线 -->
-      <line x1="400" y1="10" x2="400" y2="590" stroke="#1a1a2a" stroke-width="1" stroke-dasharray="4,8"/>
-      <line x1="10" y1="300" x2="790" y2="300" stroke="#1a1a2a" stroke-width="1" stroke-dasharray="4,8"/>
+      <rect width="800" height="600" fill="url(#mapBg)"/>
       
       <!-- 黄河 -->
-      <path d="M480,80 Q490,120 470,160 Q460,180 440,200 Q420,220 430,240 Q450,260 460,280" 
-            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.6"/>
+      <path d="M480,75 Q492,115 472,155 Q460,185 445,210 Q425,235 435,260 Q450,280 458,295" 
+            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
       <!-- 长江 -->
-      <path d="M520,120 Q530,180 520,220 Q510,260 490,300 Q470,340 480,380 Q490,420 520,450 Q540,480 580,490" 
-            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.6"/>
-      
-      <!-- 十国/五代领土（简化矩形区块） -->
-      
-      <!-- 后梁(907-923) - 金色 - 中原 -->
-      <g id="gLaterLiang" class="kingdom" data-kingdom="LaterLiang" opacity="0.85">
-        <path d="M380,180 Q450,160 470,190 Q480,220 460,250 Q430,270 390,260 Q360,240 360,210 Q365,185 380,180Z" 
-              fill="#c9a227" filter="url(#glow)"/>
-        <text x="415" y="215" class="kingdom-label">后梁</text>
+      <path d="M520,115 Q530,175 518,215 Q505,255 488,300 Q468,345 478,390 Q488,430 518,465 Q540,490 580,500" 
+            fill="none" stroke="#1a4a6a" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+      <!-- 淮河 -->
+      <path d="M540,195 Q560,220 570,255 Q575,285 565,310" 
+            fill="none" stroke="#1a4a6a" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+
+      <!-- 后梁 -->
+      <g id="gLaterLiang" class="kingdom" data-kingdom="LaterLiang" opacity="0">
+        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
+              fill="#8b6914" filter="url(#glow)"/>
+        <text x="415" y="218" class="kingdom-label">后梁</text>
       </g>
-      
-      <!-- 后唐(923-936) - 橙红 - 中原 -->
+      <!-- 后唐 -->
       <g id="gLaterTang" class="kingdom" data-kingdom="LaterTang" opacity="0">
-        <path d="M380,180 Q450,160 470,190 Q480,220 460,250 Q430,270 390,260 Q360,240 360,210 Q365,185 380,180Z" 
-              fill="#e85d04" filter="url(#glow)"/>
-        <text x="415" y="215" class="kingdom-label">后唐</text>
+        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
+              fill="#c45c00" filter="url(#glow)"/>
+        <text x="415" y="218" class="kingdom-label">后唐</text>
       </g>
-      
-      <!-- 后晋(936-947) - 青色 - 中原 -->
+      <!-- 后晋 -->
       <g id="gLaterJin" class="kingdom" data-kingdom="LaterJin" opacity="0">
-        <path d="M380,180 Q450,160 470,190 Q480,220 460,250 Q430,270 390,260 Q360,240 360,210 Q365,185 380,180Z" 
-              fill="#4cc9f0" filter="url(#glow)"/>
-        <text x="415" y="215" class="kingdom-label">后晋</text>
+        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
+              fill="#1a6090" filter="url(#glow)"/>
+        <text x="415" y="218" class="kingdom-label">后晋</text>
       </g>
-      
-      <!-- 后汉(947-951) - 紫色 - 中原 -->
+      <!-- 后汉 -->
       <g id="gLaterHan" class="kingdom" data-kingdom="LaterHan" opacity="0">
-        <path d="M380,180 Q450,160 470,190 Q480,220 460,250 Q430,270 390,260 Q360,240 360,210 Q365,185 380,180Z" 
-              fill="#7b2d8b" filter="url(#glow)"/>
-        <text x="415" y="215" class="kingdom-label">后汉</text>
+        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
+              fill="#5a2050" filter="url(#glow)"/>
+        <text x="415" y="218" class="kingdom-label">后汉</text>
       </g>
-      
-      <!-- 后周(951-960) - 绿色 - 中原 -->
+      <!-- 后周 -->
       <g id="gLaterZhou" class="kingdom" data-kingdom="LaterZhou" opacity="0">
-        <path d="M380,180 Q450,160 470,190 Q480,220 460,250 Q430,270 390,260 Q360,240 360,210 Q365,185 380,180Z" 
-              fill="#2d6a4f" filter="url(#glow)"/>
-        <text x="415" y="215" class="kingdom-label">后周</text>
+        <path d="M375,175 Q450,155 475,188 Q485,220 462,255 Q430,278 388,265 Q358,240 358,208 Q363,180 375,175Z" 
+              fill="#1a5a30" filter="url(#glow)"/>
+        <text x="415" y="218" class="kingdom-label">后周</text>
       </g>
-      
-      <!-- 前蜀(907-925) - 四川 -->
+      <!-- 前蜀 -->
       <g id="gFormerShu" class="kingdom" data-kingdom="FormerShu" opacity="0">
-        <path d="M260,300 Q310,280 330,310 Q335,350 310,390 Q270,410 240,385 Q220,350 240,315 Q250,295 260,300Z" 
-              fill="#e63946" filter="url(#glow)"/>
-        <text x="280" y="345" class="kingdom-label">前蜀</text>
+        <path d="M258,298 Q308,278 328,310 Q333,352 308,392 Q268,412 238,387 Q218,352 238,315 Q248,295 258,298Z" 
+              fill="#c0392b" filter="url(#glow)"/>
+        <text x="278" y="343" class="kingdom-label">前蜀</text>
       </g>
-      
-      <!-- 后蜀(934-965) - 四川 -->
+      <!-- 后蜀 -->
       <g id="gLaterShu" class="kingdom" data-kingdom="LaterShu" opacity="0">
-        <path d="M260,300 Q310,280 330,310 Q335,350 310,390 Q270,410 240,385 Q220,350 240,315 Q250,295 260,300Z" 
-              fill="#f4a261" filter="url(#glow)"/>
-        <text x="280" y="345" class="kingdom-label">后蜀</text>
+        <path d="M258,298 Q308,278 328,310 Q333,352 308,392 Q268,412 238,387 Q218,352 238,315 Q248,295 258,298Z" 
+              fill="#d35400" filter="url(#glow)"/>
+        <text x="278" y="343" class="kingdom-label">后蜀</text>
       </g>
-      
-      <!-- 吴(902-937) - 江淮 -->
+      <!-- 吴 -->
       <g id="gWu" class="kingdom" data-kingdom="Wu" opacity="0">
-        <path d="M500,230 Q560,200 590,240 Q600,290 580,330 Q540,360 500,340 Q470,300 480,255 Q490,235 500,230Z" 
-              fill="#2a9d8f" filter="url(#glow)"/>
-        <text x="535" y="285" class="kingdom-label">吴</text>
+        <path d="M498,228 Q558,198 588,238 Q598,290 578,330 Q538,360 498,340 Q468,300 478,253 Q488,233 498,228Z" 
+              fill="#16a085" filter="url(#glow)"/>
+        <text x="533" y="283" class="kingdom-label">吴</text>
       </g>
-      
-      <!-- 南唐(937-975) - 江淮江南 -->
+      <!-- 南唐 -->
       <g id="gSouthernTang" class="kingdom" data-kingdom="SouthernTang" opacity="0">
-        <path d="M480,230 Q560,200 600,240 Q610,300 590,360 Q550,400 500,380 Q460,340 470,280 Q475,240 480,230Z" 
-              fill="#2196F3" filter="url(#glow)"/>
-        <text x="530" y="305" class="kingdom-label">南唐</text>
+        <path d="M478,228 Q558,198 602,240 Q612,300 592,362 Q552,402 502,382 Q462,342 472,282 Q477,238 478,228Z" 
+              fill="#2980b9" filter="url(#glow)"/>
+        <text x="530" y="303" class="kingdom-label">南唐</text>
       </g>
-      
-      <!-- 吴越(907-978) - 浙江 -->
+      <!-- 吴越 -->
       <g id="gWuyue" class="kingdom" data-kingdom="Wuyue" opacity="0">
-        <path d="M560,340 Q600,310 630,340 Q640,380 620,420 Q580,440 550,420 Q540,385 555,355 Q558,342 560,340Z" 
-              fill="#e9c46a" filter="url(#glow)"/>
-        <text x="590" y="375" class="kingdom-label">吴越</text>
+        <path d="M558,338 Q598,308 628,338 Q638,380 618,420 Q578,442 548,420 Q538,385 553,355 Q556,342 558,338Z" 
+              fill="#f39c12" filter="url(#glow)"/>
+        <text x="588" y="373" class="kingdom-label">吴越</text>
       </g>
-      
-      <!-- 闽(909-945) - 福建 -->
+      <!-- 闽 -->
       <g id="gMin" class="kingdom" data-kingdom="Min" opacity="0">
-        <path d="M600,400 Q640,380 660,410 Q665,450 640,480 Q605,490 590,465 Q580,435 595,410 Q598,400 600,400Z" 
-              fill="#d62828" filter="url(#glow)"/>
-        <text x="625" y="438" class="kingdom-label">闽</text>
+        <path d="M598,398 Q638,378 658,408 Q663,448 638,478 Q603,490 588,465 Q578,435 593,410 Q596,400 598,398Z" 
+              fill="#c0392b" filter="url(#glow)"/>
+        <text x="623" y="436" class="kingdom-label">闽</text>
       </g>
-      
-      <!-- 楚(907-951) - 湖南 -->
+      <!-- 楚 -->
       <g id="gChu" class="kingdom" data-kingdom="Chu" opacity="0">
-        <path d="M420,360 Q480,330 510,360 Q520,400 495,440 Q450,460 410,440 Q390,405 405,370 Q412,358 420,360Z" 
-              fill="#90be6d" filter="url(#glow)"/>
-        <text x="455" y="400" class="kingdom-label">楚</text>
+        <path d="M418,358 Q478,328 508,358 Q518,400 493,440 Q448,462 408,440 Q388,405 403,370 Q410,358 418,358Z" 
+              fill="#27ae60" filter="url(#glow)"/>
+        <text x="453" y="398" class="kingdom-label">楚</text>
       </g>
-      
-      <!-- 南汉(917-971) - 广东广西 -->
+      <!-- 南汉 -->
       <g id="gSouthernHan" class="kingdom" data-kingdom="SouthernHan" opacity="0">
-        <path d="M500,450 Q580,420 620,450 Q640,500 610,550 Q550,580 500,560 Q470,520 480,475 Q490,450 500,450Z" 
-              fill="#457b9d" filter="url(#glow)"/>
-        <text x="550" y="500" class="kingdom-label">南汉</text>
+        <path d="M498,448 Q578,418 618,448 Q638,498 608,548 Q548,578 498,558 Q468,518 478,473 Q488,448 498,448Z" 
+              fill="#2c3e50" filter="url(#glow)"/>
+        <text x="548" y="498" class="kingdom-label">南汉</text>
       </g>
-      
-      <!-- 南平/荆南(924-963) - 湖北 -->
+      <!-- 荆南 -->
       <g id="gJingnan" class="kingdom" data-kingdom="Jingnan" opacity="0">
-        <path d="M420,280 Q470,260 495,285 Q500,320 475,345 Q440,355 415,335 Q405,305 420,280Z" 
-              fill="#9d8189" filter="url(#glow)"/>
-        <text x="452" y="305" class="kingdom-label">荆南</text>
+        <path d="M418,278 Q468,258 493,283 Q498,318 473,343 Q438,353 413,333 Q403,303 418,278Z" 
+              fill="#7f8c8d" filter="url(#glow)"/>
+        <text x="450" y="303" class="kingdom-label">荆南</text>
       </g>
-      
-      <!-- 北汉(951-979) - 山西 -->
+      <!-- 北汉 -->
       <g id="gNorthernHan" class="kingdom" data-kingdom="NorthernHan" opacity="0">
-        <path d="M350,120 Q400,100 430,125 Q440,160 415,190 Q375,205 345,185 Q330,150 350,120Z" 
-              fill="#6d597a" filter="url(#glow)"/>
-        <text x="388" y="152" class="kingdom-label">北汉</text>
+        <path d="M348,118 Q398,98 428,123 Q438,158 413,188 Q373,203 343,183 Q328,148 348,118Z" 
+              fill="#8e44ad" filter="url(#glow)"/>
+        <text x="385" y="150" class="kingdom-label">北汉</text>
       </g>
-      
-      <!-- 契丹/辽 - 北方 -->
-      <g id="gLiao" class="kingdom" data-kingdom="Liao" opacity="0.5">
-        <path d="M50,80 Q200,50 350,70 Q380,90 370,140 Q340,180 280,190 Q180,195 80,170 Q30,140 40,100Z" 
-              fill="#8888aa" filter="url(#glow)"/>
-        <text x="200" y="125" class="kingdom-label" fill="#ccc">契丹</text>
+      <!-- 契丹 -->
+      <g id="gLiao" class="kingdom" data-kingdom="Liao" opacity="0">
+        <path d="M48,78 Q198,48 348,68 Q378,88 368,138 Q338,178 278,188 Q178,193 78,168 Q28,138 38,98Z" 
+              fill="#566573" opacity="0.6" filter="url(#glow)"/>
+        <text x="198" y="122" class="kingdom-label" fill="#ccc">契丹</text>
       </g>
-      
-      <!-- 标注 -->
-      <text x="760" y="595" fill="#333" font-size="10">L001 v0.1 · 五代十国兴亡录</text>
+
+      <!-- 地图边框装饰 -->
+      <rect x="8" y="8" width="784" height="584" fill="none" stroke="rgba(201,162,39,.15)" stroke-width="1" rx="3"/>
+      <text x="790" y="594" fill="rgba(201,162,39,.2)" font-size="9" text-anchor="end" font-family="monospace">L001 · 五代十国兴亡录 v0.1</text>
     </svg>
-    
-    <!-- 年份事件浮窗 -->
-    <div class="year-events" id="yearEvents" style="display:none">
-      <h4>📌 907年大事</h4>
-      <div id="yearEventsList"></div>
+
+    <!-- 事件浮窗 -->
+    <div class="events-float" id="eventsFloat" style="display:none">
+      <h4>⚔️ <span id="eventsYearTitle">907年</span></h4>
+      <div id="eventsList"></div>
     </div>
   </div>
-  
-  <div class="year-slider">
-    <label>907</label>
-    <span id="yearDisplay">907</span>
-    <input type="range" id="yearRange" min="907" max="960" value="907" step="1">
-    <label>960</label>
-    <span id="yearLabel" style="font-size:12px;color:#555;margin-left:8px">后梁建立，五代开始</span>
+
+  <!-- 年份控制条 -->
+  <div class="year-panel">
+    <div class="year-panel-top">
+      <div class="year-big" id="yearDisplay">907</div>
+      <div class="year-sep"></div>
+      <div class="year-era-info">
+        <div class="year-era-name" id="yearEraName">后梁 · 朱温建梁</div>
+        <div class="year-era-desc" id="yearEraDesc">五代十国开始</div>
+      </div>
+    </div>
+    <div class="year-controls">
+      <label>907</label>
+      <input type="range" id="yearRange" min="907" max="960" value="907" step="1">
+      <label>960</label>
+    </div>
   </div>
 </div>
 
 <!-- ===== TIMELINE VIEW ===== -->
 <div id="timelineView" class="view">
-  <div class="timeline-header">
-    <div class="tl-title">📜 五代十国时间轴（907-960）</div>
-    <div style="font-size:13px;color:var(--muted)">点击事件查看详情</div>
+  <div class="tl-hero">
+    <div class="tl-hero-title">📜 五代十国兴亡录</div>
+    <div class="tl-hero-sub">907年 · 朱温建梁 · 至 960年 · 北宋建立</div>
   </div>
-  <div class="tl-scroll">
-    <div class="tl-ruler">
-      <div class="tl-era"><span>后梁</span>907-923</div>
-      <div class="tl-era"><span>后唐</span>923-936</div>
-      <div class="tl-era"><span>后晋</span>936-947</div>
-      <div class="tl-era"><span>后汉</span>947-951</div>
-      <div class="tl-era"><span>后周</span>951-960</div>
-    </div>
-    <div class="tl-events" id="tlEvents">
-      <!-- 动态生成 -->
-    </div>
+  <div class="tl-body" id="tlBody">
+    <!-- 动态生成 -->
   </div>
 </div>
 
-<!-- OVERLAY -->
+<!-- OVERLAY + DETAIL -->
 <div class="overlay" id="overlay" onclick="closeDetail()"></div>
-
-<!-- DETAIL PANEL -->
 <div class="detail-panel" id="detailPanel">
   <div class="detail-header">
-    <button class="detail-close" onclick="closeDetail()">×</button>
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-flag" id="detailFlag">🏛️</div>
     <div class="detail-name" id="detailName">—</div>
-    <div class="detail-subtitle" id="detailSubtitle">—</div>
-    <div id="detailPeriod"></div>
+    <div class="detail-meta">
+      <span id="detailCapital">—</span>
+      <span class="detail-period-badge" id="detailPeriod"></span>
+    </div>
   </div>
   <div class="detail-body">
     <div class="detail-section">
-      <h3>📖 简史</h3>
-      <p id="detailHistory"></p>
+      <div class="detail-section-title">简史</div>
+      <p class="detail-prose" id="detailHistory"></p>
     </div>
     <div class="detail-section">
-      <h3>👑 君主</h3>
-      <ul class="detail-rulers" id="detailRulers"></ul>
+      <div class="detail-section-title">君主世系</div>
+      <ul class="rulers-list" id="detailRulers"></ul>
     </div>
     <div class="detail-section">
-      <h3>⚔️ 重大事件</h3>
-      <div class="detail-timeline" id="detailTimeline"></div>
+      <div class="detail-section-title">大事年表</div>
+      <div class="detail-tl" id="detailTimeline"></div>
     </div>
   </div>
 </div>
 
 <script>
-// ============ DATA ============
+// ==================== DATA ====================
 const KINGDOMS = {
   LaterLiang:{
     name:'后梁',fullName:'后梁',color:'#c9a227',
-    period:'907-923',capital:'汴梁(开封)',
+    period:'907-923',capital:'汴梁',
+    flag:'⚔️',
     start:907,end:923,
     rulers:[
-      {name:'朱温/梁太祖',years:'907-912'},
+      {name:'朱温（梁太祖）',years:'907-912'},
       {name:'朱友珪',years:'912-913'},
-      {name:'朱友贞/梁末帝',years:'913-923'}
+      {name:'朱友贞（梁末帝）',years:'913-923'}
     ],
     history:'后梁由黄巢起义军降将朱温建立，定都汴梁。朱温晚年诸子争夺皇位，内部混乱。在与晋王李存勖的长期争战中逐渐失利，最终于923年被后唐所灭。后梁疆域包括今河南、山东及陕西、湖北部分地区，是五代中疆域最小的中原王朝。',
     events:[
       {year:907,title:'朱温建梁',desc:'朱温废唐哀帝，建立后梁，五代开始'},
-      {year:909,title:'梁晋柏乡之战',desc:'晋军大破后梁军，梁军元气大伤'},
-      {year:912,title:'朱温遇弑',desc:'朱温被次子朱友珪刺杀，朱友珪即帝位'},
-      {year:913,title:'朱友贞夺位',desc:'朱友贞联合杨师厚进伐，夺取帝位'},
-      {year:915,title:'魏州之战',desc:'梁军在魏州惨败，河北三镇尽失'},
-      {year:923,title:'后唐灭后梁',desc:'李存勖率军攻入汴梁，梁末帝自杀，后梁亡'}
+      {year:909,title:'柏乡之战',desc:'晋军大破后梁军，梁军元气大伤'},
+      {year:912,title:'朱温遇弑',desc:'朱温被次子朱友珪刺杀'},
+      {year:913,title:'朱友贞夺位',desc:'朱友贞联合杨师厚夺取帝位'},
+      {year:916,title:'魏州之战',desc:'梁军在魏州惨败，河北三镇尽失'},
+      {year:923,title:'后唐灭后梁',desc:'李存勖攻入汴梁，梁末帝自杀'}
     ]
   },
   LaterTang:{
     name:'后唐',fullName:'后唐',color:'#e85d04',
     period:'923-936',capital:'洛阳',
+    flag:'🔥',
     start:923,end:936,
     rulers:[
-      {name:'李存勖/唐庄宗',years:'923-926'},
-      {name:'李嗣源/唐明宗',years:'926-933'},
-      {name:'李从厚/唐闵帝',years:'933-934'},
-      {name:'李从珂/唐末帝',years:'934-936'}
+      {name:'李存勖（唐庄宗）',years:'923-926'},
+      {name:'李嗣源（唐明宗）',years:'926-933'},
+      {name:'李从厚（唐闵帝）',years:'933-934'},
+      {name:'李从珂（唐末帝）',years:'934-936'}
     ],
-    history:'后唐由晋王李存勖建立，以复兴唐朝为号召，定都洛阳。全盛时疆域包括今河南、山东、山西、河北等省及四川一部。后唐在唐明宗时期出现"小康"局面，但后期内乱不断，935年发生凤翔之乱，石敬瑭趁机联合契丹叛乱，936年被后晋所灭。',
+    history:'后唐由晋王李存勖建立，以复兴唐朝为号召，定都洛阳。全盛时疆域包括今河南、山东、山西、河北等省及四川一部。后唐在唐明宗时期出现"小康"局面，但后期内乱不断，936年被后晋所灭。',
     events:[
-      {year:923,title:'李存勖建后唐',desc:'李存勖在魏州称帝，建立后唐，随即灭后梁'},
+      {year:923,title:'李存勖建后唐',desc:'在魏州称帝，灭后梁，以光复唐朝为号召'},
       {year:925,title:'后唐灭前蜀',desc:'郭崇韬率军六万灭前蜀，王衍投降'},
       {year:926,title:'兴教门之变',desc:'唐庄宗中流箭而死，李嗣源入洛阳称帝'},
-      {year:934,title:'清君侧之乱',desc:'李从珂以讨朱弘昭为名攻入洛阳，唐闵帝被杀'},
-      {year:936,title:'后晋灭后唐',desc:'石敬瑭借契丹兵攻入洛阳，唐末帝自焚，后唐亡'}
+      {year:934,title:'清君侧之乱',desc:'李从珂攻入洛阳，唐闵帝被杀'},
+      {year:936,title:'后晋灭后唐',desc:'石敬瑭借契丹兵攻入洛阳，唐末帝自焚'}
     ]
   },
   LaterJin:{
     name:'后晋',fullName:'后晋',color:'#4cc9f0',
-    period:'936-947',capital:'汴梁(开封)',
+    period:'936-947',capital:'汴梁',
+    flag:'🏹',
     start:936,end:947,
     rulers:[
-      {name:'石敬瑭/晋高祖',years:'936-942'},
-      {name:'石重贵/晋出帝',years:'942-947'}
+      {name:'石敬瑭（晋高祖）',years:'936-942'},
+      {name:'石重贵（晋出帝）',years:'942-947'}
     ],
-    history:'后晋由石敬瑭建立，以割让燕云十六州为代价换取契丹支持，定都汴梁。石敬瑭对契丹称臣纳贡，屈辱求安。其侄石重贵继位后试图对抗契丹，引发战争。947年契丹攻入开封，后晋亡，契丹改国号为辽。',
+    history:'后晋由石敬瑭建立，以割让燕云十六州为代价换取契丹支持，定都汴梁。石敬瑭对契丹称臣纳贡，屈辱求安。其侄石重贵继位后试图对抗契丹，947年契丹攻入开封，后晋亡，契丹改国号为辽。',
     events:[
-      {year:936,title:'石敬瑭建后晋',desc:'石敬瑭借契丹兵灭后唐，建立后晋，割让燕云十六州'},
-      {year:942,title:'石重贵继位',desc:'晋出帝继位，主战派景延广主张对契丹强硬'},
+      {year:936,title:'石敬瑭建后晋',desc:'借契丹兵灭后唐，建立后晋，割让燕云十六州'},
+      {year:942,title:'石重贵继位',desc:'晋出帝继位，主战派主张对契丹强硬'},
       {year:944,title:'契丹南征',desc:'辽太宗率军南征，攻掠贝州后撤军'},
-      {year:946,title:'后晋覆灭',desc:'杜重威在滹沱河降契丹，辽太宗攻入开封，晋出帝投降'}
+      {year:946,title:'后晋覆灭',desc:'杜重威降契丹，辽太宗攻入开封，后晋亡'}
     ]
   },
   LaterHan:{
-    name:'后汉',fullName:'后汉',color:'#7b2d8b',
-    period:'947-951',capital:'汴梁(开封)',
+    name:'后汉',fullName:'后汉',color:'#9b59b6',
+    period:'947-951',capital:'汴梁',
+    flag:'🗡️',
     start:947,end:951,
     rulers:[
-      {name:'刘知远/汉高祖',years:'947-948'},
-      {name:'刘承祐/汉隐帝',years:'948-951'}
+      {name:'刘知远（汉高祖）',years:'947-948'},
+      {name:'刘承祐（汉隐帝）',years:'948-951'}
     ],
     history:'后汉由刘知远建立，趁契丹退兵之机在太原称帝，后定都汴梁。是五代中寿命最短的中原王朝，仅存四年。刘知远去世后，其子刘承祐猜忌辅政大臣，951年郭威起兵，刘承祐兵败被杀，后汉亡。',
     events:[
-      {year:947,title:'刘知远建后汉',desc:'契丹退兵后，刘知远在太原称帝，建立后汉'},
-      {year:950,title:'郭威起兵',desc:'汉隐帝杀杨邠、史弘肇等大臣，郭威起兵清君侧'},
-      {year:951,title:'后周代汉',desc:'郭威在澶州军士拥护下称帝，建立后周，后汉亡'}
+      {year:947,title:'刘知远建后汉',desc:'契丹退兵后，在太原称帝，建立后汉'},
+      {year:950,title:'郭威起兵',desc:'汉隐帝杀杨邠等大臣，郭威起兵清君侧'},
+      {year:951,title:'后周代汉',desc:'郭威在澶州被军士拥护称帝，后汉亡'}
     ]
   },
   LaterZhou:{
-    name:'后周',fullName:'后周',color:'#2d6a4f',
-    period:'951-960',capital:'汴梁(开封)',
+    name:'后周',fullName:'后周',color:'#27ae60',
+    period:'951-960',capital:'汴梁',
+    flag:'⚡',
     start:951,end:960,
     rulers:[
-      {name:'郭威/周太祖',years:'951-954'},
-      {name:'柴荣/周世宗',years:'954-959'},
-      {name:'柴宗训/恭帝',years:'959-960'}
+      {name:'郭威（周太祖）',years:'951-954'},
+      {name:'柴荣（周世宗）',years:'954-959'},
+      {name:'柴宗训（恭帝）',years:'959-960'}
     ],
-    history:'后周由郭威建立，定都汴梁。郭威改革弊政，减轻百姓负担。周世宗柴荣在位期间进行军事政治经济改革，厉行节约，整顿吏治，均定田租，疏通漕运，军事上北伐北汉、南攻南唐、西取后蜀，为北宋统一奠定基础。960年赵匡胤陈桥兵变，建立北宋。',
+    history:'后周由郭威建立，定都汴梁。郭威改革弊政，减轻百姓负担。周世宗柴荣在位期间励精图治，进行军事政治经济改革，北伐北汉，南攻南唐，西取后蜀，为北宋统一奠定基础。960年赵匡胤陈桥兵变，建立北宋。',
     events:[
       {year:951,title:'郭威建后周',desc:'郭威称帝，建立后周，都汴梁'},
       {year:954,title:'高平之战',desc:'周世宗柴荣亲征，在高平击溃北汉与契丹联军'},
-      {year:955,title:'后周灭后蜀秦凤四州',desc:'柴荣派向拱、王景率军收取后晋时被后蜀占领的秦、凤、成、阶四州'},
-      {year:956,title:'后周第一次南唐之战',desc:'柴荣率军大举进攻南唐，收取淮南大片土地'},
+      {year:956,title:'后周攻南唐',desc:'柴荣率军大举进攻南唐，收取淮南大片土地'},
       {year:959,title:'柴荣北伐',desc:'周世宗率军北伐辽，收复瀛州、莫州等地'},
       {year:960,title:'陈桥兵变',desc:'赵匡胤在陈桥兵变中被拥立为帝，建立北宋，后周亡'}
     ]
   },
   FormerShu:{
-    name:'前蜀',fullName:'前蜀',color:'#e63946',
+    name:'前蜀',fullName:'前蜀',color:'#e74c3c',
     period:'907-925',capital:'成都',
+    flag:'🌸',
     start:907,end:925,
     rulers:[
       {name:'王建',years:'907-918'},
       {name:'王衍',years:'918-925'}
     ],
-    history:'前蜀由唐末神策军将领王建建立，定都成都。全盛时据有今四川、重庆大部及陕南、甘南、鄂西部分地区。王建晚年昏聩，诛杀功臣。其子王衍奢侈荒淫，政治腐败。925年后唐灭前蜀，王衍投降。',
+    history:'前蜀由唐末神策军将领王建建立，定都成都。全盛时据有今四川、重庆大部及陕南、甘南、鄂西部分地区。王建晚年诛杀功臣，其子王衍奢侈荒淫，政治腐败。925年后唐灭前蜀。',
     events:[
       {year:907,title:'王建建前蜀',desc:'王建被封蜀王，在成都建立前蜀政权'},
       {year:918,title:'王衍继位',desc:'王衍继位后荒淫失政，大兴土木'},
@@ -514,22 +1036,24 @@ const KINGDOMS = {
     ]
   },
   LaterShu:{
-    name:'后蜀',fullName:'后蜀',color:'#f4a261',
+    name:'后蜀',fullName:'后蜀',color:'#e67e22',
     period:'934-965',capital:'成都',
+    flag:'🌺',
     start:934,end:965,
     rulers:[
       {name:'孟知祥',years:'934'},
       {name:'孟昶',years:'934-965'}
     ],
-    history:'后蜀由孟知祥趁后唐内乱之机建立，定都成都。全盛时疆域与前蜀相当。孟知祥去世后，其子孟昶继位。后蜀偏安四川，奢侈成风，政治腐败。965年被北宋所灭，是十国中最晚灭亡的割据政权之一。',
+    history:'后蜀由孟知祥趁后唐内乱之机建立，定都成都。孟知祥去世后，其子孟昶继位。后蜀偏安四川，奢侈成风。965年被北宋所灭，是十国中最晚灭亡的割据政权之一。',
     events:[
       {year:934,title:'孟知祥建后蜀',desc:'孟知祥在成都称帝，建立后蜀'},
       {year:965,title:'北宋灭后蜀',desc:'宋军攻入成都，孟昶投降，后蜀亡'}
     ]
   },
   Wu:{
-    name:'吴',fullName:'吴国',color:'#2a9d8f',
+    name:'吴',fullName:'吴国',color:'#1abc9c',
     period:'902-937',capital:'扬州',
+    flag:'🌾',
     start:902,end:937,
     rulers:[
       {name:'杨行密',years:'902-905'},
@@ -537,7 +1061,7 @@ const KINGDOMS = {
       {name:'杨隆演',years:'908-920'},
       {name:'杨溥',years:'920-937'}
     ],
-    history:'吴国由淮南节度使杨行密建立，定都扬州。全盛时据有今江苏、安徽、河南三省淮河以南地区及湖北东南部和江西全部，是南方最强大的割据政权。杨行密推行保境安民政策，经济复苏。后被权臣徐温、徐知诰实际控制，937年被南唐取代。',
+    history:'吴国由淮南节度使杨行密建立，定都扬州。杨行密推行保境安民政策，经济复苏。后被权臣徐温、徐知诰实际控制，937年被南唐取代。',
     events:[
       {year:902,title:'杨行密受封吴王',desc:'唐昭宗封杨行为吴王，吴国建立'},
       {year:905,title:'杨行密去世',desc:'杨行密去世，其子杨渥继位'},
@@ -545,37 +1069,36 @@ const KINGDOMS = {
     ]
   },
   SouthernTang:{
-    name:'南唐',fullName:'南唐',color:'#2196F3',
-    period:'937-975',capital:'金陵(南京)',
+    name:'南唐',fullName:'南唐',color:'#3498db',
+    period:'937-975',capital:'金陵',
+    flag:'🎋',
     start:937,end:975,
     rulers:[
-      {name:'李昪/南唐烈祖',years:'937-943'},
-      {name:'李璟/南唐元宗',years:'943-961'},
-      {name:'李煜/南唐后主',years:'961-975'}
+      {name:'李昪（烈祖）',years:'937-943'},
+      {name:'李璟（元宗）',years:'943-961'},
+      {name:'李煜（后主）',years:'961-975'}
     ],
-    history:'南唐由吴国权臣徐知诰（李昪）建立，定都金陵。全盛时据有今江苏、安徽、江西、福建及湖北、湖南大部，是十国中最强大的政权。李昪推行保境安民政策，经济文化繁荣。李璟时期灭闽、楚两国，但与后周战争中失利，被迫称臣。975年被北宋所灭。李煜以词著称于世。',
+    history:'南唐由吴国权臣徐知诰（李昪）建立，定都金陵。全盛时据有今江苏、安徽、江西、福建及湖北、湖南大部，是十国中最强大的政权。李昪推行保境安民政策，经济文化繁荣。李煜以词著称于世。975年被北宋所灭。',
     events:[
       {year:937,title:'南唐建立',desc:'徐知诰受禅，建立南唐，定都金陵'},
-      {year:943,title:'李昪去世',desc:'南唐烈祖李昪去世，李璟继位'},
-      {year:945,title:'南唐灭闽',desc:'南唐灭闽国，得建州、汀州等地'},
+      {year:945,title:'南唐灭闽',desc:'南唐攻陷建州，王延政投降，闽亡'},
       {year:951,title:'南唐灭楚',desc:'南唐边镐攻占长沙，楚亡'},
       {year:958,title:'后周夺淮南',desc:'周世宗柴荣南征，南唐尽失淮南之地'},
-      {year:961,title:'李煜继位',desc:'南唐元宗李璟去世，后主李煜继位'},
       {year:975,title:'北宋灭南唐',desc:'宋军攻入金陵，李煜投降，南唐亡'}
     ]
   },
   Wuyue:{
-    name:'吴越',fullName:'吴越国',color:'#e9c46a',
+    name:'吴越',fullName:'吴越国',color:'#f1c40f',
     period:'907-978',capital:'杭州',
+    flag:'🐉',
     start:907,end:978,
     rulers:[
       {name:'钱镠',years:'907-932'},
       {name:'钱元瓘',years:'932-941'},
       {name:'钱弘佐',years:'941-947'},
-      {name:'钱弘琮',years:'947-948'},
       {name:'钱弘俶',years:'948-978'}
     ],
-    history:'吴越国由钱镠建立，定都杭州。全盛时据有今浙江及江苏太湖流域。吴越国小势弱，为求自保长期向中原王朝称臣纳贡，同时与吴、南唐为敌。钱镠重视经济建设，发展海上贸易，吴越成为五代十国时期经济最繁荣的地区之一。978年钱俶纳土归宋。',
+    history:'吴越国由钱镠建立，定都杭州。全盛时据有今浙江及江苏太湖流域。吴越国小势弱，长期向中原王朝称臣纳贡，同时与吴、南唐为敌。钱镠重视经济建设，吴越成为五代十国时期经济最繁荣的地区之一。978年钱俶纳土归宋。',
     events:[
       {year:907,title:'钱镠建吴越',desc:'钱镠被后梁封为吴越王，建立吴越国'},
       {year:932,title:'钱镠去世',desc:'钱镠去世，其子钱元瓘继位'},
@@ -583,28 +1106,27 @@ const KINGDOMS = {
     ]
   },
   Min:{
-    name:'闽',fullName:'闽国',color:'#d62828',
+    name:'闽',fullName:'闽国',color:'#e74c3c',
     period:'909-945',capital:'福州',
+    flag:'🌿',
     start:909,end:945,
     rulers:[
       {name:'王审知',years:'909-925'},
-      {name:'王延翰',years:'925-926'},
-      {name:'王延钧/闽惠宗',years:'926-935'},
-      {name:'王继鹏/闽康宗',years:'935-939'},
-      {name:'王延曦/闽景宗',years:'939-944'},
+      {name:'王延钧',years:'926-935'},
+      {name:'王继鹏',years:'935-939'},
       {name:'王延政',years:'944-945'}
     ],
-    history:'闽国由王审知建立，定都福州。全盛时据有今福建及浙江、广东部分地区。王审知在位时社会安定，对外臣奉中原，对内劝课农桑。后王氏内部争夺皇位，内乱不断。945年南唐趁机灭闽，但吴越也介入瓜分其地。',
+    history:'闽国由王审知建立，定都福州。王审知在位时社会安定，对外臣奉中原，对内劝课农桑。后王氏内部争夺皇位，内乱不断。945年南唐趁机灭闽。',
     events:[
       {year:909,title:'王审知受封闽王',desc:'王审知被后梁封为闽王，闽国建立'},
-      {year:925,title:'王审知去世',desc:'王审知去世，内部争位开始'},
       {year:943,title:'王延政称殷帝',desc:'王延政在建州称帝，国号殷，闽国内部分裂'},
       {year:945,title:'南唐灭闽',desc:'南唐攻陷建州，王延政投降，闽亡'}
     ]
   },
   Chu:{
-    name:'楚',fullName:'楚国',color:'#90be6d',
+    name:'楚',fullName:'楚国',color:'#2ecc71',
     period:'907-951',capital:'长沙',
+    flag:'🦚',
     start:907,end:951,
     rulers:[
       {name:'马殷',years:'907-930'},
@@ -613,7 +1135,7 @@ const KINGDOMS = {
       {name:'马希广',years:'947-950'},
       {name:'马希萼',years:'950-951'}
     ],
-    history:'楚国由马殷建立，定都长沙。全盛时据有今湖南、广西东部及贵州、广东部分地区。马殷采取睦邻政策，鼓励农桑，对外称臣中原以抗周边割据政权。后马氏兄弟争夺皇位，内乱不断。951年被南唐所灭，后周又封刘言为武平节度使，继续统治湖南。',
+    history:'楚国由马殷建立，定都长沙。全盛时据有今湖南、广西东部及贵州、广东部分地区。马殷采取睦邻政策，鼓励农桑。后马氏兄弟争夺皇位，内乱不断。951年被南唐所灭。',
     events:[
       {year:907,title:'马殷建楚国',desc:'马殷控制湖南，被后梁封为楚王'},
       {year:927,title:'马殷受封楚国王',desc:'后唐封马殷为楚国王，正式立国'},
@@ -622,80 +1144,73 @@ const KINGDOMS = {
     ]
   },
   SouthernHan:{
-    name:'南汉',fullName:'南汉',color:'#457b9d',
+    name:'南汉',fullName:'南汉',color:'#34495e',
     period:'917-971',capital:'广州',
+    flag:'🐘',
     start:917,end:971,
     rulers:[
       {name:'刘隐',years:'917-911'},
       {name:'刘龑',years:'911-942'},
-      {name:'刘玢/南汉殇帝',years:'942-943'},
-      {name:'刘晟/南汉中宗',years:'943-958'},
-      {name:'刘鋹/南汉后主',years:'958-971'}
+      {name:'刘晟（中宗）',years:'943-958'},
+      {name:'刘鋹（后主）',years:'958-971'}
     ],
-    history:'南汉由刘隐建立，定都广州。全盛时据有今广东、广西、海南及湖南南部。刘氏割据岭南，推行科举制度，用士人治国。但后期君主荒淫残暴，大肆屠杀功臣，任用宦官，政治极度腐败。971年被北宋所灭。',
+    history:'南汉由刘隐建立，定都广州。全盛时据有今广东、广西、海南及湖南南部。南汉君主荒淫残暴，大肆屠杀功臣，任用宦官，政治极度腐败。971年被北宋所灭。',
     events:[
       {year:917,title:'刘龑建南汉',desc:'刘龑在番禺称帝，建立南汉'},
-      {year:942,title:'刘龑去世',desc:'刘龑去世，刘玢继位，旋即被杀'},
       {year:958,title:'刘晟去世',desc:'刘晟去世，刘鋹继位，政治愈发腐败'},
       {year:971,title:'北宋灭南汉',desc:'宋军攻入广州，刘鋹投降，南汉亡'}
     ]
   },
   Jingnan:{
-    name:'荆南',fullName:'荆南国/南平',color:'#9d8189',
+    name:'荆南',fullName:'荆南国',color:'#95a5a6',
     period:'924-963',capital:'江陵',
+    flag:'🕊️',
     start:924,end:963,
     rulers:[
       {name:'高季兴',years:'924-929'},
       {name:'高从诲',years:'929-948'},
       {name:'高保融',years:'948-960'},
-      {name:'高保勖',years:'960-962'},
       {name:'高继冲',years:'962-963'}
     ],
     history:'荆南（南平）由高季兴建立，定都江陵。是五代十国中最弱小的政权，仅有荆、归、峡三州。高季兴利用中原与南方政权的矛盾，四面称臣换取赏赐，在夹缝中得以存续。963年被北宋所灭。',
     events:[
       {year:924,title:'高季兴建南平',desc:'高季兴被后唐封为南平王，正式立国'},
-      {year:948,title:'高从诲去世',desc:'高从诲去世，其子高保融继位'},
       {year:963,title:'北宋灭荆南',desc:'宋军假道荆南，高继冲被迫纳土归降，荆南亡'}
     ]
   },
   NorthernHan:{
-    name:'北汉',fullName:'北汉',color:'#6d597a',
+    name:'北汉',fullName:'北汉',color:'#8e44ad',
     period:'951-979',capital:'太原',
+    flag:'⛰️',
     start:951,end:979,
     rulers:[
-      {name:'刘崇/北汉世祖',years:'951-954'},
-      {name:'刘承钧/北汉睿宗',years:'954-970'},
+      {name:'刘崇（世祖）',years:'951-954'},
+      {name:'刘承钧（睿宗）',years:'954-970'},
       {name:'刘继恩',years:'970-971'},
       {name:'刘继元',years:'971-979'}
     ],
-    history:'北汉由刘崇趁后周代汉之机在太原建立，依附契丹为援，对抗后周和北宋。是十国中最北的政权，也是最后灭亡的割据政权之一。北汉疆域相当于今山西中部、北部，虽兵强将勇，但因依赖契丹，国力有限。979年被北宋所灭。',
+    history:'北汉由刘崇趁后周代汉之机在太原建立，依附契丹为援。是十国中最北的政权，也是最后灭亡的割据政权之一。979年被北宋所灭。',
     events:[
       {year:951,title:'刘崇建北汉',desc:'刘崇在太原称帝，建立北汉，依附契丹'},
       {year:954,title:'高平之战',desc:'北汉联合契丹伐后周，在高平被周世宗击败'},
-      {year:970,title:'刘承钧去世',desc:'刘承钧去世，刘继恩继位'},
       {year:979,title:'北宋灭北汉',desc:'宋太宗亲征，攻入太原，北汉亡，十国全灭'}
     ]
   }
 };
 
-// ============ MAP FUNCTIONS ============
+// ==================== MAP ====================
 let currentYear = 907;
 
 function updateMap(year) {
   currentYear = year;
   document.getElementById('yearDisplay').textContent = year;
   
-  // Update slider fill
-  const pct = ((year - 907) / (960 - 907)) * 100;
-  document.getElementById('yearRange').style.setProperty('--pct', pct + '%');
-  
-  // Update kingdom visibility
   Object.keys(KINGDOMS).forEach(key => {
     const k = KINGDOMS[key];
     const el = document.getElementById('g' + key);
     if (!el) return;
     if (year >= k.start && year <= k.end) {
-      el.style.opacity = '0.85';
+      el.style.opacity = '0.9';
       el.classList.add('active');
     } else {
       el.style.opacity = '0';
@@ -703,43 +1218,48 @@ function updateMap(year) {
     }
   });
   
-  // Update Liao visibility (always shown when relevant)
   const liaoEl = document.getElementById('gLiao');
-  if (liaoEl) liaoEl.style.opacity = (year >= 907 && year <= 960) ? '0.5' : '0';
+  if (liaoEl) liaoEl.style.opacity = (year >= 907 && year <= 960) ? '0.6' : '0';
   
-  // Update year label
-  const label = getYearLabel(year);
-  document.getElementById('yearLabel').textContent = label;
+  const era = getEraInfo(year);
+  document.getElementById('yearEraName').textContent = era.name;
+  document.getElementById('yearEraDesc').textContent = era.desc;
   
-  // Show year events
   showYearEvents(year);
 }
 
-function getYearLabel(year) {
-  if (year === 907) return '后梁建立，五代开始';
-  if (year === 923) return '后唐灭后梁';
-  if (year === 925) return '后唐灭前蜀';
-  if (year === 934) return '后晋灭后唐，后蜀建立';
-  if (year === 936) return '后晋建立';
-  if (year === 937) return '南唐代吴';
-  if (year === 943) return '南唐灭闽';
-  if (year === 945) return '南唐灭闽，楚国内乱';
-  if (year === 947) return '契丹灭晋，后汉建立';
-  if (year === 951) return '后周代汉，北汉建立';
-  if (year === 954) return '高平之战';
-  if (year === 958) return '后周夺淮南';
-  if (year === 960) return '陈桥兵变，北宋建立';
-  return '';
+function getEraInfo(year) {
+  if (year === 907) return {name:'后梁 · 朱温建梁',desc:'五代十国时代开始'};
+  if (year === 923) return {name:'后唐 · 柏乡之战',desc:'晋灭后梁，中原易主'};
+  if (year === 925) return {name:'后唐 · 灭前蜀',desc:'郭崇韬平定西川'};
+  if (year === 934) return {name:'后晋灭唐 · 后蜀立',desc:'石敬瑭借契丹复叛，孟知祥称帝'};
+  if (year === 936) return {name:'后晋 · 燕云十六州',desc:'石敬瑭割让北方屏障'};
+  if (year === 937) return {name:'南唐 · 取代吴国',desc:'徐知诰禅让建国'};
+  if (year === 943) return {name:'南唐 · 闽国内乱',desc:'闽国分裂'};
+  if (year === 945) return {name:'南唐 · 灭闽',desc:'闽国覆亡'};
+  if (year === 947) return {name:'契丹 · 灭后晋',desc:'辽太宗入开封，改国号大辽'};
+  if (year === 951) return {name:'后周 · 取代后汉',desc:'郭威称帝，北汉建立'};
+  if (year === 954) return {name:'后周 · 高平之战',desc:'柴荣大破北汉'};
+  if (year === 956) return {name:'后周 · 南唐之战',desc:'柴荣收取淮南'};
+  if (year === 958) return {name:'后周 · 南唐请和',desc:'南唐尽失淮南'};
+  if (year === 960) return {name:'北宋 · 陈桥兵变',desc:'赵匡胤建立北宋，五代终'};
+  
+  // Find active kingdom
+  const active = Object.values(KINGDOMS).filter(k => year >= k.start && year <= k.end);
+  if (active.length > 0) {
+    return {name:active[0].name + ' · 存续中', desc:`${active.length}个政权并存`};
+  }
+  return {name:'五代十国', desc:`${year}年`};
 }
 
 function showYearEvents(year) {
-  const panel = document.getElementById('yearEvents');
-  const list = document.getElementById('yearEventsList');
+  const panel = document.getElementById('eventsFloat');
+  const list = document.getElementById('eventsList');
   const events = [];
   
   Object.values(KINGDOMS).forEach(k => {
     k.events.forEach(e => {
-      if (e.year === year) events.push(e);
+      if (e.year === year) events.push({...e, kingdom:k.name, color:k.color});
     });
   });
   
@@ -749,13 +1269,16 @@ function showYearEvents(year) {
   }
   
   panel.style.display = 'block';
-  panel.querySelector('h4').textContent = `📌 ${year}年大事`;
-  list.innerHTML = events.map(e => 
-    `<div class="year-event-item" onclick="openDetailByEvent('${e.title}')">⚔️ ${e.title}<br><span style="color:#888;font-size:11px">${e.desc}</span></div>`
-  ).join('');
+  document.getElementById('eventsYearTitle').textContent = `${year}年`;
+  list.innerHTML = events.map(e => `
+    <div class="event-item" onclick="openDetailByEvent('${e.title}')">
+      <div class="ev-title"><span class="ev-dot" style="background:${e.color}"></span>${e.title}</div>
+      <div class="ev-desc">${e.desc}</div>
+    </div>
+  `).join('');
 }
 
-// ============ CLICK HANDLERS ============
+// ==================== CLICK ====================
 document.querySelectorAll('.kingdom').forEach(g => {
   g.addEventListener('click', () => {
     const key = g.dataset.kingdom;
@@ -780,124 +1303,36 @@ function openDetail(key) {
   const k = KINGDOMS[key];
   if (!k) return;
   
+  document.getElementById('detailFlag').textContent = k.flag;
   document.getElementById('detailName').textContent = k.name;
-  document.getElementById('detailSubtitle').textContent = k.fullName + ' · ' + k.capital;
+  document.getElementById('detailCapital').textContent = '📍 ' + k.capital;
   
   const periodEl = document.getElementById('detailPeriod');
-  periodEl.textContent = k.period + '年';
-  periodEl.style.cssText = `background:${k.color}22;color:${k.color};border:1px solid ${k.color}44`;
+  periodEl.textContent = `${k.period}年`;
+  periodEl.style.cssText = `background:${k.color}22;color:${k.color};border-color:${k.color}55`;
   
   document.getElementById('detailHistory').textContent = k.history;
   
-  const rulersEl = document.getElementById('detailRulers');
-  rulersEl.innerHTML = k.rulers.map(r => 
-    `<li><span class="ruler-name">${r.name}</span><span class="ruler-years">${r.years}</span></li>`
+  document.getElementById('detailRulers').innerHTML = k.rulers.map(r => 
+    `<li><span class="ruler-name">${r.name}</span><span class="ruler-years">${r.years}年</span></li>`
   ).join('');
   
-  const tlEl = document.getElementById('detailTimeline');
-  tlEl.innerHTML = k.events.map(e => 
-    `<div class="detail-tl-item"><span class="year">${e.year}年</span> ${e.title}：${e.desc}</div>`
-  ).join('');
+  document.getElementById('detailTimeline').innerHTML = k.events.map(e => `
+    <div class="detail-tl-item">
+      <span class="year">${e.year}年</span>
+      <span class="title">${e.title}</span>
+      <span class="desc">${e.desc}</span>
+    </div>
+  `).join('');
   
   document.getElementById('overlay').classList.add('show');
   document.getElementById('detailPanel').classList.add('open');
 }
 
 function openDetailByEvent(title) {
-  // Find kingdom by event title
   for (const [key, k] of Object.entries(KINGDOMS)) {
-    const evt = k.events.find(e => e.title === title);
-    if (evt) { openDetail(key); return; }
+    if (k.events.find(e => e.title === title)) { openDetail(key); return; }
   }
-}
-
-function closeDetail() {
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('detailPanel').classList.remove('open');
-}
-
-// ============ TIMELINE ============
-function renderTimeline() {
-  const container = document.getElementById('tlEvents');
-  const width = 1200; // px per 50 years
-  const totalYears = 960 - 907;
-  const scale = x => ((x - 907) / totalYears) * 100;
-  
-  let html = '';
-  
-  // Five dynasties row
-  const fiveDy = [
-    {name:'后梁',start:907,end:923,color:'#c9a227'},
-    {name:'后唐',start:923,end:936,color:'#e85d04'},
-    {name:'后晋',start:936,end:947,color:'#4cc9f0'},
-    {name:'后汉',start:947,end:951,color:'#7b2d8b'},
-    {name:'后周',start:951,end:960,color:'#2d6a4f'}
-  ];
-  
-  html += '<div class="tl-dynasty-row">';
-  html += '<div class="tl-dynasty-label" style="color:#d4af37">五代</div>';
-  html += '<div class="tl-dynasty-track">';
-  fiveDy.forEach(d => {
-    const l = scale(d.start);
-    const w = scale(d.end) - l;
-    html += `<div class="tl-bar" style="left:${l}%;width:${w}%;background:${d.color}" onclick="openDetailByName('${d.name}')">${d.name}</div>`;
-  });
-  html += '</div></div>';
-  
-  // Ten kingdoms
-  const tenKingdoms = [
-    {name:'前蜀',start:907,end:925,color:'#e63946'},
-    {name:'后蜀',start:934,end:965,color:'#f4a261'},
-    {name:'吴',start:902,end:937,color:'#2a9d8f'},
-    {name:'南唐',start:937,end:975,color:'#2196F3'},
-    {name:'吴越',start:907,end:978,color:'#e9c46a'},
-    {name:'闽',start:909,end:945,color:'#d62828'},
-    {name:'楚',start:907,end:951,color:'#90be6d'},
-    {name:'南汉',start:917,end:971,color:'#457b9d'},
-    {name:'荆南',start:924,end:963,color:'#9d8189'},
-    {name:'北汉',start:951,end:979,color:'#6d597a'}
-  ];
-  
-  tenKingdoms.forEach(k => {
-    const l = scale(k.start);
-    const w = Math.max(scale(k.end) - l, 1);
-    html += '<div class="tl-dynasty-row">';
-    html += `<div class="tl-dynasty-label" style="color:${k.color}">${k.name}</div>`;
-    html += `<div class="tl-dynasty-track">`;
-    html += `<div class="tl-bar" style="left:${l}%;width:${w}%;background:${k.color}44;color:${k.color};border:1px solid ${k.color}" onclick="openDetailByName('${k.name}')">${k.name}</div>`;
-    html += '</div></div>';
-  });
-  
-  // Events dots
-  html += '<div style="position:relative;height:80px;margin-top:20px">';
-  html += '<div style="font-size:12px;color:var(--muted);margin-bottom:8px">⚔️ 重大事件（点击查看详情）</div>';
-  const allEvents = [];
-  Object.entries(KINGDOMS).forEach(([key, k]) => {
-    k.events.forEach(e => {
-      allEvents.push({...e, kingdom:key, kName:k.name, color:k.color});
-    });
-  });
-  allEvents.sort((a,b) => a.year - b.year);
-  allEvents.forEach(e => {
-    const x = scale(e.year);
-    const isWar = e.title.includes('战') || e.title.includes('伐') || e.title.includes('攻');
-    const isFound = e.title.includes('建') && (e.title.includes('国') || e.title.includes('朝') || e.title.includes('帝'));
-    const isDestroy = e.title.includes('灭') || e.title.includes('亡');
-    const dotClass = isWar ? 'war' : isFound ? 'found' : isDestroy ? 'destroy' : 'political';
-    html += `<div class="tl-event-dot ${dotClass}" style="left:${x}%;top:${20 + (allEvents.indexOf(e)%3)*15}px" title="${e.year} ${e.title}" onclick="openDetailByName('${e.kName}')"></div>`;
-  });
-  html += '</div>';
-  
-  container.innerHTML = html;
-  
-  // Ruler marks
-  let rulerHtml = '<div class="tl-ruler" style="margin-top:16px">';
-  for (let y = 907; y <= 960; y += 5) {
-    const x = scale(y);
-    rulerHtml += `<div style="position:absolute;left:${x}%;top:0;font-size:10px;color:var(--muted);transform:translateX(-50%)">${y}</div>`;
-  }
-  rulerHtml += '</div>';
-  container.innerHTML += rulerHtml;
 }
 
 function openDetailByName(name) {
@@ -911,7 +1346,109 @@ function openDetailByName(name) {
   if (map[name]) openDetail(map[name]);
 }
 
-// ============ INIT ============
+function closeDetail() {
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('detailPanel').classList.remove('open');
+}
+
+// ==================== TIMELINE ====================
+function renderTimeline() {
+  const body = document.getElementById('tlBody');
+  
+  const fiveDy = [
+    {name:'后梁',key:'LaterLiang',start:907,end:923,color:'#8b6914'},
+    {name:'后唐',key:'LaterTang',start:923,end:936,color:'#c45c00'},
+    {name:'后晋',key:'LaterJin',start:936,end:947,color:'#1a6090'},
+    {name:'后汉',key:'LaterHan',start:947,end:951,color:'#5a2050'},
+    {name:'后周',key:'LaterZhou',start:951,end:960,color:'#1a5a30'}
+  ];
+  
+  const tenKingdoms = [
+    {name:'前蜀',key:'FormerShu',start:907,end:925,color:'#c0392b'},
+    {name:'后蜀',key:'LaterShu',start:934,end:965,color:'#d35400'},
+    {name:'吴',key:'Wu',start:902,end:937,color:'#16a085'},
+    {name:'南唐',key:'SouthernTang',start:937,end:975,color:'#2980b9'},
+    {name:'吴越',key:'Wuyue',start:907,end:978,color:'#f39c12'},
+    {name:'闽',key:'Min',start:909,end:945,color:'#c0392b'},
+    {name:'楚',key:'Chu',start:907,end:951,color:'#27ae60'},
+    {name:'南汉',key:'SouthernHan',start:917,end:971,color:'#2c3e50'},
+    {name:'荆南',key:'Jingnan',start:924,end:963,color:'#7f8c8d'},
+    {name:'北汉',key:'NorthernHan',start:951,end:979,color:'#8e44ad'}
+  ];
+  
+  const totalYears = 960 - 902;
+  const scale = (y) => ((y - 902) / totalYears) * 100;
+  
+  let html = '';
+  
+  // Five dynasties
+  html += '<div class="dynasty-section">';
+  html += '<div class="dynasty-section-title">☀️ 中原五代</div>';
+  fiveDy.forEach(d => {
+    const l = Math.max(0, scale(d.start));
+    const w = Math.max(0.5, scale(d.end) - l);
+    html += `<div class="dynasty-row">`;
+    html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
+    html += `<div class="dynasty-track">`;
+    html += `<div class="tl-bar" style="left:${l}%;width:${w}%;background:linear-gradient(135deg,${d.color},${d.color}aa);" onclick="openDetail('${d.key}')">${d.name}</div>`;
+    html += '</div></div>';
+  });
+  html += '</div>';
+  
+  // Ten kingdoms
+  html += '<div class="dynasty-section">';
+  html += '<div class="dynasty-section-title">🌏 十国割据</div>';
+  tenKingdoms.forEach(d => {
+    const l = Math.max(0, scale(d.start));
+    const w = Math.max(0.5, scale(d.end) - l);
+    html += `<div class="dynasty-row">`;
+    html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
+    html += `<div class="dynasty-track">`;
+    html += `<div class="tl-bar ten" style="left:${l}%;width:${w}%;background:${d.color}88;color:#fff;border:1px solid ${d.color};" onclick="openDetail('${d.key}')">${d.name}</div>`;
+    html += '</div></div>';
+  });
+  html += '</div>';
+  
+  // Events
+  html += '<div class="dynasty-section events-section">';
+  html += '<div class="dynasty-section-title">⚔️ 重大事件</div>';
+  
+  // Ruler
+  html += '<div class="events-ruler">';
+  for (let y = 902; y <= 960; y += 5) {
+    const x = ((y - 902) / totalYears) * 100;
+    html += `<div class="ruler-mark" style="left:${x}%;position:absolute"><span class="year-label">${y}</span></div>`;
+  }
+  html += '</div>';
+  
+  // Events row
+  const allEvents = [];
+  Object.entries(KINGDOMS).forEach(([key, k]) => {
+    k.events.forEach(e => {
+      allEvents.push({...e, kName:k.name, key, color:k.color});
+    });
+  });
+  allEvents.sort((a,b) => a.year - b.year);
+  
+  const rowHeight = 28;
+  html += '<div class="events-row" style="height:' + (rowHeight * 4) + 'px">';
+  allEvents.forEach((e, i) => {
+    const x = ((e.year - 902) / totalYears) * 100;
+    const row = i % 4;
+    const top = row * rowHeight + rowHeight/2;
+    const isWar = e.title.includes('战') || e.title.includes('伐') || e.title.includes('攻');
+    const isFound = e.title.includes('建') || e.title.includes('立');
+    const isDestroy = e.title.includes('灭') || e.title.includes('亡') || e.title.includes('覆灭');
+    const dotClass = isWar ? 'war' : isFound ? 'found' : isDestroy ? 'destroy' : 'political';
+    html += `<div class="tl-dot ${dotClass}" style="left:${x}%;top:${top}px;background:${e.color}" onclick="openDetail('${e.key}')"><div class="dot-label">${e.year} ${e.title}</div></div>`;
+  });
+  html += '</div>';
+  
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+// ==================== INIT ====================
 updateMap(907);
 </script>
 </body>
