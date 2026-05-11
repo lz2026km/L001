@@ -2238,6 +2238,14 @@ function showEventTip(el, year, title, kingdoms, desc) {
   setTimeout(() => tip.addEventListener('click', () => tip.remove()), 3000);
 }
 
+// 暴露onclick需要的函数到window
+window.switchView = switchView;
+window.openDetail = openDetail;
+window.showYearEvents = showYearEvents;
+window.switchDetailTab = switchDetailTab;
+window.openDetailByEvent = openDetailByEvent;
+window.openDetailByName = openDetailByName;
+
 // ==================== INIT ====================
 window.addEventListener('DOMContentLoaded', () => {
   function tryInit() {
