@@ -117,6 +117,14 @@ body::after {
   text-shadow:
     0 2px 4px rgba(0,0,0,.8),
     0 0 20px rgba(201,162,39,.25);
+  margin-bottom: 2px;
+}
+.topbar-subtitle {
+  font-size: 10px;
+  color: rgba(201,162,39,.5);
+  letter-spacing: 2px;
+  font-family: monospace;
+  margin-top: -2px;
 }
 .topbar-right {
   display: flex; align-items: center; gap: 18px;
@@ -232,13 +240,25 @@ body::after {
 }
 .kingdom-label {
   font-family: 'Noto Serif SC', serif;
-  font-size: 13px;
+  font-size: 16px;
   fill: #fff;
-  font-weight: 700;
+  font-weight: 900;
   pointer-events: none;
   text-anchor: middle;
-  text-shadow: 0 2px 6px rgba(0,0,0,.9), 0 0 20px rgba(0,0,0,.5);
+  text-shadow: 0 3px 10px rgba(0,0,0,.95), 0 0 30px rgba(0,0,0,.6);
   dominant-baseline: middle;
+  letter-spacing: 2px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.9));
+}
+.kingdom-label-sub {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 9px;
+  fill: rgba(255,255,255,.7);
+  font-weight: 400;
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 1px;
 }
 
 /* ===== YEAR PANEL — DEEP BAMBOO/SCROLL ===== */
@@ -367,21 +387,24 @@ body::after {
 }
 .year-tick {
   position: absolute;
-  width: 1px;
-  height: 8px;
-  background: rgba(201,162,39,.6);
-  top: 0;
-  box-shadow: 0 0 4px rgba(201,162,39,.3);
+  width: 2px;
+  height: 12px;
+  background: linear-gradient(to bottom, var(--gold-light), var(--gold));
+  top: -2px;
+  box-shadow: 0 0 8px rgba(201,162,39,.6), 0 0 16px rgba(201,162,39,.3);
+  border-radius: 1px;
 }
 .year-tick-label {
   position: absolute;
-  font-size: 9px;
-  color: rgba(201,162,39,.5);
-  top: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  top: 12px;
   transform: translateX(-50%);
   font-family: monospace;
   white-space: nowrap;
   letter-spacing: .5px;
+  text-shadow: 0 0 8px rgba(201,162,39,.5);
 }
 
 /* ===== MAP HOVER TOOLTIP ===== */
@@ -854,6 +877,10 @@ body::after {
 .tl-dot.found { background: #2a9d8f; }
 .tl-dot.destroy { background: #555; }
 .tl-dot.political { background: #457b9d; }
+.tl-dot.culture { background: #e91e63; }
+.tl-dot.diplomacy { background: #9b59b6; }
+.tl-dot.economy { background: #f39c12; }
+.tl-dot.death { background: #607d8b; }
 .tl-dot .dot-label {
   position: absolute;
   top: -24px;
@@ -872,6 +899,133 @@ body::after {
   letter-spacing: .5px;
 }
 .tl-dot:hover .dot-label { opacity: 1; }
+
+/* ===== FILTER BAR ===== */
+.tl-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  background: rgba(201,162,39,.06);
+  border-radius: 10px;
+  border: 1px solid rgba(201,162,39,.15);
+}
+.tl-filter-btn {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(201,162,39,.7);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'Noto Serif SC', serif;
+}
+.tl-filter-btn:hover { border-color: var(--c); color: var(--c); }
+.tl-filter-btn.active {
+  background: var(--c);
+  color: #fff;
+  border-color: var(--c);
+  box-shadow: 0 0 8px var(--c);
+}
+
+/* ===== DYNASTY RULER MARKERS ===== */
+.ruler-dy-mark {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: rgba(201,162,39,.25);
+  z-index: 2;
+}
+.dy-mark-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: rgba(201,162,39,.55);
+  white-space: nowrap;
+}
+
+/* ===== LEGEND ===== */
+.tl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 18px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,.025);
+  border-radius: 8px;
+  border: 1px solid rgba(201,162,39,.1);
+}
+.tl-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(201,162,39,.65);
+  font-family: 'Noto Serif SC', serif;
+}
+.tl-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ===== EVENT TOOLTIP POPUP ===== */
+.tl-event-tip {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  background: rgba(15,10,5,.95);
+  border: 1px solid rgba(201,162,39,.4);
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-width: 180px;
+  max-width: 280px;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,.6);
+  pointer-events: auto;
+}
+.tip-year {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: monospace;
+}
+.tip-title {
+  font-size: 14px;
+  color: var(--paper);
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-family: 'Noto Serif SC', serif;
+}
+.tip-kingdoms {
+  font-size: 11px;
+  color: var(--gold-dim);
+  margin-bottom: 6px;
+}
+.tip-desc {
+  font-size: 11px;
+  color: rgba(245,237,216,.7);
+  line-height: 1.6;
+}
+
+/* ===== NO EVENTS MESSAGE ===== */
+.tl-no-events {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: rgba(201,162,39,.4);
+  font-size: 14px;
+  font-family: 'Noto Serif SC', serif;
+}
 
 /* ===== OVERLAY — CLASSICAL SCROLL REVEAL ===== */
 .overlay {
@@ -1235,6 +1389,7 @@ body::after {
 <div class="topbar">
   <div class="topbar-left">
     <h1>📜 L001 · 五代十国兴亡录</h1>
+    <div class="topbar-subtitle">907年 — 979年 · 五代更替 · 十国纷立</div>
   </div>
   <div class="topbar-right">
     <div class="tabs">
@@ -1285,78 +1440,94 @@ body::after {
         <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M530.6,362.8L527.9,361.9L525.5,353.0L521.5,355.9L518.9,356.3L519.2,358.5L516.5,361.2L515.1,361.6L512.6,362.4L505.3,362.5L504.9,364.8L502.6,367.1L500.0,371.1L502.7,372.3L503.5,371.3L508.3,371.7L510.8,371.0L512.8,370.5L514.4,369.6L515.1,369.8L519.6,368.8L520.3,368.1L521.1,368.4L521.3,368.9L524.7,369.1L528.3,367.7L527.3,367.0L528.8,365.3L530.3,364.9L530.6,362.8Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后梁</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后梁</text>
+        <text class="kingdom-label-sub" x="0" y="13">汴梁(开封)</text>
       </g>
       <g id="gLaterTang" class="kingdom" data-kingdom="LaterTang" opacity="0">
         <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后唐</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后唐</text>
+        <text class="kingdom-label-sub" x="0" y="13">洛阳</text>
       </g>
       <g id="gLaterJin" class="kingdom" data-kingdom="LaterJin" opacity="0">
         <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后晋</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后晋</text>
+        <text class="kingdom-label-sub" x="0" y="13">汴梁(开封)</text>
       </g>
       <g id="gLaterHan" class="kingdom" data-kingdom="LaterHan" opacity="0">
         <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后汉</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后汉</text>
+        <text class="kingdom-label-sub" x="0" y="13">汴梁(开封)</text>
       </g>
       <g id="gLaterZhou" class="kingdom" data-kingdom="LaterZhou" opacity="0">
         <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后周</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后周</text>
+        <text class="kingdom-label-sub" x="0" y="13">汴梁(开封)</text>
       </g>
       <g id="gWu" class="kingdom" data-kingdom="Wu" opacity="0">
         <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">吴</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">吴</text>
+        <text class="kingdom-label-sub" x="0" y="13">江都(扬州)</text>
       </g>
       <g id="gSouthernTang" class="kingdom" data-kingdom="SouthernTang" opacity="0">
         <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#2980b9" stroke="#2980b9" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
         <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#2980b9" stroke="#2980b9" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">南唐</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">南唐</text>
+        <text class="kingdom-label-sub" x="0" y="13">金陵(南京)</text>
       </g>
       <g id="gWuyue" class="kingdom" data-kingdom="Wuyue" opacity="0">
         <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#f39c12" stroke="#f39c12" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">吴越</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">吴越</text>
+        <text class="kingdom-label-sub" x="0" y="13">杭州</text>
       </g>
       <g id="gMin" class="kingdom" data-kingdom="Min" opacity="0">
         <path d="M562.0,476.3L563.4,478.4L569.5,476.8L571.0,476.3L571.2,476.8L572.2,477.5L573.0,477.7L578.7,476.6L579.1,476.5L579.4,476.9L583.3,479.5L585.7,477.4L588.2,479.1L593.4,475.6L594.2,473.3L595.9,468.0L595.5,467.5L592.3,466.3L588.7,468.6L586.5,466.8L579.9,468.0L577.5,467.9L577.2,467.3L576.2,467.1L576.2,467.5L575.5,467.3L562.4,474.2L561.9,474.8L562.3,475.5L562.0,476.3Z" fill="#c0392b" stroke="#c0392b" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">闽</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">闽</text>
+        <text class="kingdom-label-sub" x="0" y="13">福州</text>
       </g>
       <g id="gChu" class="kingdom" data-kingdom="Chu" opacity="0">
         <path d="M614.3,458.2L615.1,460.9L615.3,463.7L615.0,466.0L615.7,465.9L615.3,467.8L618.0,470.2L618.4,469.9L619.9,470.4L619.9,470.9L620.2,471.4L620.6,470.9L622.6,471.2L625.0,473.4L629.0,471.3L629.3,470.3L630.1,467.6L628.4,465.0L627.8,457.4L627.4,457.4L626.2,456.3L624.0,456.8L624.5,456.2L622.9,456.2L622.2,456.7L619.3,460.0L617.1,459.6L616.4,459.0L615.7,458.9L614.3,458.2Z" fill="#27ae60" stroke="#27ae60" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">楚</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">楚</text>
+        <text class="kingdom-label-sub" x="0" y="13">长沙</text>
       </g>
       <g id="gSouthernHan" class="kingdom" data-kingdom="SouthernHan" opacity="0">
         <path d="M583.4,572.5L586.3,575.5L587.1,576.0L587.6,577.2L588.9,576.9L588.5,574.8L586.4,571.0L586.5,570.4L590.9,563.5L591.2,562.0L592.4,561.4L592.0,559.8L590.3,556.3L590.5,555.9L591.0,555.8L592.3,554.4L587.1,554.0L584.5,555.0L583.6,554.9L580.3,559.1L579.9,558.9L577.9,561.8L581.1,565.7L581.8,567.5L581.7,568.9L582.2,569.7L582.6,571.4L583.0,571.7L583.3,572.1L583.4,572.5Z" fill="#2c3e50" stroke="#2c3e50" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">南汉</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">南汉</text>
+        <text class="kingdom-label-sub" x="0" y="13">广州</text>
       </g>
       <g id="gFormerShu" class="kingdom" data-kingdom="FormerShu" opacity="0">
         <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#c0392b" stroke="#c0392b" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">前蜀</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">前蜀</text>
+        <text class="kingdom-label-sub" x="0" y="13">成都</text>
       </g>
       <g id="gLaterShu" class="kingdom" data-kingdom="LaterShu" opacity="0">
         <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#d35400" stroke="#d35400" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后蜀</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">后蜀</text>
+        <text class="kingdom-label-sub" x="0" y="13">成都</text>
       </g>
       <g id="gJingnan" class="kingdom" data-kingdom="Jingnan" opacity="0">
         <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#7f8c8d" stroke="#7f8c8d" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">荆南</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">荆南</text>
+        <text class="kingdom-label-sub" x="0" y="13">江陵</text>
       </g>
       <g id="gNorthernHan" class="kingdom" data-kingdom="NorthernHan" opacity="0">
         <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#8e44ad" stroke="#8e44ad" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">北汉</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">北汉</text>
+        <text class="kingdom-label-sub" x="0" y="13">太原</text>
       </g>
       <g id="gLiao" class="kingdom" data-kingdom="Liao" opacity="0">
         <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#16a085" stroke="#16a085" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
-        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">契丹</text>
+        <text class="kingdom-label" fill="#fff" font-size="16" font-weight="900" text-anchor="middle" dominant-baseline="middle" filter="url(#kingdomGlow)">契丹</text>
+        <text class="kingdom-label-sub" x="0" y="13">上京</text>
       </g>
 
       <!-- ===== 城市标记 ===== -->
@@ -1396,6 +1567,53 @@ body::after {
       <path d="M896,656 L860,656 M896,656 L896,620" stroke="rgba(201,162,39,0.5)" stroke-width="2" fill="none"/>
       <rect x="4" y="4" width="892" height="652" fill="none" stroke="rgba(201,162,39,0.2)" stroke-width="1" rx="2"/>
       <text x="895" y="655" fill="rgba(201,162,39,0.2)" font-size="9" text-anchor="end" font-family="monospace">L001 · 五代十国 v0.4 真实地图</text>
+
+      <!-- ===== SVG图例 ===== -->
+      <g id="mapLegend" transform="translate(12, 12)">
+        <rect x="0" y="0" width="160" height="298" rx="8" fill="rgba(10,8,4,0.88)" stroke="rgba(201,162,39,0.35)" stroke-width="1"/>
+        <text x="80" y="18" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="10" font-weight="700" fill="#c9a227" letter-spacing="3">图例 LEGEND</text>
+        <line x1="12" y1="26" x2="148" y2="26" stroke="rgba(201,162,39,0.25)" stroke-width="0.5"/>
+        <!-- Five Dynasties -->
+        <text x="12" y="42" font-family="'Noto Serif SC',serif" font-size="9" font-weight="700" fill="rgba(201,162,39,0.7)" letter-spacing="1">☀️ 中原五代</text>
+        <rect x="12" y="48" width="14" height="10" rx="2" fill="#8B0000"/>
+        <text x="30" y="56" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后梁 907-923</text>
+        <rect x="12" y="61" width="14" height="10" rx="2" fill="#B22222"/>
+        <text x="30" y="69" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后唐 923-936</text>
+        <rect x="12" y="74" width="14" height="10" rx="2" fill="#CD5C5C"/>
+        <text x="30" y="82" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后晋 936-947</text>
+        <rect x="12" y="87" width="14" height="10" rx="2" fill="#DC143C"/>
+        <text x="30" y="95" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后汉 947-951</text>
+        <rect x="12" y="100" width="14" height="10" rx="2" fill="#FF4500"/>
+        <text x="30" y="108" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后周 951-960</text>
+        <line x1="12" y1="117" x2="148" y2="117" stroke="rgba(201,162,39,0.2)" stroke-width="0.5"/>
+        <!-- Ten Kingdoms -->
+        <text x="12" y="131" font-family="'Noto Serif SC',serif" font-size="9" font-weight="700" fill="rgba(201,162,39,0.7)" letter-spacing="1">🌏 十国割据</text>
+        <rect x="12" y="137" width="14" height="10" rx="2" fill="#006400"/>
+        <text x="30" y="145" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">吴 902-937</text>
+        <rect x="12" y="150" width="14" height="10" rx="2" fill="#2980b9"/>
+        <text x="30" y="158" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">南唐 937-975</text>
+        <rect x="12" y="163" width="14" height="10" rx="2" fill="#f39c12"/>
+        <text x="30" y="171" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">吴越 907-978</text>
+        <rect x="12" y="176" width="14" height="10" rx="2" fill="#c0392b"/>
+        <text x="30" y="184" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">闽 909-945</text>
+        <rect x="12" y="189" width="14" height="10" rx="2" fill="#27ae60"/>
+        <text x="30" y="197" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">楚 907-951</text>
+        <rect x="12" y="202" width="14" height="10" rx="2" fill="#2c3e50"/>
+        <text x="30" y="210" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">南汉 917-971</text>
+        <rect x="12" y="215" width="14" height="10" rx="2" fill="#c0392b"/>
+        <text x="30" y="223" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">前蜀 907-925</text>
+        <rect x="12" y="228" width="14" height="10" rx="2" fill="#d35400"/>
+        <text x="30" y="236" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">后蜀 934-965</text>
+        <rect x="12" y="241" width="14" height="10" rx="2" fill="#7f8c8d"/>
+        <text x="30" y="249" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">荆南 924-963</text>
+        <rect x="12" y="254" width="14" height="10" rx="2" fill="#8e44ad"/>
+        <text x="30" y="262" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">北汉 951-979</text>
+        <line x1="12" y1="271" x2="148" y2="271" stroke="rgba(201,162,39,0.2)" stroke-width="0.5"/>
+        <!-- Liao -->
+        <text x="12" y="285" font-family="'Noto Serif SC',serif" font-size="9" font-weight="700" fill="rgba(201,162,39,0.7)" letter-spacing="1">❄️ 北方政权</text>
+        <rect x="12" y="291" width="14" height="10" rx="2" fill="#16a085"/>
+        <text x="30" y="299" font-family="'Noto Serif SC',serif" font-size="9" fill="#e8d5a3">契丹/辽 907-1125</text>
+      </g>
     </svg>
 
     <!-- 事件浮窗 -->
@@ -1834,9 +2052,32 @@ function getDynastyStart(year) {
   return fiveDy[fiveDy.length - 1];
 }
 
-function renderTimeline() {
+// Event type → CSS class + color
+const EVT_COLOR = {
+  war:       '#e63946',
+  politics:  '#457b9d',
+  culture:   '#e91e63',
+  diplomacy: '#9b59b6',
+  economy:   '#f39c12',
+  found:     '#2a9d8f',
+  destroy:   '#555555',
+  death:     '#607d8b'
+};
+const EVT_LABELS = {
+  war:       '⚔️ 战争',
+  politics:  '🏛️ 政治',
+  culture:   '🎭 文化',
+  diplomacy: '🤝 外交',
+  economy:   '💰 经济',
+  found:     '🏰 开国',
+  destroy:   '💀 灭亡',
+  death:     '⚱️ 人物'
+};
+
+function renderTimeline(filterTypes) {
   const body = document.getElementById('tlBody');
   if (!body) return;
+  filterTypes = filterTypes || Object.keys(EVT_COLOR); // show all by default
 
   const fiveDy = [
     {name:'后梁',key:'houLiang',start:907,end:923,color:'#8b6914'},
@@ -1859,18 +2100,30 @@ function renderTimeline() {
     {name:'北汉',key:'beiHan',start:951,end:979,color:'#8e44ad'}
   ];
 
-  const totalYears = 960 - 902;
-  const scale = (y) => ((y - 902) / totalYears) * 100;
+  // Scale for 907–979 (full Five Dynasties & Ten Kingdoms period)
+  const TL_START = 907, TL_END = 979;
+  const totalYears = TL_END - TL_START;
+  const scale = (y) => ((y - TL_START) / totalYears) * 100;
 
   let html = '';
 
-  // Five dynasties — gradient bars
+  // ---- Event type filter bar ----
+  html += '<div class="tl-filter-bar">';
+  Object.entries(EVT_COLOR).forEach(([type, color]) => {
+    const active = filterTypes.includes(type);
+    html += `<button class="tl-filter-btn ${active?'active':''}"
+      style="--c:${color}"
+      onclick="renderTimeline(${JSON.stringify(active ? filterTypes.filter(t=>t!==type) : [...filterTypes, type])})"
+      title="${EVT_LABELS[type]}">${EVT_LABELS[type]}</button>`;
+  });
+  html += '</div>';
+
+  // ---- Five dynasties — gradient bars ----
   html += '<div class="dynasty-section">';
   html += '<div class="dynasty-section-title">☀️ 中原五代</div>';
   fiveDy.forEach(d => {
     const l = Math.max(0, scale(d.start));
     const w = Math.max(0.5, scale(d.end) - l);
-    // Build gradient per dynasty
     const gradId = 'grad' + d.key;
     html += `<div class="dynasty-row">`;
     html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
@@ -1886,7 +2139,7 @@ function renderTimeline() {
   });
   html += '</div>';
 
-  // Ten kingdoms — thin bars with vertical markers
+  // ---- Ten kingdoms — thin bars ----
   html += '<div class="dynasty-section">';
   html += '<div class="dynasty-section-title">🌏 十国割据</div>';
   tenKingdoms.forEach(d => {
@@ -1895,53 +2148,94 @@ function renderTimeline() {
     html += `<div class="dynasty-row">`;
     html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
     html += `<div class="dynasty-track" id="track-ten-${d.key}">`;
-    // Vertical start marker
     html += `<div class="ten-marker" style="left:${l}%" data-name="${d.name}"></div>`;
     html += `<div class="tl-bar ten" style="left:${l}%;width:${w}%;background:${d.color}66;border:1px solid ${d.color}88;color:#fff;" data-start="${d.start}" data-end="${d.end}" onclick="openDetail('${d.key}')">${d.name}</div>`;
     html += '</div></div>';
   });
   html += '</div>';
 
-  // Events with diamond icons
+  // ---- Events section ----
   html += '<div class="dynasty-section events-section">';
-  html += '<div class="dynasty-section-title">⚔️ 重大事件</div>';
+  html += '<div class="dynasty-section-title">⚔️ 重大事件 <span class="tl-event-count" id="tlEventCount"></span></div>';
 
-  // Ruler
+  // Ruler with year ticks
   html += '<div class="events-ruler">';
-  for (let y = 902; y <= 960; y += 5) {
-    const x = ((y - 902) / totalYears) * 100;
+  for (let y = TL_START; y <= TL_END; y += 5) {
+    const x = scale(y);
     html += `<div class="ruler-mark" style="left:${x}%;position:absolute"><span class="year-label">${y}</span></div>`;
+  }
+  // Dynasty period markers on ruler
+  const dyMarkers = [
+    {y:907,label:'后梁'},{y:923,label:'后唐'},{y:936,label:'后晋'},{y:947,label:'后汉'},{y:951,label:'后周'}
+  ];
+  dyMarkers.forEach(m => {
+    const x = scale(m.y);
+    html += `<div class="ruler-dy-mark" style="left:${x}%"><span class="dy-mark-label">${m.label}</span></div>`;
+  });
+  html += '</div>';
+
+  // ---- Use TIMELINE_EVENTS (comprehensive events 875-979) ----
+  const allEvents = (TIMELINE_EVENTS || [])
+    .filter(e => e.year >= TL_START && e.year <= TL_END && filterTypes.includes(e.type))
+    .sort((a, b) => a.year - b.year || (a.significance === 'high' ? -1 : 1));
+
+  // Build kingdom color lookup
+  const kColor = {};
+  Object.entries(KINGDOM_DATA).forEach(([key, k]) => { if (key !== 'background') kColor[key] = k.color; });
+
+  // Assign each event a display color: use type color, or kingdom color as fallback
+  const eventColor = (e) => EVT_COLOR[e.type] || kColor[e.involvedKingdoms?.[0]] || '#888';
+
+  // Layout: up to 8 rows of events
+  const numRows = 8;
+  const rowHeight = 26;
+  html += `<div class="events-row" style="height:${rowHeight * numRows}px;position:relative;">`;
+
+  if (allEvents.length === 0) {
+    html += '<div class="tl-no-events">该类型暂无事件</div>';
+  } else {
+    allEvents.forEach((e, i) => {
+      const x = scale(e.year);
+      const row = i % numRows;
+      const top = row * rowHeight + rowHeight / 2;
+      const color = eventColor(e);
+      const kingdoms = e.involvedKingdoms ? e.involvedKingdoms.map(k => KINGDOM_DATA[k]?.name || k).join('·') : '';
+      const label = kingdoms ? `${e.year} ${e.title} (${kingdoms})` : `${e.year} ${e.title}`;
+      const sigMark = e.significance === 'high' ? '◆' : '◇';
+      html += `<div class="tl-dot ${e.type}" style="left:${x}%;top:${top}px;background:${color};border-color:${color}88;"
+        title="${e.description || e.title}"
+        onclick="showEventTip(this,${e.year},'${e.title.replace(/'/g,"\\'")}','${kingdoms.replace(/'/g,"\\'")}','${(e.description||'').replace(/'/g,"\\'")}')">`
+        + `<span class="dot-label">${sigMark}${e.year}${sigMark}</span></div>`;
+    });
   }
   html += '</div>';
 
-  // Events row — diamond icons
-  const allEvents = [];
-  Object.entries(KINGDOM_DATA).forEach(([key, k]) => {
-    if (key === 'background') return;
-    (k.rulers || []).forEach(r => {
-      (r.events || []).forEach(e => {
-        allEvents.push({...e, kName: k.name, key, color: k.color});
-      });
-    });
-  });
-  allEvents.sort((a,b) => a.year - b.year);
-
-  const rowHeight = 28;
-  html += '<div class="events-row" style="height:' + (rowHeight * 4) + 'px">';
-  allEvents.forEach((e, i) => {
-    const x = ((e.year - 902) / totalYears) * 100;
-    const row = i % 4;
-    const top = row * rowHeight + rowHeight/2;
-    const isWar = e.title.includes('战') || e.title.includes('伐') || e.title.includes('攻');
-    const isFound = e.title.includes('建') || e.title.includes('立');
-    const isDestroy = e.title.includes('灭') || e.title.includes('亡') || e.title.includes('覆灭');
-    const dotClass = isWar ? 'war' : isFound ? 'found' : isDestroy ? 'destroy' : 'political';
-    html += `<div class="tl-diamond ${dotClass}" style="left:${x}%;top:${top}px;background:${e.color};border-color:${e.color}88;" onclick="openDetail('${e.key}')"><div class="diamond-label">${e.year} ${e.title}</div></div>`;
+  // Legend
+  html += '<div class="tl-legend">';
+  Object.entries(EVT_COLOR).forEach(([type, color]) => {
+    html += `<span class="tl-legend-item"><span class="tl-legend-dot" style="background:${color}"></span>${EVT_LABELS[type]}</span>`;
   });
   html += '</div>';
 
   html += '</div>';
   body.innerHTML = html;
+
+  // Update count
+  const cnt = document.getElementById('tlEventCount');
+  if (cnt) cnt.textContent = `(${allEvents.length}件)`;
+}
+
+// Show event tooltip popup
+function showEventTip(el, year, title, kingdoms, desc) {
+  // Remove existing tip
+  const existing = document.getElementById('tlEventTip');
+  if (existing) existing.remove();
+  const tip = document.createElement('div');
+  tip.id = 'tlEventTip';
+  tip.className = 'tl-event-tip';
+  tip.innerHTML = `<div class="tip-year">${year}</div><div class="tip-title">${title}</div>${kingdoms?`<div class="tip-kingdoms">${kingdoms}</div>`:''}${desc?`<div class="tip-desc">${desc}</div>`:''}`;
+  el.parentNode.appendChild(tip);
+  setTimeout(() => tip.addEventListener('click', () => tip.remove()), 3000);
 }
 
 // ==================== INIT ====================
