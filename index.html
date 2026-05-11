@@ -1946,10 +1946,17 @@ function renderTimeline() {
 
 // ==================== INIT ====================
 window.addEventListener('DOMContentLoaded', () => {
-  updateMap(907);
-  renderTimeline();
-  initYearTicks();
-  initMapHover();
+  function tryInit() {
+    if (typeof KINGDOM_DATA === 'undefined') {
+      setTimeout(tryInit, 50);
+      return;
+    }
+    updateMap(907);
+    renderTimeline();
+    initYearTicks();
+    initMapHover();
+  }
+  setTimeout(tryInit, 100);
 });
 
 function initYearTicks() {
