@@ -4,26 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L001 · 五代十国兴亡录</title>
-<!-- fonts inline -->
 <style>
+/* ===== CSS VARIABLES — ANCIENT PALETTE ===== */
 :root {
-  --ink: #1a1208;
+  --ink: #0d0906;
   --paper: #f5edd8;
   --paper-dark: #e8d9b8;
+  --paper-light: #faf6eb;
   --gold: #c9a227;
   --gold-light: #e8c84a;
+  --gold-dim: #8b6914;
   --bronze: #8b6914;
   --vermilion: #8b1a1a;
+  --vermilion-bright: #c0392b;
   --text: #2c1810;
   --text-light: #5a4030;
   --muted: #8a7060;
-  --shadow: rgba(0,0,0,.25);
-  --liang:#8b6914;
-  --tang:#c45c00;
-  --jin:#1a6090;
-  --han:#5a2050;
-  --zhou:#1a5a30;
+  --shadow: rgba(0,0,0,.35);
+  --liang: #8b6914;
+  --tang: #c45c00;
+  --jin: #1a6090;
+  --han: #5a2050;
+  --zhou: #1a5a30;
 }
+
+/* ===== RESET ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { height:100%; overflow:hidden; }
 body {
@@ -36,83 +41,149 @@ body {
 .paper-bg {
   background: var(--paper);
   background-image:
-    radial-gradient(ellipse at 20% 20%, rgba(200,170,100,.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(180,140,80,.08) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    radial-gradient(ellipse at 20% 20%, rgba(200,170,100,.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,140,80,.10) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
-/* ===== TOPBAR ===== */
+/* ===== ANTIQUE CORNER DECORATIONS ===== */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+body::before {
+  top: 0; left: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0,0 Q40,5 60,0 Q65,40 80,40 M0,0 Q5,40 0,60' stroke='%23c9a227' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3Cpath d='M5,5 L30,5 L30,8 L8,8 L8,30 L5,30 Z' fill='%23c9a227' opacity='0.3'/%3E%3Ccircle cx='5' cy='5' r='3' fill='%23c9a227' opacity='0.5'/%3E%3C/svg%3E") no-repeat;
+}
+body::after {
+  bottom: 0; right: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M80,80 Q40,75 20,80 Q15,40 0,40 M80,80 Q75,40 80,20' stroke='%23c9a227' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3Cpath d='M75,75 L50,75 L50,72 L72,72 L72,50 L75,50 Z' fill='%23c9a227' opacity='0.3'/%3E%3Ccircle cx='75' cy='75' r='3' fill='%23c9a227' opacity='0.5'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* ===== TOPBAR — ENHANCED DEEP WOOD GRAIN ===== */
 .topbar {
-  height: 64px;
+  height: 72px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px;
-  background: linear-gradient(135deg, #1a1208 0%, #2c1f10 50%, #1a1208 100%);
-  border-bottom: 2px solid var(--gold);
+  padding: 0 36px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(201,162,39,.03) 0px,
+      transparent 2px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,.15) 0px,
+      rgba(30,20,8,.6) 2px,
+      rgba(0,0,0,.2) 4px,
+      rgba(20,12,4,.8) 6px,
+      rgba(0,0,0,.1) 8px
+    ),
+    linear-gradient(160deg, #1a1008 0%, #2a1a0c 30%, #1a1208 60%, #120a04 100%);
+  border-bottom: 3px solid var(--gold);
   position: relative;
   z-index: 100;
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.6),
+    inset 0 1px 0 rgba(201,162,39,.2),
+    inset 0 -1px 0 rgba(0,0,0,.4);
 }
+/* Golden thread line under topbar */
 .topbar::after {
   content: '';
   position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+  bottom: -4px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold-light), var(--gold), var(--gold-light), transparent);
+  box-shadow: 0 0 8px rgba(201,162,39,.4);
 }
+
 .topbar-left {
   display: flex; align-items: center; gap: 20px;
 }
 .topbar h1 {
   font-family: 'Noto Serif SC', 'SimSun', serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   color: var(--gold);
-  letter-spacing: 4px;
-  text-shadow: 0 2px 8px rgba(201,162,39,.3);
+  letter-spacing: 5px;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.8),
+    0 0 20px rgba(201,162,39,.25);
 }
 .topbar-right {
-  display: flex; align-items: center; gap: 16px;
+  display: flex; align-items: center; gap: 18px;
 }
 .ver-badge {
   font-size: 12px;
   color: var(--gold);
-  background: rgba(201,162,39,.15);
-  border: 1px solid var(--gold);
-  padding: 2px 10px;
+  background: rgba(201,162,39,.12);
+  border: 1px solid rgba(201,162,39,.4);
+  padding: 3px 12px;
   border-radius: 20px;
   font-family: monospace;
+  letter-spacing: 1px;
 }
+
+/* ===== TABS — ANCIENT BRONZE BUTTONS ===== */
 .tabs {
-  display: flex; gap: 4px;
-  background: rgba(0,0,0,.3);
-  padding: 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(201,162,39,.3);
+  display: flex; gap: 6px;
+  background: rgba(0,0,0,.4);
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(201,162,39,.25);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.4);
 }
 .tabs button {
-  padding: 8px 20px;
+  padding: 9px 22px;
   border: none;
   background: transparent;
-  color: rgba(201,162,39,.6);
+  color: rgba(201,162,39,.55);
   font-size: 14px;
   font-family: 'Noto Serif SC', serif;
   cursor: pointer;
-  border-radius: 7px;
-  transition: all .25s;
-  display: flex; align-items: center; gap: 6px;
+  border-radius: 9px;
+  transition: all .3s;
+  display: flex; align-items: center; gap: 7px;
+  position: relative;
+  overflow: hidden;
+}
+.tabs button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(201,162,39,.08) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity .3s;
 }
 .tabs button.active {
-  background: linear-gradient(135deg, var(--gold), var(--bronze));
+  background: linear-gradient(160deg, var(--gold) 0%, var(--bronze) 100%);
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(201,162,39,.4);
+  box-shadow:
+    0 3px 12px rgba(201,162,39,.5),
+    inset 0 1px 0 rgba(255,255,255,.2),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  letter-spacing: 1px;
 }
+.tabs button.active::before { opacity: 1; }
 .tabs button:hover:not(.active) {
   color: var(--gold-light);
-  background: rgba(201,162,39,.1);
+  background: rgba(201,162,39,.08);
+  box-shadow: 0 0 8px rgba(201,162,39,.15);
 }
+.tabs button:hover:not(.active)::before { opacity: 1; }
 
 /* ===== VIEWS ===== */
-.view { display: none; height: calc(100vh - 64px); }
+.view { display: none; height: calc(100vh - 72px); }
 .view.active { display: flex; flex-direction: column; }
 
 /* ===== MAP VIEW ===== */
@@ -127,12 +198,13 @@ body {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 50%, #1a2a3a 0%, #0a0a0f 100%);
+    radial-gradient(ellipse at 50% 50%, #1a2530 0%, #0a0a10 100%);
 }
+/* Subtle aged map texture overlay */
 .map-wrapper::before {
   content: '';
   position: absolute; inset: 0;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='1' fill='rgba(201,162,39,0.1)'/%3E%3C/svg%3E");
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='1' fill='rgba(201,162,39,0.08)'/%3E%3C/svg%3E");
   background-size: 60px 60px;
   pointer-events: none;
   z-index: 0;
@@ -169,65 +241,83 @@ body {
   dominant-baseline: middle;
 }
 
-/* ===== YEAR SLIDER ===== */
+/* ===== YEAR PANEL — DEEP BAMBOO/SCROLL ===== */
 .year-panel {
-  height: 90px;
+  height: 96px;
   flex-shrink: 0;
-  background: linear-gradient(to top, rgba(10,8,5,.98) 0%, rgba(20,15,8,.95) 60%, rgba(26,18,8,.9) 100%);
-  border-top: 1px solid rgba(201,162,39,.3);
-  padding: 12px 40px 16px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(201,162,39,.02) 0px,
+      transparent 3px,
+      transparent 12px
+    ),
+    linear-gradient(to top, rgba(8,6,3,.98) 0%, rgba(16,12,6,.95) 50%, rgba(22,16,8,.92) 100%);
+  border-top: 2px solid rgba(201,162,39,.4);
+  padding: 14px 44px 18px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.5);
+}
+/* Top decorative line */
+.year-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 40px; right: 40px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,162,39,.4), transparent);
 }
 .year-panel-top {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 .year-big {
-  font-family: 'ZCOOL XiaoWei', serif;
-  font-size: 32px;
+  font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+  font-size: 36px;
   font-weight: 900;
   color: var(--gold);
-  text-shadow: 0 0 20px rgba(201,162,39,.5);
-  min-width: 60px;
+  text-shadow: 0 0 24px rgba(201,162,39,.5), 0 2px 6px rgba(0,0,0,.8);
+  min-width: 68px;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 .year-sep {
   width: 1px;
-  height: 30px;
+  height: 34px;
   background: linear-gradient(to bottom, transparent, var(--gold), transparent);
 }
-.year-era-info {
-  flex: 1;
-}
+.year-era-info { flex: 1; }
 .year-era-name {
   font-family: 'Noto Serif SC', serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--gold-light);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  letter-spacing: 1px;
 }
 .year-era-desc {
   font-size: 12px;
   color: var(--muted);
+  letter-spacing: .5px;
 }
 .year-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 .year-controls label {
   font-size: 13px;
   color: rgba(201,162,39,.5);
   font-weight: 600;
+  font-family: monospace;
 }
 #yearRange {
   flex: 1;
   -webkit-appearance: none;
-  height: 4px;
+  height: 5px;
   background: linear-gradient(to right,
     var(--liang) 0%,
     var(--tang) 25%,
@@ -237,80 +327,174 @@ body {
     #333 80%,
     #222 100%
   );
-  border-radius: 2px;
+  border-radius: 3px;
   cursor: pointer;
   accent-color: var(--gold);
+  box-shadow: 0 1px 4px rgba(0,0,0,.5);
 }
 #yearRange::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold), var(--bronze));
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(201,162,39,.6), 0 2px 6px rgba(0,0,0,.5);
+  box-shadow: 0 0 12px rgba(201,162,39,.7), 0 2px 8px rgba(0,0,0,.6);
   border: 2px solid rgba(255,255,255,.3);
+  transition: transform .2s, box-shadow .2s;
+}
+#yearRange::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(201,162,39,.9), 0 4px 12px rgba(0,0,0,.6);
 }
 #yearRange::-moz-range-thumb {
-  width: 20px; height: 20px;
+  width: 22px; height: 22px;
   background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(201,162,39,.6);
+  box-shadow: 0 0 12px rgba(201,162,39,.7);
   border: 2px solid rgba(255,255,255,.3);
 }
 
-/* ===== EVENTS FLOAT ===== */
-.events-float {
-  position: absolute;
-  right: 24px;
-  top: 16px;
-  width: 240px;
-  background: rgba(20,14,8,.92);
-  border: 1px solid rgba(201,162,39,.3);
-  border-radius: 12px;
-  padding: 14px 16px;
-  z-index: 20;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+/* Dynasty boundary tick marks */
+.year-tick-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-top: -2px;
+  padding: 0 20px;
+  position: relative;
 }
-.events-float h4 {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 13px;
+.year-tick {
+  position: absolute;
+  width: 1px;
+  height: 8px;
+  background: rgba(201,162,39,.6);
+  top: 0;
+  box-shadow: 0 0 4px rgba(201,162,39,.3);
+}
+.year-tick-label {
+  position: absolute;
+  font-size: 9px;
+  color: rgba(201,162,39,.5);
+  top: 9px;
+  transform: translateX(-50%);
+  font-family: monospace;
+  white-space: nowrap;
+  letter-spacing: .5px;
+}
+
+/* ===== MAP HOVER TOOLTIP ===== */
+.map-tooltip {
+  position: absolute;
+  background: rgba(16,10,4,.96);
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  padding: 12px 16px;
+  pointer-events: none;
+  z-index: 50;
+  min-width: 170px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.7), 0 0 0 1px rgba(201,162,39,.1);
+  backdrop-filter: blur(8px);
+}
+.map-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(201,162,39,.3), transparent 50%, rgba(201,162,39,.2));
+  z-index: -1;
+}
+.map-tooltip-name {
+  font-size: 16px;
   font-weight: 700;
   color: var(--gold);
-  margin-bottom: 10px;
-  padding-bottom: 8px;
+  font-family: 'Noto Serif SC', serif;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+.map-tooltip-info {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ===== EVENTS FLOAT — ANTIQUE CARD ===== */
+.events-float {
+  position: absolute;
+  right: 28px;
+  top: 18px;
+  width: 250px;
+  background:
+    linear-gradient(160deg, rgba(20,14,6,.96) 0%, rgba(14,10,4,.97) 100%);
+  border: 1px solid rgba(201,162,39,.35);
+  border-radius: 14px;
+  padding: 16px 18px;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.6),
+    inset 0 1px 0 rgba(201,162,39,.1);
+}
+/* Scroll/卷轴 top/bottom decorations */
+.events-float::before,
+.events-float::after {
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, rgba(201,162,39,.3), transparent);
+}
+.events-float::before { top: 6px; }
+.events-float::after { bottom: 6px; }
+
+.events-float h4 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(201,162,39,.2);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  letter-spacing: 1px;
 }
 .event-item {
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(201,162,39,.08);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(201,162,39,.07);
   cursor: pointer;
-  transition: all .2s;
+  transition: all .25s;
+  border-radius: 4px;
 }
 .event-item:last-child { border-bottom: none; }
-.event-item:hover { padding-left: 6px; }
+.event-item:hover {
+  padding-left: 8px;
+  background: rgba(201,162,39,.05);
+}
 .event-item .ev-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--paper);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
 }
 .event-item .ev-desc {
   font-size: 11px;
   color: var(--muted);
   line-height: 1.5;
+  padding-left: 12px;
 }
 .ev-dot {
   display: inline-block;
-  width: 6px; height: 6px;
+  width: 7px; height: 7px;
   border-radius: 50%;
-  margin-right: 6px;
+  margin-right: 7px;
   background: var(--gold);
+  box-shadow: 0 0 4px rgba(201,162,39,.5);
+  flex-shrink: 0;
 }
 
 /* ===== TIMELINE VIEW ===== */
@@ -322,122 +506,297 @@ body {
   padding: 0;
 }
 .tl-hero {
-  background: linear-gradient(135deg, #1a1208 0%, #2c1f10 50%, #1a1208 100%);
-  padding: 40px 48px 32px;
-  border-bottom: 2px solid var(--gold);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(201,162,39,.02) 0px,
+      transparent 3px,
+      transparent 14px
+    ),
+    linear-gradient(160deg, #1a1208 0%, #2a1c0e 40%, #1a1208 70%, #0e0804 100%);
+  padding: 44px 52px 36px;
+  border-bottom: 3px solid var(--gold);
   position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5);
 }
 .tl-hero::after {
   content: '';
   position: absolute;
-  bottom: -1px; left: 48px; right: 48px;
-  height: 1px;
+  bottom: -4px; left: 52px; right: 52px;
+  height: 2px;
   background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+  box-shadow: 0 0 8px rgba(201,162,39,.3);
+}
+/* Corner ornaments on hero */
+.tl-hero::before {
+  content: '❧';
+  position: absolute;
+  top: 8px; left: 16px;
+  font-size: 20px;
+  color: rgba(201,162,39,.3);
+  font-family: serif;
 }
 .tl-hero-title {
   font-family: 'Noto Serif SC', 'SimSun', serif;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 900;
   color: var(--gold);
-  letter-spacing: 6px;
-  margin-bottom: 8px;
+  letter-spacing: 7px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 10px rgba(201,162,39,.25);
 }
 .tl-hero-sub {
   font-size: 14px;
   color: var(--muted);
-  letter-spacing: 2px;
-}
-.tl-body {
-  padding: 32px 48px 60px;
-}
-
-/* ===== DYNASTY BARS ===== */
-.dynasty-section { margin-bottom: 32px; }
-.dynasty-section-title {
-  font-family: 'Noto Serif SC', 'SimSun', serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--gold);
   letter-spacing: 3px;
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(201,162,39,.2);
+}
+.tl-hero-controls {
+  margin-top: 18px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
+}
+.tl-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 24px;
+  background: linear-gradient(160deg, var(--gold), var(--bronze));
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .3s;
+  box-shadow:
+    0 4px 16px rgba(201,162,39,.5),
+    inset 0 1px 0 rgba(255,255,255,.2),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+.tl-play-btn:hover {
+  background: linear-gradient(160deg, var(--gold-light), var(--gold));
+  box-shadow: 0 6px 24px rgba(201,162,39,.7), 0 0 0 1px rgba(201,162,39,.3);
+  transform: translateY(-2px);
+}
+.tl-play-btn.playing {
+  background: linear-gradient(160deg, var(--vermilion), #5a0f0f);
+  box-shadow: 0 4px 16px rgba(139,26,26,.5);
+}
+.tl-play-btn.playing:hover {
+  background: linear-gradient(160deg, var(--vermilion-bright), var(--vermilion));
+}
+.tl-progress-bar {
+  flex: 1;
+  height: 5px;
+  background: rgba(201,162,39,.12);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(201,162,39,.15);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.4);
+}
+.tl-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--gold), var(--gold-light));
+  border-radius: 3px;
+  transition: width .3s;
+  box-shadow: 0 0 8px rgba(201,162,39,.5);
+}
+.tl-progress-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: monospace;
+  min-width: 84px;
+  text-align: right;
+  letter-spacing: .5px;
+}
+.tl-body {
+  padding: 36px 52px 64px;
+}
+
+/* ===== DYNASTY SECTIONS — BAMBOO SCROLL ===== */
+.dynasty-section {
+  margin-bottom: 38px;
+  position: relative;
+}
+.dynasty-section-title {
+  font-family: 'Noto Serif SC', 'SimSun', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(201,162,39,.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 1px 6px rgba(201,162,39,.2);
 }
 .dynasty-section-title::before {
   content: '';
-  width: 4px; height: 16px;
-  background: var(--gold);
-  border-radius: 2px;
+  width: 5px; height: 18px;
+  background: linear-gradient(to bottom, var(--gold), var(--bronze));
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(201,162,39,.4);
 }
+.dynasty-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(201,162,39,.2), transparent);
+}
+
 .dynasty-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   gap: 0;
 }
 .dynasty-label {
-  width: 70px;
+  width: 74px;
   font-size: 13px;
   font-weight: 700;
   text-align: right;
-  padding-right: 14px;
+  padding-right: 16px;
   flex-shrink: 0;
   color: var(--paper-dark);
+  letter-spacing: 2px;
 }
 .dynasty-track {
   flex: 1;
   position: relative;
-  height: 32px;
-  background: rgba(255,255,255,.03);
-  border-radius: 6px;
+  height: 36px;
+  background: rgba(255,255,255,.025);
+  border-radius: 8px;
   overflow: visible;
+  border: 1px solid rgba(201,162,39,.08);
 }
+
+/* ===== TEN KINGDOM VERTICAL MARKERS ===== */
+.ten-marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 36px;
+  background: linear-gradient(to bottom, transparent, rgba(201,162,39,.45), transparent);
+  pointer-events: none;
+}
+.ten-marker::before {
+  content: attr(data-name);
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: rgba(201,162,39,.5);
+  white-space: nowrap;
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: 1px;
+}
+
+/* ===== DIAMOND EVENT ICONS ===== */
+.tl-diamond {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,.5);
+  transition: all .25s;
+  z-index: 5;
+}
+.tl-diamond:hover {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.6);
+  box-shadow: 0 0 18px currentColor;
+  z-index: 15;
+}
+.tl-diamond.war { background: #e63946; }
+.tl-diamond.found { background: #2a9d8f; }
+.tl-diamond.destroy { background: #555; }
+.tl-diamond.political { background: #457b9d; }
+.tl-diamond .diamond-label {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-45deg);
+  font-size: 10px;
+  color: var(--gold);
+  white-space: nowrap;
+  background: rgba(20,14,8,.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: .5px;
+}
+.tl-diamond:hover .diamond-label { opacity: 1; }
+
+/* ===== TIMELINE BARS — ENHANCED ===== */
 .tl-bar {
   position: absolute;
-  height: 26px;
-  top: 3px;
-  border-radius: 5px;
+  height: 28px;
+  top: 4px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 14px;
   font-size: 12px;
   font-weight: 700;
-  color: rgba(255,255,255,.9);
+  color: rgba(255,255,255,.92);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: filter .25s, transform .2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,.4);
+  transition: filter .25s, transform .2s, box-shadow .25s;
+  box-shadow: 0 3px 10px rgba(0,0,0,.5);
   letter-spacing: 1px;
   font-family: 'Noto Serif SC', serif;
+  background: linear-gradient(90deg, var(--liang) 0%, #b8860b 100%) !important;
+  border: 1px solid rgba(255,255,255,.15);
+}
+.tl-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.18) 0%, transparent 50%, rgba(0,0,0,.18) 100%);
+  border-radius: inherit;
+  pointer-events: none;
 }
 .tl-bar:hover {
-  filter: brightness(1.3);
-  transform: translateY(-2px);
+  filter: brightness(1.35) saturate(1.2);
+  transform: translateY(-3px);
   z-index: 10;
+  box-shadow: 0 8px 20px rgba(0,0,0,.6), 0 0 12px rgba(201,162,39,.3);
 }
 .tl-bar.ten {
-  height: 22px;
-  top: 5px;
+  height: 24px;
+  top: 6px;
   font-size: 11px;
-  opacity: .9;
+  opacity: .88;
+  border-left: 3px solid rgba(255,255,255,.4);
+  background: linear-gradient(90deg, var(--tang) 0%, #cd6600 100%) !important;
 }
 
-/* ===== EVENT DOTS ===== */
-.events-section { margin-top: 36px; }
+/* ===== EVENTS SECTION ===== */
+.events-section { margin-top: 42px; }
 .events-ruler {
   display: flex;
   position: relative;
-  height: 36px;
-  margin-bottom: 20px;
-  background: rgba(201,162,39,.05);
-  border-radius: 6px;
-  border: 1px solid rgba(201,162,39,.15);
+  height: 38px;
+  margin-bottom: 24px;
+  background: rgba(201,162,39,.04);
+  border-radius: 8px;
+  border: 1px solid rgba(201,162,39,.12);
   overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,.3);
 }
 .ruler-mark {
   flex: 1;
@@ -445,38 +804,39 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid rgba(201,162,39,.1);
+  border-right: 1px solid rgba(201,162,39,.08);
   position: relative;
 }
 .ruler-mark:last-child { border-right: none; }
 .ruler-mark .year-label {
   font-size: 11px;
   font-weight: 700;
-  color: rgba(201,162,39,.7);
+  color: rgba(201,162,39,.65);
 }
 .ruler-mark .dynasty-label-sm {
   font-size: 9px;
-  color: rgba(201,162,39,.4);
-  margin-top: 1px;
+  color: rgba(201,162,39,.35);
+  margin-top: 2px;
 }
 .events-row {
   position: relative;
-  height: 100px;
+  height: 112px;
   background: rgba(255,255,255,.02);
-  border-radius: 6px;
-  margin-bottom: 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
   overflow: visible;
+  border: 1px solid rgba(201,162,39,.06);
 }
 .events-row::before {
   content: '';
   position: absolute;
   left: 0; right: 0; top: 50%;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(201,162,39,.2), transparent);
+  background: linear-gradient(to right, transparent, rgba(201,162,39,.18), transparent);
 }
 .tl-dot {
   position: absolute;
-  width: 14px; height: 14px;
+  width: 15px; height: 15px;
   border-radius: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -486,8 +846,8 @@ body {
   z-index: 5;
 }
 .tl-dot:hover {
-  transform: translate(-50%, -50%) scale(1.6);
-  box-shadow: 0 0 12px currentColor;
+  transform: translate(-50%, -50%) scale(1.7);
+  box-shadow: 0 0 14px currentColor;
   z-index: 15;
 }
 .tl-dot.war { background: #e63946; }
@@ -496,224 +856,376 @@ body {
 .tl-dot.political { background: #457b9d; }
 .tl-dot .dot-label {
   position: absolute;
-  top: -22px;
+  top: -24px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10px;
   color: var(--gold);
   white-space: nowrap;
-  background: rgba(20,14,8,.85);
-  padding: 1px 5px;
-  border-radius: 3px;
+  background: rgba(20,14,8,.9);
+  padding: 2px 6px;
+  border-radius: 4px;
   pointer-events: none;
   opacity: 0;
   transition: opacity .2s;
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: .5px;
 }
 .tl-dot:hover .dot-label { opacity: 1; }
 
-/* ===== DETAIL PANEL ===== */
+/* ===== OVERLAY — CLASSICAL SCROLL REVEAL ===== */
 .overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,.65);
+  background: rgba(0,0,0,.7);
   opacity: 0; pointer-events: none;
-  transition: opacity .4s;
+  transition: opacity .45s;
   z-index: 200;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
 }
 .overlay.show { opacity: 1; pointer-events: auto; }
 
 .detail-panel {
   position: fixed;
-  top: 0; right: -520px;
-  width: 500px;
+  top: 0; right: -560px;
+  width: 540px;
   height: 100vh;
-  background: linear-gradient(160deg, #1e1810 0%, #16100a 50%, #1a1208 100%);
-  border-left: 2px solid var(--gold);
-  transition: right .4s cubic-bezier(.4,0,.2,1);
+  background:
+    linear-gradient(165deg, #1c1408 0%, #241a0c 35%, #1a1208 65%, #0e0804 100%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(201,162,39,.025) 0px,
+      rgba(201,162,39,.025) 2px,
+      transparent 2px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(201,162,39,.018) 0px,
+      rgba(201,162,39,.018) 2px,
+      transparent 2px,
+      transparent 16px
+    );
+  border-left: 3px solid var(--gold);
+  transition: right .45s cubic-bezier(.4,0,.2,1);
   z-index: 210;
   overflow-y: auto;
-  box-shadow: -12px 0 50px rgba(0,0,0,.7);
+  box-shadow: -18px 0 70px rgba(0,0,0,.85);
 }
+/* Scroll reveal animation */
 .detail-panel.open { right: 0; }
+
+/* 绢本/卷轴边缘光晕 */
 .detail-panel::before {
   content: '';
   position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    linear-gradient(to right, rgba(201,162,39,.08) 0%, transparent 4%, transparent 96%, rgba(201,162,39,.08) 100%),
+    linear-gradient(to bottom, rgba(201,162,39,.1) 0%, transparent 6%, transparent 94%, rgba(201,162,39,.1) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.detail-panel::after {
+  content: '';
+  position: absolute;
   top: 0; left: 0; right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, rgba(201,162,39,.08) 0%, transparent 100%);
+  height: 320px;
+  background: linear-gradient(to bottom, rgba(201,162,39,.07) 0%, transparent 100%);
   pointer-events: none;
 }
+
 .detail-header {
-  padding: 28px 32px 20px;
-  border-bottom: 1px solid rgba(201,162,39,.2);
+  padding: 30px 36px 22px;
+  border-bottom: 1px solid rgba(201,162,39,.22);
   position: sticky;
   top: 0;
   background: inherit;
   z-index: 1;
 }
+/* 顶部卷轴装饰 */
+.detail-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: .5;
+}
+
 .detail-close {
   float: right;
   background: rgba(201,162,39,.1);
-  border: 1px solid rgba(201,162,39,.3);
+  border: 1px solid rgba(201,162,39,.35);
   color: var(--gold);
-  width: 32px; height: 32px;
+  width: 34px; height: 34px;
   border-radius: 50%;
   font-size: 18px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all .2s;
+  transition: all .25s;
   line-height: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
 }
 .detail-close:hover {
   background: var(--gold);
   color: var(--ink);
+  box-shadow: 0 0 12px rgba(201,162,39,.5);
+  transform: scale(1.1);
 }
 .detail-flag {
-  font-size: 28px;
-  margin-bottom: 8px;
-  letter-spacing: 4px;
+  font-size: 30px;
+  margin-bottom: 10px;
+  letter-spacing: 5px;
 }
 .detail-name {
   font-family: 'Noto Serif SC', 'SimSun', serif;
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 900;
   color: var(--gold);
-  letter-spacing: 4px;
-  text-shadow: 0 2px 12px rgba(201,162,39,.3);
-  margin-bottom: 6px;
+  letter-spacing: 5px;
+  text-shadow: 0 2px 14px rgba(201,162,39,.3);
+  margin-bottom: 8px;
   line-height: 1.2;
 }
 .detail-meta {
   font-size: 13px;
   color: var(--muted);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
+  flex-wrap: wrap;
 }
 .detail-period-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 14px;
+  padding: 4px 16px;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 700;
   font-family: monospace;
   border: 1px solid;
+  letter-spacing: .5px;
 }
-.detail-body { padding: 24px 32px 40px; }
-.detail-section { margin-bottom: 28px; }
+
+/* ===== DETAIL BODY TABS ===== */
+.detail-body {
+  padding: 0 0 48px;
+  position: relative;
+  z-index: 1;
+}
+.detail-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(201,162,39,.22);
+  background: rgba(0,0,0,.18);
+  position: sticky;
+  top: 90px;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+.detail-tab-btn {
+  flex: 1;
+  padding: 14px 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .25s;
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: 1px;
+}
+.detail-tab-btn:hover {
+  color: var(--gold-light);
+  background: rgba(201,162,39,.05);
+}
+.detail-tab-btn.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(201,162,39,.07);
+  text-shadow: 0 0 8px rgba(201,162,39,.2);
+}
+.detail-tab-content {
+  display: none;
+  padding: 26px 36px;
+}
+.detail-tab-content.active { display: block; }
+
+.detail-section { margin-bottom: 30px; }
 .detail-section-title {
   font-family: 'Noto Serif SC', serif;
   font-size: 12px;
   font-weight: 700;
   color: var(--gold);
   text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-bottom: 14px;
-  padding-bottom: 8px;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(201,162,39,.15);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
 }
 .detail-section-title::before {
   content: '';
-  width: 3px; height: 14px;
-  background: var(--gold);
+  width: 4px; height: 15px;
+  background: linear-gradient(to bottom, var(--gold), var(--bronze));
   border-radius: 2px;
+  box-shadow: 0 0 5px rgba(201,162,39,.4);
 }
+
+/* 古籍竖排/古籍排版 */
 .detail-prose {
   font-size: 15px;
-  line-height: 2;
+  line-height: 2.1;
   color: var(--paper-dark);
   text-align: justify;
+  text-indent: 2em;
+  letter-spacing: .5px;
 }
-.rulers-list { list-style: none; }
-.rulers-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  background: rgba(255,255,255,.03);
-  border-radius: 8px;
-  margin-bottom: 6px;
-  border: 1px solid rgba(201,162,39,.08);
-  transition: all .2s;
+.detail-prose p + p { margin-top: 1em; }
+
+/* ===== RULER CARDS — BRONZE FRAME ===== */
+.rulers-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
-.rulers-list li:hover {
-  background: rgba(201,162,39,.06);
-  border-color: rgba(201,162,39,.2);
+.ruler-card {
+  background:
+    linear-gradient(135deg, rgba(201,162,39,.05) 0%, rgba(201,162,39,.02) 100%);
+  border: 1px solid rgba(201,162,39,.14);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all .3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
-.ruler-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--paper);
+/* Bronze corner accents */
+.ruler-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity .3s;
 }
-.ruler-years {
+.ruler-card:hover {
+  background: linear-gradient(135deg, rgba(201,162,39,.1) 0%, rgba(201,162,39,.04) 100%);
+  border-color: rgba(201,162,39,.3);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.4), 0 0 0 1px rgba(201,162,39,.1);
+}
+.ruler-card:hover::before { opacity: 1; }
+.ruler-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 5px;
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: 1px;
+}
+.ruler-card-years {
   font-size: 12px;
   color: var(--muted);
   font-family: monospace;
+  margin-bottom: 7px;
 }
+.ruler-card-title {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.ruler-card-deed {
+  font-size: 12px;
+  color: var(--paper-dark);
+  line-height: 1.6;
+}
+.ruler-card-temple {
+  font-size: 10px;
+  color: rgba(201,162,39,.6);
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Detail timeline (vertical) */
 .detail-tl {
   position: relative;
-  padding-left: 20px;
-  border-left: 2px solid rgba(201,162,39,.25);
+  padding-left: 24px;
+  border-left: 2px solid rgba(201,162,39,.28);
 }
 .detail-tl-item {
   position: relative;
-  padding: 0 0 20px;
+  padding: 0 0 22px;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--paper-dark);
 }
 .detail-tl-item:last-child { padding-bottom: 0; }
 .detail-tl-item::before {
   content: '';
   position: absolute;
-  left: -25px;
-  top: 5px;
-  width: 8px; height: 8px;
+  left: -28px;
+  top: 6px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: var(--gold);
-  box-shadow: 0 0 8px rgba(201,162,39,.5);
+  box-shadow: 0 0 10px rgba(201,162,39,.55);
+  border: 2px solid rgba(201,162,39,.3);
 }
 .detail-tl-item .year {
   color: var(--gold);
   font-weight: 700;
   font-size: 12px;
   font-family: monospace;
+  margin-right: 8px;
 }
 .detail-tl-item .title {
   font-weight: 700;
   color: var(--paper);
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  font-family: 'Noto Serif SC', serif;
 }
 .detail-tl-item .desc {
   color: var(--muted);
   font-size: 12px;
 }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgba(0,0,0,.2); }
-::-webkit-scrollbar-thumb { background: rgba(201,162,39,.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(201,162,39,.5); }
+/* ===== SCROLLBAR — ANTIQUE BRONZE ===== */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,.25); border-radius: 4px; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold), var(--bronze));
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--gold-light), var(--gold)); }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width: 768px) {
-  .topbar { padding: 0 16px; height: 56px; }
-  .topbar h1 { font-size: 16px; letter-spacing: 2px; }
-  .tabs button { padding: 6px 14px; font-size: 13px; }
+  .topbar { padding: 0 16px; height: 60px; }
+  .topbar h1 { font-size: 16px; letter-spacing: 3px; }
+  .tabs button { padding: 7px 14px; font-size: 13px; }
   .detail-panel { width: 100%; right: -100%; }
-  .events-float { width: 180px; right: 8px; padding: 10px 12px; }
-  .year-panel { padding: 10px 16px 12px; }
-  .tl-body { padding: 20px 16px 40px; }
-  .tl-hero { padding: 24px 16px 20px; }
-  .tl-hero-title { font-size: 20px; }
-  .dynasty-label { width: 50px; font-size: 11px; }
+  .events-float { width: 185px; right: 10px; padding: 12px 14px; }
+  .year-panel { padding: 12px 18px 14px; height: 88px; }
+  .tl-body { padding: 22px 18px 44px; }
+  .tl-hero { padding: 26px 18px 22px; }
+  .tl-hero-title { font-size: 20px; letter-spacing: 4px; }
+  .dynasty-label { width: 52px; font-size: 11px; }
+  .detail-name { font-size: 26px; }
+  body::before, body::after { width: 50px; height: 50px; }
 }
 </style>
 </head>
@@ -729,197 +1241,131 @@ body {
       <button class="active" onclick="switchView('map')">🗺️ 地图</button>
       <button onclick="switchView('timeline')">📜 时间轴</button>
     </div>
-    <span class="ver-badge">v0.1</span>
+    <span class="ver-badge">v1.0</span>
   </div>
 </div>
 
 <!-- ===== MAP VIEW ===== -->
 <div id="mapView" class="view active">
   <div class="map-wrapper">
-    <!-- ===== 五代十国历史地图 v0.3 ===== -->
-    <!-- ===== 五代十国真实地图 v0.4 ===== -->
+    <!-- ===== 五代十国真实动态地图 v0.5 ===== -->
     <svg id="chinaMap" viewBox="0 0 900 660" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="mapBg" cx="50%" cy="45%" r="70%">
-          <stop offset="0%" stop-color="#1a2a3a"/>
-          <stop offset="60%" stop-color="#0d1a28"/>
-          <stop offset="100%" stop-color="#060c14"/>
-        </radialGradient>
-        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#e8c84a"/>
-          <stop offset="50%" stop-color="#c9a227"/>
-          <stop offset="100%" stop-color="#8b6914"/>
-        </linearGradient>
+        <radialGradient id="mapBg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#1a2a3a"/><stop offset="60%" stop-color="#0d1a28"/><stop offset="100%" stop-color="#060c14"/></radialGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8c84a"/><stop offset="50%" stop-color="#c9a227"/><stop offset="100%" stop-color="#8b6914"/></linearGradient>
         <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="kingdomGlow"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#000" flood-opacity=".6"/></filter>
         <filter id="cityGlow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <pattern id="paper" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-          <rect width="200" height="200" fill="#1a2a3a"/>
-          <circle cx="100" cy="100" r="1" fill="rgba(201,162,39,0.08)"/>
-          <circle cx="0" cy="0" r="1" fill="rgba(201,162,39,0.06)"/>
-          <circle cx="50" cy="50" r="0.5" fill="rgba(201,162,39,0.04)"/>
-          <circle cx="150" cy="80" r="0.5" fill="rgba(201,162,39,0.04)"/>
-        </pattern>
+        <pattern id="paper" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse"><rect width="200" height="200" fill="#1a2a3a"/><circle cx="100" cy="100" r="1" fill="rgba(201,162,39,0.08)"/></pattern>
       </defs>
-
       <rect width="900" height="660" fill="url(#mapBg)"/>
       <rect width="900" height="660" fill="url(#paper)" opacity="0.4"/>
 
-      <!-- ===== 真实省份底图 ===== -->
-      <!-- 河南省 -->
+      <!-- ===== 省份底图 ===== -->
       <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#2d4a3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 山西省 -->
       <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#3d3d5a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 河北省 -->
       <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#4a3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 山东省 -->
       <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#3d4a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 陕西省 -->
       <path d="M530.6,362.8L527.9,361.9L525.5,353.0L521.5,355.9L518.9,356.3L519.2,358.5L516.5,361.2L515.1,361.6L512.6,362.4L505.3,362.5L504.9,364.8L502.6,367.1L500.0,371.1L502.7,372.3L503.5,371.3L508.3,371.7L510.8,371.0L512.8,370.5L514.4,369.6L515.1,369.8L519.6,368.8L520.3,368.1L521.1,368.4L521.3,368.9L524.7,369.1L528.3,367.7L527.3,367.0L528.8,365.3L530.3,364.9L530.6,362.8Z" fill="#3d3d4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 江苏省 -->
       <path d="M666.8,394.9L661.4,392.2L659.6,392.6L657.2,401.9L656.9,402.7L658.6,406.2L658.3,407.4L659.3,408.3L662.9,409.5L664.2,412.0L663.9,413.9L663.4,414.7L661.8,415.8L661.8,416.3L661.9,416.5L662.4,416.6L662.6,416.9L665.6,417.3L666.1,417.2L667.4,417.4L668.2,416.3L669.0,410.2L668.2,408.8L665.6,407.6L665.6,407.3L667.4,404.6L667.0,400.4L667.1,398.9L666.5,396.6L666.8,394.9Z" fill="#4a4a3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 浙江省 -->
       <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#3d5a5a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 安徽省 -->
       <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#4a3d4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 江西省 -->
       <path d="M614.3,458.2L615.1,460.9L615.3,463.7L615.0,466.0L615.7,465.9L615.3,467.8L618.0,470.2L618.4,469.9L619.9,470.4L619.9,470.9L620.2,471.4L620.6,470.9L622.6,471.2L625.0,473.4L629.0,471.3L629.3,470.3L630.1,467.6L628.4,465.0L627.8,457.4L627.4,457.4L626.2,456.3L624.0,456.8L624.5,456.2L622.9,456.2L622.2,456.7L619.3,460.0L617.1,459.6L616.4,459.0L615.7,458.9L614.3,458.2Z" fill="#3d4a3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 福建省 -->
       <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 湖南省 -->
       <path d="M562.0,476.3L563.4,478.4L569.5,476.8L571.0,476.3L571.2,476.8L572.2,477.5L573.0,477.7L578.7,476.6L579.1,476.5L579.4,476.9L583.3,479.5L585.7,477.4L588.2,479.1L593.4,475.6L594.2,473.3L595.9,468.0L595.5,467.5L592.3,466.3L588.7,468.6L586.5,466.8L579.9,468.0L577.5,467.9L577.2,467.3L576.2,467.1L576.2,467.5L575.5,467.3L562.4,474.2L561.9,474.8L562.3,475.5L562.0,476.3Z" fill="#3d4a5a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 广东省 -->
       <path d="M583.4,572.5L586.3,575.5L587.1,576.0L587.6,577.2L588.9,576.9L588.5,574.8L586.4,571.0L586.5,570.4L590.9,563.5L591.2,562.0L592.4,561.4L592.0,559.8L590.3,556.3L590.5,555.9L591.0,555.8L592.3,554.4L587.1,554.0L584.5,555.0L583.6,554.9L580.3,559.1L579.9,558.9L577.9,561.8L581.1,565.7L581.8,567.5L581.7,568.9L582.2,569.7L582.6,571.4L583.0,571.7L583.3,572.1L583.4,572.5Z" fill="#4a3d4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 广西壮族自治区 -->
       <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#5a3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 四川省 -->
       <path d="M445.7,434.1L448.0,435.8L453.4,436.7L455.1,435.5L455.9,435.6L456.5,435.0L459.2,430.6L458.9,429.3L456.6,424.9L454.0,423.8L446.6,419.8L445.3,415.2L442.0,414.5L441.5,415.2L439.3,422.2L438.3,423.6L434.1,424.6L433.5,425.5L432.9,425.1L431.6,425.7L432.7,426.9L432.8,436.0L433.9,436.2L434.4,435.5L437.1,435.8L437.5,438.3L439.5,436.7L441.2,435.8L441.8,435.5L445.7,434.1Z" fill="#3d3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 湖北省 -->
       <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#4a4a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 福建省(海岛部分) -->
-      <path d="M687.7,506.5L687.6,506.6L687.6,506.4L687.5,506.3L687.4,506.6L687.5,506.5L687.6,506.6L687.6,506.8L687.8,506.9L687.9,506.6L688.0,506.7L688.0,506.5L687.8,506.4L687.7,506.5Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M679.0,521.0L679.1,520.9L679.1,520.6L679.0,520.5L679.0,520.6L678.8,520.7L678.7,520.6L678.7,520.9L678.8,520.9L679.0,521.0Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M674.3,520.2L674.5,520.0L674.6,519.9L674.8,519.7L674.8,519.4L674.6,519.5L674.4,519.8L674.2,520.0L674.2,519.8L674.1,520.0L674.3,520.2Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M680.6,509.4L680.7,509.5L680.8,509.2L680.5,509.0L680.3,509.2L680.1,509.4L680.0,509.8L680.2,509.8L680.2,509.5L680.6,509.4Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M680.0,514.3L680.2,514.2L680.4,514.0L680.1,514.0L680.0,514.1L680.0,514.3Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M676.2,525.2L676.5,525.1L676.6,525.0L676.5,524.9L676.5,524.7L676.3,524.9L676.1,524.9L676.2,525.2Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M676.0,526.1L676.0,526.0L676.3,525.9L676.1,525.7L676.2,525.5L676.1,525.4L676.0,525.5L675.9,525.7L676.0,525.9L675.9,526.0L676.0,526.1Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M679.5,510.9L679.6,510.8L679.7,510.8L679.8,510.6L679.9,510.6L680.0,510.3L679.8,510.3L679.7,510.5L679.4,510.4L679.5,510.2L679.3,510.2L679.3,510.5L679.2,510.8L679.5,510.9Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.3,511.0L675.4,510.9L675.4,510.7L675.5,510.5L675.3,510.5L675.0,510.2L674.7,510.2L674.7,510.5L674.9,510.8L675.3,510.9L675.3,511.0Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M678.8,505.8L678.9,505.7L678.8,505.6L678.8,505.8Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M672.8,525.6L673.0,525.6L673.0,525.5L673.0,525.2L672.8,525.3L672.7,525.5L672.8,525.6Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.5,519.8L675.5,519.9L675.7,520.1L676.1,520.0L676.1,519.9L676.3,520.0L676.4,519.9L676.3,519.5L676.2,519.6L675.8,519.7L675.7,519.6L675.5,519.8Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.7,517.8L675.9,517.7L675.7,517.6L675.7,517.8Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.7,511.1L675.9,510.7L675.7,510.7L675.5,510.9L675.8,511.3L675.7,511.1Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M676.9,526.2L677.0,526.4L677.1,526.2L676.9,526.2Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M679.3,505.7L679.1,505.9L679.3,505.8L679.3,505.7Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M680.5,508.9L680.7,508.8L680.5,508.8L680.5,508.9Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M679.6,514.0L679.8,513.8L679.7,513.7L679.5,513.7L679.4,513.8L679.6,514.0Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.2,519.3L675.2,519.4L675.5,519.2L675.3,519.3L675.2,519.3Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M671.6,523.7L671.7,523.7L671.7,523.5L671.6,523.7Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.2,511.2L675.3,511.3L675.3,511.2L675.2,511.1L675.2,511.2Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M680.3,508.5L680.4,508.5L680.4,508.2L680.2,508.4L680.3,508.5Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M683.7,507.2L683.9,507.1L683.8,507.1L683.7,507.2Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M675.4,519.5L675.3,519.7L675.6,519.7L675.7,519.5L675.5,519.3L675.4,519.5Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M674.3,519.4L674.4,519.5L674.5,519.3L674.3,519.4Z" fill="#4a5a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 四川省(多部件) -->
-      <path d="M447.9,421.1L447.9,421.1L447.9,421.1L447.9,421.1L447.9,421.1Z" fill="#3d3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M438.2,437.8L438.1,437.8L438.1,437.8L438.2,437.8L438.2,437.8Z" fill="#3d3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M449.7,434.8L449.7,434.8L449.7,434.9L449.8,434.8L449.7,434.8Z" fill="#3d3d3d" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <!-- 湖北省(多部件) -->
-      <path d="M606.4,421.3L606.6,421.2L606.5,421.0L606.3,421.0L606.3,421.2L606.4,421.3Z" fill="#4a4a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
-      <path d="M606.9,421.8L607.0,421.8L607.1,421.8L607.2,421.7L607.1,421.6L607.1,421.3L607.0,421.2L606.9,421.3L607.0,421.6L606.9,421.8Z" fill="#4a4a4a" stroke="#c9a227" stroke-width="0.4" opacity="0.7"/>
 
-      <!-- ===== 省份名称标注 ===== -->
-      <text x="586" y="355" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">河南</text>
-      <text x="570" y="298" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">山西</text>
-      <text x="600" y="292" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">河北</text>
-      <text x="640" y="315" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">山东</text>
-      <text x="520" y="365" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">陕西</text>
-      <text x="663" y="407" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">江苏</text>
-      <text x="675" y="443" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">浙江</text>
-      <text x="643" y="410" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">安徽</text>
-      <text x="620" y="467" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">江西</text>
-      <text x="670" y="515" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">福建</text>
-      <text x="575" y="477" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">湖南</text>
-      <text x="586" y="566" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">广东</text>
-      <text x="510" y="570" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">广西</text>
-      <text x="445" y="430" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">四川</text>
-      <text x="597" y="430" font-family="serif" font-size="8" fill="rgba(201,162,39,0.25)" text-anchor="middle">湖北</text>
+      <!-- ===== 王国动态层 ===== -->
+      <g id="gLaterLiang" class="kingdom" data-kingdom="LaterLiang" opacity="0">
+        <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M530.6,362.8L527.9,361.9L525.5,353.0L521.5,355.9L518.9,356.3L519.2,358.5L516.5,361.2L515.1,361.6L512.6,362.4L505.3,362.5L504.9,364.8L502.6,367.1L500.0,371.1L502.7,372.3L503.5,371.3L508.3,371.7L510.8,371.0L512.8,370.5L514.4,369.6L515.1,369.8L519.6,368.8L520.3,368.1L521.1,368.4L521.3,368.9L524.7,369.1L528.3,367.7L527.3,367.0L528.8,365.3L530.3,364.9L530.6,362.8Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后梁</text>
+      </g>
+      <g id="gLaterTang" class="kingdom" data-kingdom="LaterTang" opacity="0">
+        <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后唐</text>
+      </g>
+      <g id="gLaterJin" class="kingdom" data-kingdom="LaterJin" opacity="0">
+        <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后晋</text>
+      </g>
+      <g id="gLaterHan" class="kingdom" data-kingdom="LaterHan" opacity="0">
+        <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后汉</text>
+      </g>
+      <g id="gLaterZhou" class="kingdom" data-kingdom="LaterZhou" opacity="0">
+        <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后周</text>
+      </g>
+      <g id="gWu" class="kingdom" data-kingdom="Wu" opacity="0">
+        <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">吴</text>
+      </g>
+      <g id="gSouthernTang" class="kingdom" data-kingdom="SouthernTang" opacity="0">
+        <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#2980b9" stroke="#2980b9" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#2980b9" stroke="#2980b9" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">南唐</text>
+      </g>
+      <g id="gWuyue" class="kingdom" data-kingdom="Wuyue" opacity="0">
+        <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#f39c12" stroke="#f39c12" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">吴越</text>
+      </g>
+      <g id="gMin" class="kingdom" data-kingdom="Min" opacity="0">
+        <path d="M562.0,476.3L563.4,478.4L569.5,476.8L571.0,476.3L571.2,476.8L572.2,477.5L573.0,477.7L578.7,476.6L579.1,476.5L579.4,476.9L583.3,479.5L585.7,477.4L588.2,479.1L593.4,475.6L594.2,473.3L595.9,468.0L595.5,467.5L592.3,466.3L588.7,468.6L586.5,466.8L579.9,468.0L577.5,467.9L577.2,467.3L576.2,467.1L576.2,467.5L575.5,467.3L562.4,474.2L561.9,474.8L562.3,475.5L562.0,476.3Z" fill="#c0392b" stroke="#c0392b" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">闽</text>
+      </g>
+      <g id="gChu" class="kingdom" data-kingdom="Chu" opacity="0">
+        <path d="M614.3,458.2L615.1,460.9L615.3,463.7L615.0,466.0L615.7,465.9L615.3,467.8L618.0,470.2L618.4,469.9L619.9,470.4L619.9,470.9L620.2,471.4L620.6,470.9L622.6,471.2L625.0,473.4L629.0,471.3L629.3,470.3L630.1,467.6L628.4,465.0L627.8,457.4L627.4,457.4L626.2,456.3L624.0,456.8L624.5,456.2L622.9,456.2L622.2,456.7L619.3,460.0L617.1,459.6L616.4,459.0L615.7,458.9L614.3,458.2Z" fill="#27ae60" stroke="#27ae60" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">楚</text>
+      </g>
+      <g id="gSouthernHan" class="kingdom" data-kingdom="SouthernHan" opacity="0">
+        <path d="M583.4,572.5L586.3,575.5L587.1,576.0L587.6,577.2L588.9,576.9L588.5,574.8L586.4,571.0L586.5,570.4L590.9,563.5L591.2,562.0L592.4,561.4L592.0,559.8L590.3,556.3L590.5,555.9L591.0,555.8L592.3,554.4L587.1,554.0L584.5,555.0L583.6,554.9L580.3,559.1L579.9,558.9L577.9,561.8L581.1,565.7L581.8,567.5L581.7,568.9L582.2,569.7L582.6,571.4L583.0,571.7L583.3,572.1L583.4,572.5Z" fill="#2c3e50" stroke="#2c3e50" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">南汉</text>
+      </g>
+      <g id="gFormerShu" class="kingdom" data-kingdom="FormerShu" opacity="0">
+        <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#c0392b" stroke="#c0392b" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">前蜀</text>
+      </g>
+      <g id="gLaterShu" class="kingdom" data-kingdom="LaterShu" opacity="0">
+        <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#d35400" stroke="#d35400" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">后蜀</text>
+      </g>
+      <g id="gJingnan" class="kingdom" data-kingdom="Jingnan" opacity="0">
+        <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#7f8c8d" stroke="#7f8c8d" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">荆南</text>
+      </g>
+      <g id="gNorthernHan" class="kingdom" data-kingdom="NorthernHan" opacity="0">
+        <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#8e44ad" stroke="#8e44ad" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">北汉</text>
+      </g>
+      <g id="gLiao" class="kingdom" data-kingdom="Liao" opacity="0">
+        <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#16a085" stroke="#16a085" stroke-width="0.2" opacity="0.85" filter="url(#kingdomGlow)"/>
+        <text class="kingdom-label" fill="#fff" font-size="15" font-weight="900" text-anchor="middle" dominant-baseline="middle">契丹</text>
+      </g>
 
-      <!-- ===== 王国着色层 ===== -->
-      <!-- 后梁:河南省+河北省+山西省+山东省+陕西省 -->
-      <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.25"/>
-      <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.25"/>
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.25"/>
-      <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.25"/>
-      <path d="M530.6,362.8L527.9,361.9L525.5,353.0L521.5,355.9L518.9,356.3L519.2,358.5L516.5,361.2L515.1,361.6L512.6,362.4L505.3,362.5L504.9,364.8L502.6,367.1L500.0,371.1L502.7,372.3L503.5,371.3L508.3,371.7L510.8,371.0L512.8,370.5L514.4,369.6L515.1,369.8L519.6,368.8L520.3,368.1L521.1,368.4L521.3,368.9L524.7,369.1L528.3,367.7L527.3,367.0L528.8,365.3L530.3,364.9L530.6,362.8Z" fill="#8B0000" stroke="#8B0000" stroke-width="0.2" opacity="0.25"/>
-      <!-- 后唐:山西省+河北省+河南省 -->
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.25"/>
-      <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.25"/>
-      <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#B22222" stroke="#B22222" stroke-width="0.2" opacity="0.25"/>
-      <!-- 后晋:山西省+河北省+河南省+山东省 -->
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.25"/>
-      <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.25"/>
-      <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.25"/>
-      <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#CD5C5C" stroke="#CD5C5C" stroke-width="0.2" opacity="0.25"/>
-      <!-- 后汉:山西省+河北省+河南省 -->
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.25"/>
-      <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.25"/>
-      <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#DC143C" stroke="#DC143C" stroke-width="0.2" opacity="0.25"/>
-      <!-- 后周:河南省+河北省+山东省+山西省 -->
-      <path d="M595.9,349.8L595.6,349.4L594.4,349.1L593.4,349.4L592.0,350.2L591.3,350.1L590.8,350.4L586.7,349.5L584.3,349.0L584.3,348.6L584.0,348.5L581.4,350.0L580.1,350.4L580.2,351.0L579.6,351.2L578.9,351.3L576.7,353.1L577.2,353.4L574.2,357.7L575.9,360.9L582.1,360.2L582.7,360.2L582.8,359.2L589.8,360.5L591.9,358.7L593.2,357.4L594.9,354.6L594.7,353.2L595.6,351.4L595.9,349.8Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.25"/>
-      <path d="M590.3,279.4L589.8,279.3L586.9,282.6L586.3,283.1L586.6,284.8L586.2,287.0L590.8,293.5L592.7,298.2L592.6,298.7L593.7,298.4L594.4,300.8L593.0,303.7L593.7,303.5L599.8,301.1L601.2,301.5L604.4,300.1L606.7,298.5L611.7,300.1L612.2,298.6L613.4,294.4L612.9,291.7L612.4,290.8L606.3,288.1L604.5,284.3L602.5,284.7L598.7,280.4L597.2,280.4L593.9,281.3L592.6,280.9L590.3,279.4Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.25"/>
-      <path d="M629.9,322.5L629.0,323.8L628.5,323.8L627.9,324.2L628.9,326.1L635.0,325.3L637.9,323.7L640.1,322.4L642.6,325.1L642.7,325.5L643.1,327.8L645.4,328.6L646.2,329.1L649.1,322.4L647.5,316.3L646.1,315.2L645.5,314.9L644.9,313.2L644.4,312.9L644.2,312.5L642.1,312.5L641.5,310.3L641.9,310.4L643.1,310.0L641.8,303.4L639.5,302.7L637.9,303.7L636.6,306.4L636.0,313.2L629.9,322.5Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.25"/>
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#FF4500" stroke="#FF4500" stroke-width="0.2" opacity="0.25"/>
-      <!-- 吴:安徽省+江苏省+江西省+浙江省 -->
-      <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.25"/>
-      <path d="M666.8,394.9L661.4,392.2L659.6,392.6L657.2,401.9L656.9,402.7L658.6,406.2L658.3,407.4L659.3,408.3L662.9,409.5L664.2,412.0L663.9,413.9L663.4,414.7L661.8,415.8L661.8,416.3L661.9,416.5L662.4,416.6L662.6,416.9L665.6,417.3L666.1,417.2L667.4,417.4L668.2,416.3L669.0,410.2L668.2,408.8L665.6,407.6L665.6,407.3L667.4,404.6L667.0,400.4L667.1,398.9L666.5,396.6L666.8,394.9Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.25"/>
-      <path d="M614.3,458.2L615.1,460.9L615.3,463.7L615.0,466.0L615.7,465.9L615.3,467.8L618.0,470.2L618.4,469.9L619.9,470.4L619.9,470.9L620.2,471.4L620.6,470.9L622.6,471.2L625.0,473.4L629.0,471.3L629.3,470.3L630.1,467.6L628.4,465.0L627.8,457.4L627.4,457.4L626.2,456.3L624.0,456.8L624.5,456.2L622.9,456.2L622.2,456.7L619.3,460.0L617.1,459.6L616.4,459.0L615.7,458.9L614.3,458.2Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.25"/>
-      <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#006400" stroke="#006400" stroke-width="0.2" opacity="0.25"/>
-      <!-- 南唐:江苏省+安徽省+江西省+福建省+浙江省 -->
-      <path d="M666.8,394.9L661.4,392.2L659.6,392.6L657.2,401.9L656.9,402.7L658.6,406.2L658.3,407.4L659.3,408.3L662.9,409.5L664.2,412.0L663.9,413.9L663.4,414.7L661.8,415.8L661.8,416.3L661.9,416.5L662.4,416.6L662.6,416.9L665.6,417.3L666.1,417.2L667.4,417.4L668.2,416.3L669.0,410.2L668.2,408.8L665.6,407.6L665.6,407.3L667.4,404.6L667.0,400.4L667.1,398.9L666.5,396.6L666.8,394.9Z" fill="#228B22" stroke="#228B22" stroke-width="0.2" opacity="0.25"/>
-      <path d="M637.1,417.0L638.3,420.1L639.2,420.1L642.6,422.1L643.0,422.3L644.0,421.6L644.4,419.2L645.0,416.7L645.4,416.6L645.9,416.2L649.0,412.8L650.7,412.5L649.8,406.8L650.5,405.1L648.5,403.3L648.8,403.1L649.5,402.2L649.4,400.7L649.2,399.7L644.7,399.4L643.9,399.6L642.4,398.1L643.1,397.0L643.0,396.6L641.4,395.2L639.5,393.5L636.7,411.6L637.6,411.5L638.8,411.7L637.1,417.0Z" fill="#228B22" stroke="#228B22" stroke-width="0.2" opacity="0.25"/>
-      <path d="M614.3,458.2L615.1,460.9L615.3,463.7L615.0,466.0L615.7,465.9L615.3,467.8L618.0,470.2L618.4,469.9L619.9,470.4L619.9,470.9L620.2,471.4L620.6,470.9L622.6,471.2L625.0,473.4L629.0,471.3L629.3,470.3L630.1,467.6L628.4,465.0L627.8,457.4L627.4,457.4L626.2,456.3L624.0,456.8L624.5,456.2L622.9,456.2L622.2,456.7L619.3,460.0L617.1,459.6L616.4,459.0L615.7,458.9L614.3,458.2Z" fill="#228B22" stroke="#228B22" stroke-width="0.2" opacity="0.25"/>
-      <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#228B22" stroke="#228B22" stroke-width="0.2" opacity="0.25"/>
-      <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#228B22" stroke="#228B22" stroke-width="0.2" opacity="0.25"/>
-      <!-- 吴越:浙江省+福建省 -->
-      <path d="M691.1,434.8L687.8,432.9L686.9,433.2L686.5,434.2L686.0,433.7L682.7,431.4L682.6,431.2L682.1,431.3L677.8,430.6L677.1,430.6L677.1,429.9L676.3,429.6L676.2,432.0L664.4,436.0L659.6,446.6L658.5,448.8L661.6,454.9L664.4,452.2L670.5,453.2L670.7,451.8L675.3,450.4L676.4,448.4L677.2,446.8L677.4,446.3L680.1,446.0L681.1,443.2L683.7,441.1L685.4,438.2L689.9,436.0L691.1,434.8Z" fill="#32CD32" stroke="#32CD32" stroke-width="0.2" opacity="0.25"/>
-      <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#32CD32" stroke="#32CD32" stroke-width="0.2" opacity="0.25"/>
-      <!-- 楚:湖南省 -->
-      <path d="M562.0,476.3L563.4,478.4L569.5,476.8L571.0,476.3L571.2,476.8L572.2,477.5L573.0,477.7L578.7,476.6L579.1,476.5L579.4,476.9L583.3,479.5L585.7,477.4L588.2,479.1L593.4,475.6L594.2,473.3L595.9,468.0L595.5,467.5L592.3,466.3L588.7,468.6L586.5,466.8L579.9,468.0L577.5,467.9L577.2,467.3L576.2,467.1L576.2,467.5L575.5,467.3L562.4,474.2L561.9,474.8L562.3,475.5L562.0,476.3Z" fill="#3CB371" stroke="#3CB371" stroke-width="0.2" opacity="0.25"/>
-      <!-- 闽:福建省 -->
-      <path d="M677.6,503.3L676.1,502.9L669.9,503.5L669.6,503.3L662.3,504.4L662.4,505.6L661.8,507.1L661.0,508.3L658.8,512.2L657.9,515.8L658.0,515.2L657.5,518.3L665.5,518.2L669.2,521.3L669.8,522.9L669.7,523.8L670.1,524.1L671.0,524.1L670.9,523.0L671.1,522.1L671.7,522.4L673.0,523.5L673.0,523.9L677.7,520.3L672.9,520.1L672.8,519.5L677.5,508.4L678.2,507.4L679.9,506.5L677.6,503.3Z" fill="#2E8B57" stroke="#2E8B57" stroke-width="0.2" opacity="0.25"/>
-      <!-- 南汉:广东省+广西壮族自治区 -->
-      <path d="M583.4,572.5L586.3,575.5L587.1,576.0L587.6,577.2L588.9,576.9L588.5,574.8L586.4,571.0L586.5,570.4L590.9,563.5L591.2,562.0L592.4,561.4L592.0,559.8L590.3,556.3L590.5,555.9L591.0,555.8L592.3,554.4L587.1,554.0L584.5,555.0L583.6,554.9L580.3,559.1L579.9,558.9L577.9,561.8L581.1,565.7L581.8,567.5L581.7,568.9L582.2,569.7L582.6,571.4L583.0,571.7L583.3,572.1L583.4,572.5Z" fill="#20B2AA" stroke="#20B2AA" stroke-width="0.2" opacity="0.25"/>
-      <path d="M522.7,562.9L516.3,557.1L516.5,556.7L516.3,556.5L505.2,554.1L504.0,556.3L503.2,560.3L500.5,563.2L498.5,564.6L498.0,564.6L495.6,567.8L498.6,570.9L499.2,570.1L499.6,569.3L501.9,570.5L504.5,572.1L504.8,576.0L504.7,577.4L505.1,577.9L506.3,579.9L519.0,577.2L519.2,576.7L520.7,577.1L520.9,577.3L527.1,575.0L528.1,574.2L526.6,571.6L526.6,570.6L526.6,570.3L522.7,562.9Z" fill="#20B2AA" stroke="#20B2AA" stroke-width="0.2" opacity="0.25"/>
-      <!-- 前蜀:四川省 -->
-      <path d="M445.7,434.1L448.0,435.8L453.4,436.7L455.1,435.5L455.9,435.6L456.5,435.0L459.2,430.6L458.9,429.3L456.6,424.9L454.0,423.8L446.6,419.8L445.3,415.2L442.0,414.5L441.5,415.2L439.3,422.2L438.3,423.6L434.1,424.6L433.5,425.5L432.9,425.1L431.6,425.7L432.7,426.9L432.8,436.0L433.9,436.2L434.4,435.5L437.1,435.8L437.5,438.3L439.5,436.7L441.2,435.8L441.8,435.5L445.7,434.1Z" fill="#4682B4" stroke="#4682B4" stroke-width="0.2" opacity="0.25"/>
-      <!-- 后蜀:四川省 -->
-      <path d="M445.7,434.1L448.0,435.8L453.4,436.7L455.1,435.5L455.9,435.6L456.5,435.0L459.2,430.6L458.9,429.3L456.6,424.9L454.0,423.8L446.6,419.8L445.3,415.2L442.0,414.5L441.5,415.2L439.3,422.2L438.3,423.6L434.1,424.6L433.5,425.5L432.9,425.1L431.6,425.7L432.7,426.9L432.8,436.0L433.9,436.2L434.4,435.5L437.1,435.8L437.5,438.3L439.5,436.7L441.2,435.8L441.8,435.5L445.7,434.1Z" fill="#5F9EA0" stroke="#5F9EA0" stroke-width="0.2" opacity="0.25"/>
-      <!-- 荆南:湖北省 -->
-      <path d="M588.4,432.9L589.0,433.1L590.1,436.7L595.1,438.3L595.5,438.4L595.8,439.9L600.7,435.7L601.0,435.3L601.0,435.0L601.3,433.3L604.6,427.4L606.6,425.8L606.5,425.3L607.5,423.0L606.2,421.4L605.3,422.7L601.5,422.4L600.5,419.9L599.1,416.0L596.2,415.4L595.3,419.6L595.4,420.7L595.2,424.8L592.1,427.5L591.6,428.6L591.8,429.3L591.5,429.5L591.1,429.6L588.6,432.2L588.4,432.9Z" fill="#708090" stroke="#708090" stroke-width="0.2" opacity="0.25"/>
-      <!-- 北汉:山西省 -->
-      <path d="M579.0,292.3L579.2,287.7L575.1,288.7L572.5,289.5L570.1,288.8L567.0,288.0L567.4,288.4L567.3,290.0L565.8,290.6L565.4,290.7L564.9,290.3L563.6,290.0L562.7,290.3L557.3,295.1L557.1,296.0L560.8,297.1L562.1,297.1L563.0,298.6L566.0,299.3L566.0,300.0L570.9,302.9L570.9,302.4L571.9,300.0L572.5,299.9L573.0,297.5L574.9,295.7L575.5,293.3L577.6,293.0L577.9,293.3L579.0,292.3Z" fill="#696969" stroke="#696969" stroke-width="0.2" opacity="0.25"/>
-      <!-- 契丹:河北省+山西省 -->
-
-      <!-- ===== 城市标注 ===== -->
-      <circle cx="597.1" cy="352.0" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="601.1" y="356.0" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">汴梁</text>
-      <circle cx="570.7" cy="353.8" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="574.7" y="357.8" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">洛阳</text>
-      <circle cx="569.3" cy="293.3" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="573.3" y="297.3" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">太原</text>
-      <circle cx="446.3" cy="429.0" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="450.3" y="433.0" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">成都</text>
-      <circle cx="662.9" cy="403.3" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="666.9" y="407.3" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">金陵</text>
-      <circle cx="683.4" cy="434.5" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="687.4" y="438.5" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">杭州</text>
-      <circle cx="582.4" cy="566.5" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="586.4" y="570.5" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">广州</text>
-      <circle cx="576.6" cy="473.0" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
-      <text x="580.6" y="477.0" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">长沙</text>
+      <!-- ===== 城市标记 ===== -->
+      <circle cx="605.0" cy="335.5" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
+      <text x="609.0" y="339.5" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">洛阳</text>
+      <circle cx="589.2" cy="297.2" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
+      <text x="593.2" y="301.2" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">开封</text>
+      <circle cx="614.5" cy="305.0" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
+      <text x="618.5" y="309.0" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">郑州</text>
       <circle cx="670.2" cy="511.5" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
       <text x="674.2" y="515.5" font-family="serif" font-size="10" fill="#e8d5a3" opacity="0.9">福州</text>
       <circle cx="566.3" cy="434.5" r="3" fill="#c9a227" filter="url(#cityGlow)"/>
@@ -957,6 +1403,11 @@ body {
       <h4>⚔️ <span id="eventsYearTitle">907年</span></h4>
       <div id="eventsList"></div>
     </div>
+    <!-- Map hover tooltip -->
+    <div class="map-tooltip" id="mapTooltip" style="display:none">
+      <div class="map-tooltip-name" id="tooltipName"></div>
+      <div class="map-tooltip-info" id="tooltipInfo"></div>
+    </div>
   </div>
 
   <!-- 年份控制条 -->
@@ -974,6 +1425,9 @@ body {
       <input type="range" id="yearRange" min="907" max="960" value="907" step="1">
       <label>960</label>
     </div>
+    <div class="year-tick-row" id="yearTickRow">
+      <!-- 动态生成朝代分界线 -->
+    </div>
   </div>
 </div>
 
@@ -982,6 +1436,16 @@ body {
   <div class="tl-hero">
     <div class="tl-hero-title">📜 五代十国兴亡录</div>
     <div class="tl-hero-sub">907年 · 朱温建梁 · 至 960年 · 北宋建立</div>
+    <div class="tl-hero-controls">
+      <button class="tl-play-btn" id="tlPlayBtn" onclick="toggleTlPlay()">
+        <span id="tlPlayIcon">▶</span>
+        <span id="tlPlayText">自动播放</span>
+      </button>
+      <div class="tl-progress-bar">
+        <div class="tl-progress-fill" id="tlProgressFill"></div>
+      </div>
+      <div class="tl-progress-label" id="tlProgressLabel">907 / 960</div>
+    </div>
   </div>
   <div class="tl-body" id="tlBody">
     <!-- 动态生成 -->
@@ -1001,293 +1465,75 @@ body {
     </div>
   </div>
   <div class="detail-body">
-    <div class="detail-section">
-      <div class="detail-section-title">简史</div>
-      <p class="detail-prose" id="detailHistory"></p>
+    <!-- Tabs: History / Rulers / Timeline -->
+    <div class="detail-tabs">
+      <button class="detail-tab-btn active" data-tab="history" onclick="switchDetailTab('history')">📖 简史</button>
+      <button class="detail-tab-btn" data-tab="rulers" onclick="switchDetailTab('rulers')">👑 君主</button>
+      <button class="detail-tab-btn" data-tab="events" onclick="switchDetailTab('events')">⚔️ 年表</button>
+      <button class="detail-tab-btn" data-tab="economy" onclick="switchDetailTab('economy')">💰 经济</button>
+      <button class="detail-tab-btn" data-tab="culture" onclick="switchDetailTab('culture')">🎭 文化</button>
     </div>
-    <div class="detail-section">
-      <div class="detail-section-title">君主世系</div>
-      <ul class="rulers-list" id="detailRulers"></ul>
+    <!-- Tab: History -->
+    <div class="detail-tab-content active" id="tab-history">
+      <div class="detail-section">
+        <div class="detail-section-title">📖 简史</div>
+        <p class="detail-prose" id="detailHistory"></p>
+      </div>
     </div>
-    <div class="detail-section">
-      <div class="detail-section-title">大事年表</div>
-      <div class="detail-tl" id="detailTimeline"></div>
+    <!-- Tab: Rulers -->
+    <div class="detail-tab-content" id="tab-rulers">
+      <div class="detail-section">
+        <div class="detail-section-title">👑 君主世系</div>
+        <div class="rulers-cards" id="detailRulers"></div>
+      </div>
+    </div>
+    <!-- Tab: Events -->
+    <div class="detail-tab-content" id="tab-events">
+      <div class="detail-section">
+        <div class="detail-section-title">⚔️ 大事年表</div>
+        <div class="detail-tl" id="detailTimeline"></div>
+      </div>
+    </div>
+    <!-- Tab: Economy -->
+    <div class="detail-tab-content" id="tab-economy">
+      <div class="detail-section">
+        <div class="detail-section-title">💰 经济政策</div>
+        <p class="detail-prose" id="detailEconomy"></p>
+      </div>
+    </div>
+    <!-- Tab: Culture -->
+    <div class="detail-tab-content" id="tab-culture">
+      <div class="detail-section">
+        <div class="detail-section-title">🎭 文化成就</div>
+        <p class="detail-prose" id="detailCulture"></p>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">⚔️ 军事行动</div>
+        <p class="detail-prose" id="detailMilitary"></p>
+      </div>
     </div>
   </div>
 </div>
 
-<script>
-// ==================== DATA ====================
-const KINGDOMS = {
-  LaterLiang:{
-    name:'后梁',fullName:'后梁',color:'#c9a227',
-    period:'907-923',capital:'汴梁',
-    flag:'⚔️',
-    start:907,end:923,
-    rulers:[
-      {name:'朱温（梁太祖）',years:'907-912'},
-      {name:'朱友珪',years:'912-913'},
-      {name:'朱友贞（梁末帝）',years:'913-923'}
-    ],
-    history:'后梁由黄巢起义军降将朱温建立，定都汴梁。朱温晚年诸子争夺皇位，内部混乱。在与晋王李存勖的长期争战中逐渐失利，最终于923年被后唐所灭。后梁疆域包括今河南、山东及陕西、湖北部分地区，是五代中疆域最小的中原王朝。',
-    events:[
-      {year:907,title:'朱温建梁',desc:'朱温废唐哀帝，建立后梁，五代开始'},
-      {year:909,title:'柏乡之战',desc:'晋军大破后梁军，梁军元气大伤'},
-      {year:912,title:'朱温遇弑',desc:'朱温被次子朱友珪刺杀'},
-      {year:913,title:'朱友贞夺位',desc:'朱友贞联合杨师厚夺取帝位'},
-      {year:916,title:'魏州之战',desc:'梁军在魏州惨败，河北三镇尽失'},
-      {year:923,title:'后唐灭后梁',desc:'李存勖攻入汴梁，梁末帝自杀'}
-    ]
-  },
-  LaterTang:{
-    name:'后唐',fullName:'后唐',color:'#e85d04',
-    period:'923-936',capital:'洛阳',
-    flag:'🔥',
-    start:923,end:936,
-    rulers:[
-      {name:'李存勖（唐庄宗）',years:'923-926'},
-      {name:'李嗣源（唐明宗）',years:'926-933'},
-      {name:'李从厚（唐闵帝）',years:'933-934'},
-      {name:'李从珂（唐末帝）',years:'934-936'}
-    ],
-    history:'后唐由晋王李存勖建立，以复兴唐朝为号召，定都洛阳。全盛时疆域包括今河南、山东、山西、河北等省及四川一部。后唐在唐明宗时期出现"小康"局面，但后期内乱不断，936年被后晋所灭。',
-    events:[
-      {year:923,title:'李存勖建后唐',desc:'在魏州称帝，灭后梁，以光复唐朝为号召'},
-      {year:925,title:'后唐灭前蜀',desc:'郭崇韬率军六万灭前蜀，王衍投降'},
-      {year:926,title:'兴教门之变',desc:'唐庄宗中流箭而死，李嗣源入洛阳称帝'},
-      {year:934,title:'清君侧之乱',desc:'李从珂攻入洛阳，唐闵帝被杀'},
-      {year:936,title:'后晋灭后唐',desc:'石敬瑭借契丹兵攻入洛阳，唐末帝自焚'}
-    ]
-  },
-  LaterJin:{
-    name:'后晋',fullName:'后晋',color:'#4cc9f0',
-    period:'936-947',capital:'汴梁',
-    flag:'🏹',
-    start:936,end:947,
-    rulers:[
-      {name:'石敬瑭（晋高祖）',years:'936-942'},
-      {name:'石重贵（晋出帝）',years:'942-947'}
-    ],
-    history:'后晋由石敬瑭建立，以割让燕云十六州为代价换取契丹支持，定都汴梁。石敬瑭对契丹称臣纳贡，屈辱求安。其侄石重贵继位后试图对抗契丹，947年契丹攻入开封，后晋亡，契丹改国号为辽。',
-    events:[
-      {year:936,title:'石敬瑭建后晋',desc:'借契丹兵灭后唐，建立后晋，割让燕云十六州'},
-      {year:942,title:'石重贵继位',desc:'晋出帝继位，主战派主张对契丹强硬'},
-      {year:944,title:'契丹南征',desc:'辽太宗率军南征，攻掠贝州后撤军'},
-      {year:946,title:'后晋覆灭',desc:'杜重威降契丹，辽太宗攻入开封，后晋亡'}
-    ]
-  },
-  LaterHan:{
-    name:'后汉',fullName:'后汉',color:'#9b59b6',
-    period:'947-951',capital:'汴梁',
-    flag:'🗡️',
-    start:947,end:951,
-    rulers:[
-      {name:'刘知远（汉高祖）',years:'947-948'},
-      {name:'刘承祐（汉隐帝）',years:'948-951'}
-    ],
-    history:'后汉由刘知远建立，趁契丹退兵之机在太原称帝，后定都汴梁。是五代中寿命最短的中原王朝，仅存四年。刘知远去世后，其子刘承祐猜忌辅政大臣，951年郭威起兵，刘承祐兵败被杀，后汉亡。',
-    events:[
-      {year:947,title:'刘知远建后汉',desc:'契丹退兵后，在太原称帝，建立后汉'},
-      {year:950,title:'郭威起兵',desc:'汉隐帝杀杨邠等大臣，郭威起兵清君侧'},
-      {year:951,title:'后周代汉',desc:'郭威在澶州被军士拥护称帝，后汉亡'}
-    ]
-  },
-  LaterZhou:{
-    name:'后周',fullName:'后周',color:'#27ae60',
-    period:'951-960',capital:'汴梁',
-    flag:'⚡',
-    start:951,end:960,
-    rulers:[
-      {name:'郭威（周太祖）',years:'951-954'},
-      {name:'柴荣（周世宗）',years:'954-959'},
-      {name:'柴宗训（恭帝）',years:'959-960'}
-    ],
-    history:'后周由郭威建立，定都汴梁。郭威改革弊政，减轻百姓负担。周世宗柴荣在位期间励精图治，进行军事政治经济改革，北伐北汉，南攻南唐，西取后蜀，为北宋统一奠定基础。960年赵匡胤陈桥兵变，建立北宋。',
-    events:[
-      {year:951,title:'郭威建后周',desc:'郭威称帝，建立后周，都汴梁'},
-      {year:954,title:'高平之战',desc:'周世宗柴荣亲征，在高平击溃北汉与契丹联军'},
-      {year:956,title:'后周攻南唐',desc:'柴荣率军大举进攻南唐，收取淮南大片土地'},
-      {year:959,title:'柴荣北伐',desc:'周世宗率军北伐辽，收复瀛州、莫州等地'},
-      {year:960,title:'陈桥兵变',desc:'赵匡胤在陈桥兵变中被拥立为帝，建立北宋，后周亡'}
-    ]
-  },
-  FormerShu:{
-    name:'前蜀',fullName:'前蜀',color:'#e74c3c',
-    period:'907-925',capital:'成都',
-    flag:'🌸',
-    start:907,end:925,
-    rulers:[
-      {name:'王建',years:'907-918'},
-      {name:'王衍',years:'918-925'}
-    ],
-    history:'前蜀由唐末神策军将领王建建立，定都成都。全盛时据有今四川、重庆大部及陕南、甘南、鄂西部分地区。王建晚年诛杀功臣，其子王衍奢侈荒淫，政治腐败。925年后唐灭前蜀。',
-    events:[
-      {year:907,title:'王建建前蜀',desc:'王建被封蜀王，在成都建立前蜀政权'},
-      {year:918,title:'王衍继位',desc:'王衍继位后荒淫失政，大兴土木'},
-      {year:925,title:'后唐灭前蜀',desc:'郭崇韬率唐军攻入成都，王衍投降，前蜀亡'}
-    ]
-  },
-  LaterShu:{
-    name:'后蜀',fullName:'后蜀',color:'#e67e22',
-    period:'934-965',capital:'成都',
-    flag:'🌺',
-    start:934,end:965,
-    rulers:[
-      {name:'孟知祥',years:'934'},
-      {name:'孟昶',years:'934-965'}
-    ],
-    history:'后蜀由孟知祥趁后唐内乱之机建立，定都成都。孟知祥去世后，其子孟昶继位。后蜀偏安四川，奢侈成风。965年被北宋所灭，是十国中最晚灭亡的割据政权之一。',
-    events:[
-      {year:934,title:'孟知祥建后蜀',desc:'孟知祥在成都称帝，建立后蜀'},
-      {year:965,title:'北宋灭后蜀',desc:'宋军攻入成都，孟昶投降，后蜀亡'}
-    ]
-  },
-  Wu:{
-    name:'吴',fullName:'吴国',color:'#1abc9c',
-    period:'902-937',capital:'扬州',
-    flag:'🌾',
-    start:902,end:937,
-    rulers:[
-      {name:'杨行密',years:'902-905'},
-      {name:'杨渥',years:'905-908'},
-      {name:'杨隆演',years:'908-920'},
-      {name:'杨溥',years:'920-937'}
-    ],
-    history:'吴国由淮南节度使杨行密建立，定都扬州。杨行密推行保境安民政策，经济复苏。后被权臣徐温、徐知诰实际控制，937年被南唐取代。',
-    events:[
-      {year:902,title:'杨行密受封吴王',desc:'唐昭宗封杨行为吴王，吴国建立'},
-      {year:905,title:'杨行密去世',desc:'杨行密去世，其子杨渥继位'},
-      {year:937,title:'南唐代吴',desc:'徐知诰接受杨溥禅让，吴亡，南唐建立'}
-    ]
-  },
-  SouthernTang:{
-    name:'南唐',fullName:'南唐',color:'#3498db',
-    period:'937-975',capital:'金陵',
-    flag:'🎋',
-    start:937,end:975,
-    rulers:[
-      {name:'李昪（烈祖）',years:'937-943'},
-      {name:'李璟（元宗）',years:'943-961'},
-      {name:'李煜（后主）',years:'961-975'}
-    ],
-    history:'南唐由吴国权臣徐知诰（李昪）建立，定都金陵。全盛时据有今江苏、安徽、江西、福建及湖北、湖南大部，是十国中最强大的政权。李昪推行保境安民政策，经济文化繁荣。李煜以词著称于世。975年被北宋所灭。',
-    events:[
-      {year:937,title:'南唐建立',desc:'徐知诰受禅，建立南唐，定都金陵'},
-      {year:945,title:'南唐灭闽',desc:'南唐攻陷建州，王延政投降，闽亡'},
-      {year:951,title:'南唐灭楚',desc:'南唐边镐攻占长沙，楚亡'},
-      {year:958,title:'后周夺淮南',desc:'周世宗柴荣南征，南唐尽失淮南之地'},
-      {year:975,title:'北宋灭南唐',desc:'宋军攻入金陵，李煜投降，南唐亡'}
-    ]
-  },
-  Wuyue:{
-    name:'吴越',fullName:'吴越国',color:'#f1c40f',
-    period:'907-978',capital:'杭州',
-    flag:'🐉',
-    start:907,end:978,
-    rulers:[
-      {name:'钱镠',years:'907-932'},
-      {name:'钱元瓘',years:'932-941'},
-      {name:'钱弘佐',years:'941-947'},
-      {name:'钱弘俶',years:'948-978'}
-    ],
-    history:'吴越国由钱镠建立，定都杭州。全盛时据有今浙江及江苏太湖流域。吴越国小势弱，长期向中原王朝称臣纳贡，同时与吴、南唐为敌。钱镠重视经济建设，吴越成为五代十国时期经济最繁荣的地区之一。978年钱俶纳土归宋。',
-    events:[
-      {year:907,title:'钱镠建吴越',desc:'钱镠被后梁封为吴越王，建立吴越国'},
-      {year:932,title:'钱镠去世',desc:'钱镠去世，其子钱元瓘继位'},
-      {year:978,title:'吴越归宋',desc:'钱俶入汴梁纳土，吴越国亡'}
-    ]
-  },
-  Min:{
-    name:'闽',fullName:'闽国',color:'#e74c3c',
-    period:'909-945',capital:'福州',
-    flag:'🌿',
-    start:909,end:945,
-    rulers:[
-      {name:'王审知',years:'909-925'},
-      {name:'王延钧',years:'926-935'},
-      {name:'王继鹏',years:'935-939'},
-      {name:'王延政',years:'944-945'}
-    ],
-    history:'闽国由王审知建立，定都福州。王审知在位时社会安定，对外臣奉中原，对内劝课农桑。后王氏内部争夺皇位，内乱不断。945年南唐趁机灭闽。',
-    events:[
-      {year:909,title:'王审知受封闽王',desc:'王审知被后梁封为闽王，闽国建立'},
-      {year:943,title:'王延政称殷帝',desc:'王延政在建州称帝，国号殷，闽国内部分裂'},
-      {year:945,title:'南唐灭闽',desc:'南唐攻陷建州，王延政投降，闽亡'}
-    ]
-  },
-  Chu:{
-    name:'楚',fullName:'楚国',color:'#2ecc71',
-    period:'907-951',capital:'长沙',
-    flag:'🦚',
-    start:907,end:951,
-    rulers:[
-      {name:'马殷',years:'907-930'},
-      {name:'马希声',years:'930-932'},
-      {name:'马希范',years:'932-947'},
-      {name:'马希广',years:'947-950'},
-      {name:'马希萼',years:'950-951'}
-    ],
-    history:'楚国由马殷建立，定都长沙。全盛时据有今湖南、广西东部及贵州、广东部分地区。马殷采取睦邻政策，鼓励农桑。后马氏兄弟争夺皇位，内乱不断。951年被南唐所灭。',
-    events:[
-      {year:907,title:'马殷建楚国',desc:'马殷控制湖南，被后梁封为楚王'},
-      {year:927,title:'马殷受封楚国王',desc:'后唐封马殷为楚国王，正式立国'},
-      {year:947,title:'马氏内乱',desc:'马希范去世，马希广、马希萼兄弟争位'},
-      {year:951,title:'南唐灭楚',desc:'南唐边镐攻占长沙，楚亡'}
-    ]
-  },
-  SouthernHan:{
-    name:'南汉',fullName:'南汉',color:'#34495e',
-    period:'917-971',capital:'广州',
-    flag:'🐘',
-    start:917,end:971,
-    rulers:[
-      {name:'刘隐',years:'917-911'},
-      {name:'刘龑',years:'911-942'},
-      {name:'刘晟（中宗）',years:'943-958'},
-      {name:'刘鋹（后主）',years:'958-971'}
-    ],
-    history:'南汉由刘隐建立，定都广州。全盛时据有今广东、广西、海南及湖南南部。南汉君主荒淫残暴，大肆屠杀功臣，任用宦官，政治极度腐败。971年被北宋所灭。',
-    events:[
-      {year:917,title:'刘龑建南汉',desc:'刘龑在番禺称帝，建立南汉'},
-      {year:958,title:'刘晟去世',desc:'刘晟去世，刘鋹继位，政治愈发腐败'},
-      {year:971,title:'北宋灭南汉',desc:'宋军攻入广州，刘鋹投降，南汉亡'}
-    ]
-  },
-  Jingnan:{
-    name:'荆南',fullName:'荆南国',color:'#95a5a6',
-    period:'924-963',capital:'江陵',
-    flag:'🕊️',
-    start:924,end:963,
-    rulers:[
-      {name:'高季兴',years:'924-929'},
-      {name:'高从诲',years:'929-948'},
-      {name:'高保融',years:'948-960'},
-      {name:'高继冲',years:'962-963'}
-    ],
-    history:'荆南（南平）由高季兴建立，定都江陵。是五代十国中最弱小的政权，仅有荆、归、峡三州。高季兴利用中原与南方政权的矛盾，四面称臣换取赏赐，在夹缝中得以存续。963年被北宋所灭。',
-    events:[
-      {year:924,title:'高季兴建南平',desc:'高季兴被后唐封为南平王，正式立国'},
-      {year:963,title:'北宋灭荆南',desc:'宋军假道荆南，高继冲被迫纳土归降，荆南亡'}
-    ]
-  },
-  NorthernHan:{
-    name:'北汉',fullName:'北汉',color:'#8e44ad',
-    period:'951-979',capital:'太原',
-    flag:'⛰️',
-    start:951,end:979,
-    rulers:[
-      {name:'刘崇（世祖）',years:'951-954'},
-      {name:'刘承钧（睿宗）',years:'954-970'},
-      {name:'刘继恩',years:'970-971'},
-      {name:'刘继元',years:'971-979'}
-    ],
-    history:'北汉由刘崇趁后周代汉之机在太原建立，依附契丹为援。是十国中最北的政权，也是最后灭亡的割据政权之一。979年被北宋所灭。',
-    events:[
-      {year:951,title:'刘崇建北汉',desc:'刘崇在太原称帝，建立北汉，依附契丹'},
-      {year:954,title:'高平之战',desc:'北汉联合契丹伐后周，在高平被周世宗击败'},
-      {year:979,title:'北宋灭北汉',desc:'宋太宗亲征，攻入太原，北汉亡，十国全灭'}
-    ]
-  }
+<script type="module">
+import { KINGDOM_DATA, TIMELINE_EVENTS, HISTORICAL_FIGURES } from './data.js';
+
+// 键名映射: data.js键 → SVG元素ID
+const KEY_TO_ID = {
+  'houLiang': 'LaterLiang', 'houTang': 'LaterTang', 'houJin': 'LaterJin',
+  'houHan': 'LaterHan', 'houZhou': 'LaterZhou', 'wu': 'Wu',
+  'nanTang': 'SouthernTang', 'wuYue': 'Wuyue', 'min': 'Min',
+  'chu': 'Chu', 'nanHan': 'SouthernHan', 'qianShu': 'FormerShu',
+  'houShu': 'LaterShu', 'jingNan': 'Jingnan', 'beiHan': 'NorthernHan',
+  'liao': 'Liao', 'background': 'background'
+};
+const ID_TO_KEY = Object.fromEntries(Object.entries(KEY_TO_ID).map(([k,v]) => [v, k]));
+
+// 展示用名称映射
+const KEY_TO_DISPLAY = {
+  'houLiang':'后梁','houTang':'后唐','houJin':'后晋','houHan':'后汉','houZhou':'后周',
+  'wu':'吴','nanTang':'南唐','wuYue':'吴越','min':'闽','chu':'楚',
+  'nanHan':'南汉','qianShu':'前蜀','houShu':'后蜀','jingNan':'荆南','beiHan':'北汉','liao':'契丹'
 };
 
 // ==================== MAP ====================
@@ -1296,10 +1542,12 @@ let currentYear = 907;
 function updateMap(year) {
   currentYear = year;
   document.getElementById('yearDisplay').textContent = year;
-  
-  Object.keys(KINGDOMS).forEach(key => {
-    const k = KINGDOMS[key];
-    const el = document.getElementById('g' + key);
+
+  Object.keys(KINGDOM_DATA).forEach(key => {
+    if (key === 'background') return;
+    const k = KINGDOM_DATA[key];
+    const svgId = 'g' + (KEY_TO_ID[key] || key);
+    const el = document.getElementById(svgId);
     if (!el) return;
     if (year >= k.start && year <= k.end) {
       el.style.opacity = '0.9';
@@ -1309,14 +1557,11 @@ function updateMap(year) {
       el.classList.remove('active');
     }
   });
-  
-  const liaoEl = document.getElementById('gLiao');
-  if (liaoEl) liaoEl.style.opacity = (year >= 907 && year <= 960) ? '0.6' : '0';
-  
+
   const era = getEraInfo(year);
   document.getElementById('yearEraName').textContent = era.name;
   document.getElementById('yearEraDesc').textContent = era.desc;
-  
+
   showYearEvents(year);
 }
 
@@ -1335,9 +1580,9 @@ function getEraInfo(year) {
   if (year === 956) return {name:'后周 · 南唐之战',desc:'柴荣收取淮南'};
   if (year === 958) return {name:'后周 · 南唐请和',desc:'南唐尽失淮南'};
   if (year === 960) return {name:'北宋 · 陈桥兵变',desc:'赵匡胤建立北宋，五代终'};
-  
+
   // Find active kingdom
-  const active = Object.values(KINGDOMS).filter(k => year >= k.start && year <= k.end);
+  const active = Object.values(KINGDOM_DATA).filter(k => year >= k.start && year <= k.end);
   if (active.length > 0) {
     return {name:active[0].name + ' · 存续中', desc:`${active.length}个政权并存`};
   }
@@ -1348,18 +1593,19 @@ function showYearEvents(year) {
   const panel = document.getElementById('eventsFloat');
   const list = document.getElementById('eventsList');
   const events = [];
-  
-  Object.values(KINGDOMS).forEach(k => {
-    k.events.forEach(e => {
+
+  Object.entries(KINGDOM_DATA).forEach(([key, k]) => {
+    if (key === 'background') return;
+    (k.rulers || []).flatMap(r => r.events || []).forEach(e => {
       if (e.year === year) events.push({...e, kingdom:k.name, color:k.color});
     });
   });
-  
+
   if (events.length === 0) {
     panel.style.display = 'none';
     return;
   }
-  
+
   panel.style.display = 'block';
   document.getElementById('eventsYearTitle').textContent = `${year}年`;
   list.innerHTML = events.map(e => `
@@ -1392,48 +1638,124 @@ function switchView(view) {
 }
 
 function openDetail(key) {
-  const k = KINGDOMS[key];
+  const k = KINGDOM_DATA[key];
   if (!k) return;
-  
-  document.getElementById('detailFlag').textContent = k.flag;
+
+  document.getElementById('detailFlag').textContent = k.flag || '🏛️';
   document.getElementById('detailName').textContent = k.name;
   document.getElementById('detailCapital').textContent = '📍 ' + k.capital;
-  
+
   const periodEl = document.getElementById('detailPeriod');
-  periodEl.textContent = `${k.period}年`;
+  periodEl.textContent = `${k.start}-${k.end}年`;
   periodEl.style.cssText = `background:${k.color}22;color:${k.color};border-color:${k.color}55`;
-  
-  document.getElementById('detailHistory').textContent = k.history;
-  
-  document.getElementById('detailRulers').innerHTML = k.rulers.map(r => 
-    `<li><span class="ruler-name">${r.name}</span><span class="ruler-years">${r.years}年</span></li>`
-  ).join('');
-  
-  document.getElementById('detailTimeline').innerHTML = k.events.map(e => `
+
+  // Reset to history tab
+  switchDetailTab('history');
+
+  // History tab
+  document.getElementById('detailHistory').innerHTML = (k.history || '').split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('');
+
+  // Rulers tab — card grid
+  document.getElementById('detailRulers').innerHTML = (k.rulers || []).map(r => `
+    <div class="ruler-card">
+      <div class="ruler-card-name">${r.name}</div>
+      <div class="ruler-card-years">${r.reignStart || r.years || '?'}–${r.reignEnd || '?'}年</div>
+      ${r.templeName ? `<div class="ruler-card-title">庙号: ${r.templeName}</div>` : ''}
+      ${r.posthumousTitle ? `<div class="ruler-card-title">谥号: ${r.posthumousTitle}</div>` : ''}
+      ${r.personality ? `<div class="ruler-card-deed">性格: ${r.personality}</div>` : ''}
+      ${r.majorDeeds ? `<div class="ruler-card-deed">${r.majorDeeds}</div>` : ''}
+    </div>
+  `).join('');
+
+  // Events tab
+  const allEvents = (k.rulers || []).flatMap(r => r.events || []);
+  document.getElementById('detailTimeline').innerHTML = allEvents.slice(0, 15).map(e => `
     <div class="detail-tl-item">
       <span class="year">${e.year}年</span>
       <span class="title">${e.title}</span>
-      <span class="desc">${e.desc}</span>
+      <div class="desc">${e.desc}</div>
     </div>
   `).join('');
-  
+
+  // Economy tab
+  document.getElementById('detailEconomy').innerHTML = (k.economicPolicies || []).map(p => `<p>${p}</p>`).join('') || '<p>暂无记载</p>';
+
+  // Culture + Military tab
+  document.getElementById('detailCulture').innerHTML = (k.culturalAchievements || []).map(p => `<p>${p}</p>`).join('') || '<p>暂无记载</p>';
+  document.getElementById('detailMilitary').innerHTML = (k.militaryEvents || []).map(p => `<p>${p}</p>`).join('') || '<p>暂无记载</p>';
+
   document.getElementById('overlay').classList.add('show');
   document.getElementById('detailPanel').classList.add('open');
 }
 
+function switchDetailTab(tab) {
+  document.querySelectorAll('.detail-tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  document.querySelectorAll('.detail-tab-content').forEach(c => {
+    c.classList.toggle('active', c.id === 'tab-' + tab);
+  });
+}
+
+// Alias for openDetail - shows kingdom detail panel
+function showKingdomDetail(key) {
+  return openDetail(key);
+}
+
+// Show event detail in floating popup
+function showEventDetail(eventTitle, eventYear, eventDesc, kingdomName, kingdomColor) {
+  // Remove existing popup if any
+  const existing = document.getElementById('eventDetailPopup');
+  if (existing) existing.remove();
+
+  // Create popup
+  const popup = document.createElement('div');
+  popup.id = 'eventDetailPopup';
+  popup.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(160deg, #1e1810 0%, #16100a 50%, #1a1208 100%);
+    border: 2px solid ${kingdomColor || '#c9a227'};
+    border-radius: 12px;
+    padding: 24px 32px;
+    z-index: 300;
+    min-width: 320px;
+    max-width: 420px;
+    box-shadow: 0 12px 60px rgba(0,0,0,.8);
+  `;
+
+  popup.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div>
+        <div style="font-size:12px;color:${kingdomColor || '#c9a227'};font-weight:700;letter-spacing:2px;margin-bottom:4px;">${kingdomName || ''}</div>
+        <div style="font-size:20px;font-weight:900;color:#c9a227;font-family:'Noto Serif SC',serif;">${eventTitle}</div>
+      </div>
+      <button onclick="document.getElementById('eventDetailPopup').remove();document.getElementById('overlay').classList.remove('show');" style="background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.3);color:#c9a227;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+    <div style="font-size:14px;color:#8a7060;margin-bottom:12px;font-family:monospace;">📅 ${eventYear}年</div>
+    <div style="font-size:15px;line-height:1.8;color:#e8d9b8;text-align:justify;">${eventDesc}</div>
+  `;
+
+  document.getElementById('overlay').classList.add('show');
+  document.body.appendChild(popup);
+}
+
 function openDetailByEvent(title) {
-  for (const [key, k] of Object.entries(KINGDOMS)) {
-    if (k.events.find(e => e.title === title)) { openDetail(key); return; }
+  for (const [key, k] of Object.entries(KINGDOM_DATA)) {
+    const allEvents = (k.rulers || []).flatMap(r => r.events || []);
+    if (allEvents.find(e => e.title === title)) { openDetail(key); return; }
   }
 }
 
 function openDetailByName(name) {
   const map = {
-    '后梁':'LaterLiang','后唐':'LaterTang','后晋':'LaterJin',
-    '后汉':'LaterHan','后周':'LaterZhou','前蜀':'FormerShu',
-    '后蜀':'LaterShu','吴':'Wu','南唐':'SouthernTang',
-    '吴越':'Wuyue','闽':'Min','楚':'Chu','南汉':'SouthernHan',
-    '荆南':'Jingnan','北汉':'NorthernHan'
+    '后梁':'houLiang','后唐':'houTang','后晋':'houJin',
+    '后汉':'houHan','后周':'houZhou','前蜀':'qianShu',
+    '后蜀':'houShu','吴':'wu','南唐':'nanTang',
+    '吴越':'wuYue','闽':'min','楚':'chu','南汉':'nanHan',
+    '荆南':'jingNan','北汉':'beiHan'
   };
   if (map[name]) openDetail(map[name]);
 }
@@ -1444,50 +1766,127 @@ function closeDetail() {
 }
 
 // ==================== TIMELINE ====================
+let tlPlaying = false;
+let tlPlayTimer = null;
+let tlCurrentYear = 907;
+
+function toggleTlPlay() {
+  tlPlaying = !tlPlaying;
+  const btn = document.getElementById('tlPlayBtn');
+  const icon = document.getElementById('tlPlayIcon');
+  const text = document.getElementById('tlPlayText');
+  if (tlPlaying) {
+    btn.classList.add('playing');
+    icon.textContent = '⏸';
+    text.textContent = '暂停';
+    if (tlCurrentYear >= 960) tlCurrentYear = 907;
+    tlPlayNext();
+  } else {
+    btn.classList.remove('playing');
+    icon.textContent = '▶';
+    text.textContent = '自动播放';
+    clearTimeout(tlPlayTimer);
+  }
+}
+
+function tlPlayNext() {
+  if (!tlPlaying || tlCurrentYear > 960) {
+    tlPlaying = false;
+    const btn = document.getElementById('tlPlayBtn');
+    btn.classList.remove('playing');
+    document.getElementById('tlPlayIcon').textContent = '▶';
+    document.getElementById('tlPlayText').textContent = '重播';
+    return;
+  }
+  tlCurrentYear++;
+  updateTlProgress(tlCurrentYear);
+  tlPlayTimer = setTimeout(tlPlayNext, 400);
+}
+
+function updateTlProgress(year) {
+  const fill = document.getElementById('tlProgressFill');
+  const label = document.getElementById('tlProgressLabel');
+  const pct = ((year - 907) / (960 - 907)) * 100;
+  fill.style.width = pct + '%';
+  label.textContent = `${year} / 960`;
+  // Highlight current year bar
+  document.querySelectorAll('.tl-bar').forEach(bar => {
+    const start = parseFloat(bar.dataset.start);
+    const end = parseFloat(bar.dataset.end);
+    if (year >= start && year <= end) {
+      bar.style.filter = 'brightness(1.4)';
+      bar.style.boxShadow = '0 0 16px ' + bar.style.backgroundColor;
+    } else {
+      bar.style.filter = '';
+      bar.style.boxShadow = '';
+    }
+  });
+  // Scroll to relevant section
+  const activeBar = document.querySelector(`.tl-bar[data-start="${getDynastyStart(year)}"]`);
+  if (activeBar) {
+    activeBar.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
+function getDynastyStart(year) {
+  const fiveDy = [907,923,936,947,951];
+  for (const s of fiveDy) { if (year >= s) return s; }
+  return fiveDy[fiveDy.length - 1];
+}
+
 function renderTimeline() {
   const body = document.getElementById('tlBody');
-  
+  if (!body) return;
+
   const fiveDy = [
-    {name:'后梁',key:'LaterLiang',start:907,end:923,color:'#8b6914'},
-    {name:'后唐',key:'LaterTang',start:923,end:936,color:'#c45c00'},
-    {name:'后晋',key:'LaterJin',start:936,end:947,color:'#1a6090'},
-    {name:'后汉',key:'LaterHan',start:947,end:951,color:'#5a2050'},
-    {name:'后周',key:'LaterZhou',start:951,end:960,color:'#1a5a30'}
+    {name:'后梁',key:'houLiang',start:907,end:923,color:'#8b6914'},
+    {name:'后唐',key:'houTang',start:923,end:936,color:'#c45c00'},
+    {name:'后晋',key:'houJin',start:936,end:947,color:'#1a6090'},
+    {name:'后汉',key:'houHan',start:947,end:951,color:'#5a2050'},
+    {name:'后周',key:'houZhou',start:951,end:960,color:'#1a5a30'}
   ];
-  
+
   const tenKingdoms = [
-    {name:'前蜀',key:'FormerShu',start:907,end:925,color:'#c0392b'},
-    {name:'后蜀',key:'LaterShu',start:934,end:965,color:'#d35400'},
-    {name:'吴',key:'Wu',start:902,end:937,color:'#16a085'},
-    {name:'南唐',key:'SouthernTang',start:937,end:975,color:'#2980b9'},
-    {name:'吴越',key:'Wuyue',start:907,end:978,color:'#f39c12'},
-    {name:'闽',key:'Min',start:909,end:945,color:'#c0392b'},
-    {name:'楚',key:'Chu',start:907,end:951,color:'#27ae60'},
-    {name:'南汉',key:'SouthernHan',start:917,end:971,color:'#2c3e50'},
-    {name:'荆南',key:'Jingnan',start:924,end:963,color:'#7f8c8d'},
-    {name:'北汉',key:'NorthernHan',start:951,end:979,color:'#8e44ad'}
+    {name:'前蜀',key:'qianShu',start:907,end:925,color:'#c0392b'},
+    {name:'后蜀',key:'houShu',start:934,end:965,color:'#d35400'},
+    {name:'吴',key:'wu',start:902,end:937,color:'#16a085'},
+    {name:'南唐',key:'nanTang',start:937,end:975,color:'#2980b9'},
+    {name:'吴越',key:'wuYue',start:907,end:978,color:'#f39c12'},
+    {name:'闽',key:'min',start:909,end:945,color:'#c0392b'},
+    {name:'楚',key:'chu',start:907,end:951,color:'#27ae60'},
+    {name:'南汉',key:'nanHan',start:917,end:971,color:'#2c3e50'},
+    {name:'荆南',key:'jingNan',start:924,end:963,color:'#7f8c8d'},
+    {name:'北汉',key:'beiHan',start:951,end:979,color:'#8e44ad'}
   ];
-  
+
   const totalYears = 960 - 902;
   const scale = (y) => ((y - 902) / totalYears) * 100;
-  
+
   let html = '';
-  
-  // Five dynasties
+
+  // Five dynasties — gradient bars
   html += '<div class="dynasty-section">';
   html += '<div class="dynasty-section-title">☀️ 中原五代</div>';
   fiveDy.forEach(d => {
     const l = Math.max(0, scale(d.start));
     const w = Math.max(0.5, scale(d.end) - l);
+    // Build gradient per dynasty
+    const gradId = 'grad' + d.key;
     html += `<div class="dynasty-row">`;
     html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
-    html += `<div class="dynasty-track">`;
-    html += `<div class="tl-bar" style="left:${l}%;width:${w}%;background:linear-gradient(135deg,${d.color},${d.color}aa);" onclick="openDetail('${d.key}')">${d.name}</div>`;
+    html += `<div class="dynasty-track" id="track-${d.key}">`;
+    html += `<svg width="100%" height="36" style="position:absolute;top:0;left:0;overflow:visible;pointer-events:none;">`;
+    html += `<defs><linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="0%">`;
+    html += `<stop offset="0%" stop-color="${d.color}"/><stop offset="40%" stop-color="${d.color}cc"/><stop offset="100%" stop-color="${d.color}88"/>`;
+    html += `</linearGradient></defs>`;
+    html += `<rect x="${l}%" width="${w}%" height="28" y="4" fill="url(#${gradId})" rx="6" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))"/>`;
+    html += `</svg>`;
+    html += `<div class="tl-bar" style="left:${l}%;width:${w}%;border:1px solid ${d.color}88;" data-start="${d.start}" data-end="${d.end}" onclick="openDetail('${d.key}')">${d.name}</div>`;
     html += '</div></div>';
   });
   html += '</div>';
-  
-  // Ten kingdoms
+
+  // Ten kingdoms — thin bars with vertical markers
   html += '<div class="dynasty-section">';
   html += '<div class="dynasty-section-title">🌏 十国割据</div>';
   tenKingdoms.forEach(d => {
@@ -1495,16 +1894,18 @@ function renderTimeline() {
     const w = Math.max(0.5, scale(d.end) - l);
     html += `<div class="dynasty-row">`;
     html += `<div class="dynasty-label" style="color:${d.color}">${d.name}</div>`;
-    html += `<div class="dynasty-track">`;
-    html += `<div class="tl-bar ten" style="left:${l}%;width:${w}%;background:${d.color}88;color:#fff;border:1px solid ${d.color};" onclick="openDetail('${d.key}')">${d.name}</div>`;
+    html += `<div class="dynasty-track" id="track-ten-${d.key}">`;
+    // Vertical start marker
+    html += `<div class="ten-marker" style="left:${l}%" data-name="${d.name}"></div>`;
+    html += `<div class="tl-bar ten" style="left:${l}%;width:${w}%;background:${d.color}66;border:1px solid ${d.color}88;color:#fff;" data-start="${d.start}" data-end="${d.end}" onclick="openDetail('${d.key}')">${d.name}</div>`;
     html += '</div></div>';
   });
   html += '</div>';
-  
-  // Events
+
+  // Events with diamond icons
   html += '<div class="dynasty-section events-section">';
   html += '<div class="dynasty-section-title">⚔️ 重大事件</div>';
-  
+
   // Ruler
   html += '<div class="events-ruler">';
   for (let y = 902; y <= 960; y += 5) {
@@ -1512,16 +1913,19 @@ function renderTimeline() {
     html += `<div class="ruler-mark" style="left:${x}%;position:absolute"><span class="year-label">${y}</span></div>`;
   }
   html += '</div>';
-  
-  // Events row
+
+  // Events row — diamond icons
   const allEvents = [];
-  Object.entries(KINGDOMS).forEach(([key, k]) => {
-    k.events.forEach(e => {
-      allEvents.push({...e, kName:k.name, key, color:k.color});
+  Object.entries(KINGDOM_DATA).forEach(([key, k]) => {
+    if (key === 'background') return;
+    (k.rulers || []).forEach(r => {
+      (r.events || []).forEach(e => {
+        allEvents.push({...e, kName: k.name, key, color: k.color});
+      });
     });
   });
   allEvents.sort((a,b) => a.year - b.year);
-  
+
   const rowHeight = 28;
   html += '<div class="events-row" style="height:' + (rowHeight * 4) + 'px">';
   allEvents.forEach((e, i) => {
@@ -1532,16 +1936,80 @@ function renderTimeline() {
     const isFound = e.title.includes('建') || e.title.includes('立');
     const isDestroy = e.title.includes('灭') || e.title.includes('亡') || e.title.includes('覆灭');
     const dotClass = isWar ? 'war' : isFound ? 'found' : isDestroy ? 'destroy' : 'political';
-    html += `<div class="tl-dot ${dotClass}" style="left:${x}%;top:${top}px;background:${e.color}" onclick="openDetail('${e.key}')"><div class="dot-label">${e.year} ${e.title}</div></div>`;
+    html += `<div class="tl-diamond ${dotClass}" style="left:${x}%;top:${top}px;background:${e.color};border-color:${e.color}88;" onclick="openDetail('${e.key}')"><div class="diamond-label">${e.year} ${e.title}</div></div>`;
   });
   html += '</div>';
-  
+
   html += '</div>';
   body.innerHTML = html;
 }
 
 // ==================== INIT ====================
-updateMap(907);
+window.addEventListener('DOMContentLoaded', () => {
+  updateMap(907);
+  renderTimeline();
+  initYearTicks();
+  initMapHover();
+});
+
+function initYearTicks() {
+  const tickRow = document.getElementById('yearTickRow');
+  if (!tickRow) return;
+  const sliderEl = document.getElementById('yearRange');
+  // Five dynasty boundaries
+  const ticks = [
+    {year: 907, label: '后梁'},
+    {year: 923, label: '后唐'},
+    {year: 936, label: '后晋'},
+    {year: 947, label: '后汉'},
+    {year: 951, label: '后周'},
+    {year: 960, label: '北宋'}
+  ];
+  const total = 960 - 907;
+  tickRow.innerHTML = ticks.map(t => {
+    const pct = ((t.year - 907) / total) * 100;
+    return `<div class="year-tick" style="left:${pct}%"><div class="year-tick-label" style="left:${pct}%">${t.year} ${t.label}</div></div>`;
+  }).join('');
+}
+
+function initMapHover() {
+  document.querySelectorAll('.kingdom').forEach(g => {
+    // Click to open detail
+    g.addEventListener('click', () => {
+      const svgId = g.dataset.kingdom;
+      if (!svgId) return;
+      const key = ID_TO_KEY[svgId];
+      if (key) openDetail(key);
+    });
+    // Hover tooltip
+    g.addEventListener('mouseenter', (e) => {
+      const svgId = g.dataset.kingdom;
+      if (!svgId) return;
+      const key = ID_TO_KEY[svgId];
+      if (!key) return;
+      const k = KINGDOM_DATA[key];
+      if (!k) return;
+      const tip = document.getElementById('mapTooltip');
+      const nameEl = document.getElementById('tooltipName');
+      const infoEl = document.getElementById('tooltipInfo');
+      nameEl.textContent = k.name;
+      infoEl.innerHTML = `📍 ${k.capital}<br>⏱ ${k.start}–${k.end}年`;
+      tip.style.display = 'block';
+    });
+    g.addEventListener('mousemove', (e) => {
+      const tip = document.getElementById('mapTooltip');
+      const wrapper = document.querySelector('.map-wrapper');
+      if (!tip || !wrapper) return;
+      const rect = wrapper.getBoundingClientRect();
+      tip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tip.style.top = (e.clientY - rect.top - 10) + 'px';
+    });
+    g.addEventListener('mouseleave', () => {
+      const tip = document.getElementById('mapTooltip');
+      if (tip) tip.style.display = 'none';
+    });
+  });
+}
 </script>
 </body>
 </html>
