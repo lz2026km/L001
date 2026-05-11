@@ -2477,17 +2477,3 @@ function getFigureByName(name) {
 function getBackground() {
   return KINGDOM_DATA.background;
 }
-
-// 导出数据
-export {
-  KINGDOM_DATA,
-  TIMELINE_EVENTS,
-  HISTORICAL_FIGURES,
-  getKingdomById,
-  getAllKingdoms,
-  getKingdomsByPeriod,
-  getEventsByYear,
-  getEventsByKingdom,
-  getFigureByName,
-  getBackground
-};
